@@ -9,6 +9,6 @@ class AppRouter {
       case SpalshRoute:
         return MaterialPageRoute(builder: (_) => SpalshScreen());
     }
-    return null;
+    return MaterialPageRoute(builder: (_) => SpalshScreen());
   }
 }
