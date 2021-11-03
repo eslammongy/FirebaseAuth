@@ -20,9 +20,9 @@ Widget textInputField({
       height: size,
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.all(Radius.circular(8)),
+        borderRadius: BorderRadius.all(Radius.circular(5)),
         border: Border.all(
-          color: AppColor.iconsColor,
+          color: AppColor.shapesColor,
           width: 2,
         ),
       ),
@@ -37,11 +37,13 @@ Widget textInputField({
         cursorColor: Colors.amberAccent,
         decoration: InputDecoration(
           labelText: label,
+
           border: InputBorder.none,
           focusedBorder: InputBorder.none,
           enabledBorder: InputBorder.none,
           errorBorder: InputBorder.none,
           disabledBorder: InputBorder.none,
+
           contentPadding:
               EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
           prefixIcon: Icon(
@@ -74,7 +76,7 @@ Widget buildPhoneFormField(
               color: Colors.white,
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
-                color: AppColor.iconsColor,
+                color: AppColor.shapesColor,
                 width: 2,
               ),
             ),
@@ -89,7 +91,7 @@ Widget buildPhoneFormField(
               controller: textEditingController,
               type: TextInputType.phone,
               validate: (_) {},
-              label: "enter phone number",
+              label: "phone number",
               prefix: Icons.phone_android_rounded))
     ],
   );

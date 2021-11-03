@@ -39,10 +39,11 @@ class _SpalshScreenState extends State<SpalshScreen> {
               height: 10,
             ),
             Text(
-              "Maps",
+              "MAPS",
               style: TextStyle(
                   fontSize: 30,
                   fontFamily: "Pacifico",
+                  fontWeight: FontWeight.w800,
                   color: AppColor.textColor),
             )
           ],
