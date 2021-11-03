@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_maps/constants/colors.dart';
+import 'package:flutter_maps/constants/strings.dart';
+import 'package:flutter_maps/presentaion/screens/success_screen.dart';
 import 'package:flutter_maps/presentaion/widget/text_input_feild.dart';
 
 class CreateUserAccount extends StatelessWidget {
@@ -87,17 +89,53 @@ class CreateUserAccount extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        "By registering you agree to Terms & Conditions and Privacy Policy of the app.",
-                        style: TextStyle(
-                            fontSize: 17,
-                            fontFamily: "Roboto",
-                            fontWeight: FontWeight.w500,
-                            color: AppColor.textColor),
+                      RichText(
                         textAlign: TextAlign.center,
+                        text: TextSpan(
+                            text: "By registering you agree to ",
+                            style: TextStyle(
+                                fontSize: 17,
+                                fontFamily: "Roboto",
+                                height: 1.5,
+                                fontWeight: FontWeight.w400,
+                                color: AppColor.textColor),
+                            children: <TextSpan>[
+                              TextSpan(
+                                  text: "Terms & Conditions",
+                                  style: TextStyle(
+                                      fontSize: 17,
+                                      fontFamily: "Roboto",
+                                      fontWeight: FontWeight.w600,
+                                      letterSpacing: 1.2,
+                                      color: AppColor.shapesColor)),
+                              TextSpan(
+                                  text: " and ",
+                                  style: TextStyle(
+                                      fontSize: 17,
+                                      fontFamily: "Roboto",
+                                      height: 1.5,
+                                      fontWeight: FontWeight.w400,
+                                      color: AppColor.textColor)),
+                              TextSpan(
+                                  text: "Privacy Policy",
+                                  style: TextStyle(
+                                      fontSize: 17,
+                                      fontFamily: "Roboto",
+                                      fontWeight: FontWeight.w600,
+                                      letterSpacing: 1.2,
+                                      color: AppColor.shapesColor)),
+                              TextSpan(
+                                  text: " of the app ",
+                                  style: TextStyle(
+                                      fontSize: 17,
+                                      fontFamily: "Roboto",
+                                      height: 1.5,
+                                      fontWeight: FontWeight.w400,
+                                      color: AppColor.textColor))
+                            ]),
                       ),
                       SizedBox(
-                        height: 30,
+                        height: 40,
                       ),
                       Container(
                         width: double.infinity,
@@ -114,7 +152,10 @@ class CreateUserAccount extends StatelessWidget {
                               )
                             ]),
                         child: TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.of(context)
+                                  .pushReplacementNamed(wellDoneScreen);
+                            },
                             child: Text(
                               "Get Started",
                               style: TextStyle(

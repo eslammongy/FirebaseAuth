@@ -1,20 +1,94 @@
-class DropDwonItem {
-  const DropDwonItem(this.name, this.imagePath);
+import 'package:flutter/cupertino.dart';
+
+class Item {
+  Item(this.name, this.icon);
   final String name;
-  final String imagePath;
+  final Image icon;
 }
 
-List<DropDwonItem> dropDwonItems = <DropDwonItem>[
-  const DropDwonItem('+20', "assets/images/egypt.png"),
-  const DropDwonItem('+61', "assets/images/australia.png"),
-  const DropDwonItem('+213', "assets/images/algeria.png"),
-  const DropDwonItem('+1', "assets/images/canada.png"),
-  const DropDwonItem('+1', "assets/images/usa.png"),
-  const DropDwonItem('+966', "assets/images/ksa.png"),
-  const DropDwonItem('+91', "assets/images/india.png"),
-  const DropDwonItem('+39', "assets/images/italy.png"),
-  const DropDwonItem('+33', "assets/images/france.png"),
-  const DropDwonItem('+965', "assets/images/kuwait.png"),
-  const DropDwonItem('+81', "assets/images/japan.png"),
-  const DropDwonItem('+86', "assets/images/china.png"),
+List<Item> items = <Item>[
+  Item(
+      '+20',
+      Image.asset(
+        "assets/images/egypt.png",
+        width: 30,
+        height: 30,
+      )),
+  Item(
+      '+61',
+      Image.asset(
+        "assets/images/australia.png",
+        width: 30,
+        height: 30,
+      )),
+  Item(
+      '+213',
+      Image.asset(
+        "assets/images/algeria.png",
+        width: 30,
+        height: 30,
+      )),
+  Item(
+      '+1',
+      Image.asset(
+        "assets/images/canada.png",
+        width: 30,
+        height: 30,
+      )),
+  Item(
+      '+1',
+      Image.asset(
+        "assets/images/usa.png",
+        width: 30,
+        height: 30,
+      )),
+  Item(
+      '+966',
+      Image.asset(
+        "assets/images/ksa.png",
+        width: 30,
+        height: 30,
+      )),
+  Item(
+      '+91',
+      Image.asset(
+        "assets/images/india.png",
+        width: 30,
+        height: 30,
+      )),
+  Item(
+      '+39',
+      Image.asset(
+        "assets/images/italy.png",
+        width: 30,
+        height: 30,
+      )),
+  Item(
+      '+33',
+      Image.asset(
+        "assets/images/france.png",
+        width: 30,
+        height: 30,
+      )),
+  Item(
+      '+965',
+      Image.asset(
+        "assets/images/kuwait.png",
+        width: 30,
+        height: 30,
+      )),
+  Item(
+      '+81',
+      Image.asset(
+        "assets/images/kuwait.png",
+        width: 30,
+        height: 30,
+      )),
+  Item(
+      '+86',
+      Image.asset(
+        "assets/images/china.png",
+        width: 30,
+        height: 30,
+      )),
 ];

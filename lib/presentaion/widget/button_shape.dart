@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_maps/constants/colors.dart';
 
 Widget buildButtonShape(
-    String buttonText, BuildContext context, Widget widget) {
+    {String buttonText, BuildContext context, Function onPressed}) {
   return Align(
     alignment: AlignmentDirectional.centerEnd,
     child: Container(
@@ -21,10 +21,7 @@ Widget buildButtonShape(
             )
           ]),
       child: TextButton(
-          onPressed: () {
-            Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (_) => widget));
-          },
+          onPressed: onPressed,
           child: Text(
             buttonText,
             style: TextStyle(

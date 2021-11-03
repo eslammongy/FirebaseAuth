@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_maps/constants/colors.dart';
+import 'package:flutter_maps/constants/strings.dart';
 import 'package:flutter_maps/presentaion/screens/create_user_account.dart';
 import 'package:flutter_maps/presentaion/widget/button_shape.dart';
 import 'package:flutter_maps/presentaion/widget/text_input_feild.dart';
 import 'package:flutter_maps/presentaion/widget/upper_view.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
 
 class VerifyPhoneNumber extends StatelessWidget {
   VerifyPhoneNumber({Key key}) : super(key: key);
@@ -14,26 +16,28 @@ class VerifyPhoneNumber extends StatelessWidget {
       child: Scaffold(
         backgroundColor: AppColor.backgroundColor,
         body: SingleChildScrollView(
-          child: Form(
-              child: Container(
+          child: Container(
             margin: EdgeInsets.symmetric(horizontal: 15, vertical: 60),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                displayUpperView("Verify your phone number",
-                    "Enter your 6 digit code numbers sent to you at +20123456789"),
-                textInputField(
-                    controller: textEditingController,
-                    type: TextInputType.phone,
-                    validate: (_) {},
-                    label: "phone number",
-                    prefix: Icons.phone_android_rounded),
+                displayUpperView(
+                    "Verify your phone number",
+                    "Enter your 6 digit code numbers sent to you at",
+                    "01020260714"),
+                buildPinCodeContainer(context),
                 SizedBox(
                   height: 40,
                 ),
-                buildButtonShape("Verify", context, CreateUserAccount()),
+                buildButtonShape(
+                    buttonText: "Verify",
+                    context: context,
+                    onPressed: () {
+                      Navigator.of(context)
+                          .pushReplacementNamed(createAccountScreen);
+                    }),
                 SizedBox(
-                  height: 60,
+                  height: 90,
                 ),
                 Align(
                   alignment: Alignment.bottomCenter,
@@ -88,8 +92,42 @@ class VerifyPhoneNumber extends StatelessWidget {
                 ),
               ],
             ),
-          )),
+          ),
         ),
+      ),
+    );
+  }
+
+  Widget buildPinCodeContainer(BuildContext context) {
+    return Container(
+      child: PinCodeTextField(
+        length: 6,
+        appContext: context,
+        obscureText: false,
+        animationType: AnimationType.scale,
+        keyboardType: TextInputType.number,
+        pinTheme: PinTheme(
+            shape: PinCodeFieldShape.box,
+            borderRadius: BorderRadius.circular(5),
+            fieldHeight: 50,
+            fieldWidth: 50,
+            activeFillColor: Colors.blue[100],
+            inactiveFillColor: AppColor.backgroundColor,
+            borderWidth: 1,
+            selectedFillColor: Colors.blue,
+            inactiveColor: AppColor.shapesColor,
+            activeColor: AppColor.iconsColor,
+            selectedColor: AppColor.iconsColor),
+        animationDuration: Duration(milliseconds: 300),
+        backgroundColor: AppColor.backgroundColor,
+        enableActiveFill: true,
+        controller: textEditingController,
+        onCompleted: (v) {
+          print("Completed");
+        },
+        onChanged: (value) {
+          print(value);
+        },
       ),
     );
   }

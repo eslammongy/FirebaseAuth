@@ -23,12 +23,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-    
   cupertino_icons: ^1.0.2
   firebase_auth: ^3.1.4
   firebase_core: ^1.8.0
   flutter_bloc: ^7.3.1
   hexcolor: ^2.0.5
+  pin_code_fields: ^7.3.0
 
 dev_dependencies:
   flutter_test:
@@ -46,7 +46,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
-  
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
   # For details regarding adding assets from package dependencies, see
@@ -75,6 +75,5 @@ flutter:
       fonts:
         - asset: assets/fonts/Pacifico-Regular.ttf
           weight: 700
-  #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

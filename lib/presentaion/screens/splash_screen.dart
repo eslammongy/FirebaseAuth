@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_maps/constants/colors.dart';
+import 'package:flutter_maps/constants/strings.dart';
 import 'package:flutter_maps/presentaion/screens/phone_auth.dart';
 
 class SpalshScreen extends StatefulWidget {
@@ -15,10 +16,8 @@ class _SpalshScreenState extends State<SpalshScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(
-        Duration(seconds: 3),
-        () => Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => PhoneAuthScreen())));
+    Timer(Duration(seconds: 3),
+        () => Navigator.pushReplacementNamed(context, phoneAuthScreen));
   }
 
   @override
