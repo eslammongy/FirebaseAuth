@@ -3,13 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_maps/constants/colors.dart';
 
 Widget buildButtonShape(
-    {String buttonText, BuildContext context, Function onPressed}) {
+    {String buttonText,
+    double buttonWidth,
+    BuildContext context,
+    Function onPressed}) {
   return Align(
     alignment: AlignmentDirectional.centerEnd,
     child: Container(
-      width: 160,
+      width: buttonWidth,
       height: 60,
-      margin: EdgeInsets.symmetric(horizontal: 15),
       decoration: BoxDecoration(
           color: AppColor.shapesColor,
           borderRadius: BorderRadius.all(Radius.circular(8)),

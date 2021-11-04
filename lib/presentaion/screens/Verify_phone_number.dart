@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_maps/constants/colors.dart';
 import 'package:flutter_maps/constants/strings.dart';
-import 'package:flutter_maps/presentaion/screens/create_user_account.dart';
 import 'package:flutter_maps/presentaion/widget/button_shape.dart';
-import 'package:flutter_maps/presentaion/widget/text_input_feild.dart';
 import 'package:flutter_maps/presentaion/widget/upper_view.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
+// ignore: must_be_immutable
 class VerifyPhoneNumber extends StatelessWidget {
   VerifyPhoneNumber({Key key}) : super(key: key);
   var textEditingController = TextEditingController();
@@ -30,6 +29,7 @@ class VerifyPhoneNumber extends StatelessWidget {
                   height: 40,
                 ),
                 buildButtonShape(
+                    buttonWidth: 160.0,
                     buttonText: "Verify",
                     context: context,
                     onPressed: () {

@@ -26,9 +26,9 @@ class SuccessScreen extends StatelessWidget {
               Text(
                 "You're almost done to get started, let's do it...",
                 style: TextStyle(
-                    fontSize: 25,
-                    fontFamily: "Roboto",
-                    fontWeight: FontWeight.w500,
+                    fontSize: 35,
+                    fontFamily: "Allan",
+                    fontWeight: FontWeight.w800,
                     color: AppColor.textColor),
                 textAlign: TextAlign.center,
               ),
@@ -40,7 +40,7 @@ class SuccessScreen extends StatelessWidget {
                 height: 60,
                 margin: EdgeInsets.symmetric(horizontal: 15),
                 decoration: BoxDecoration(
-                    color: AppColor.iconsColor,
+                    color: AppColor.shapesColor,
                     borderRadius: BorderRadius.all(Radius.circular(8)),
                     boxShadow: [
                       BoxShadow(

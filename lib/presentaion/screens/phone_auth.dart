@@ -28,19 +28,23 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
         child: Form(
           key: formKey,
           child: Container(
-            margin: EdgeInsets.symmetric(horizontal: 15, vertical: 100),
+            margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SizedBox(
+                  height: 50,
+                ),
                 displayUpperView(
                     "What is your phone number?",
                     "Please enter your phone number to verify your account.",
                     ''),
                 buildPhoneFormField(selectedUser, emailTextController),
                 SizedBox(
-                  height: 80,
+                  height: 100,
                 ),
                 buildButtonShape(
+                    buttonWidth: 160.0,
                     buttonText: "Next",
                     context: context,
                     onPressed: () {

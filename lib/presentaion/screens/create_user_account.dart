@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_maps/constants/colors.dart';
 import 'package:flutter_maps/constants/strings.dart';
-import 'package:flutter_maps/presentaion/screens/success_screen.dart';
 import 'package:flutter_maps/presentaion/widget/text_input_feild.dart';
 
+// ignore: must_be_immutable
 class CreateUserAccount extends StatelessWidget {
   CreateUserAccount({Key key}) : super(key: key);
 
-  var textEditingController = TextEditingController();
+  var eTextNameController = TextEditingController();
+  var eTextEmailController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -67,7 +68,7 @@ class CreateUserAccount extends StatelessWidget {
                   height: 50,
                 ),
                 textInputField(
-                    controller: textEditingController,
+                    controller: eTextNameController,
                     type: TextInputType.name,
                     validate: (_) {},
                     label: "first name",
@@ -76,7 +77,7 @@ class CreateUserAccount extends StatelessWidget {
                   height: 20,
                 ),
                 textInputField(
-                    controller: textEditingController,
+                    controller: eTextEmailController,
                     type: TextInputType.name,
                     validate: (_) {},
                     label: "last name",
