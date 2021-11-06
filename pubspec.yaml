@@ -30,6 +30,7 @@ dependencies:
   hexcolor: ^2.0.5
   flushbar: ^1.10.4
   pin_code_fields: ^7.3.0
+  country_code_picker: ^2.0.2
 
 dev_dependencies:
   flutter_test:

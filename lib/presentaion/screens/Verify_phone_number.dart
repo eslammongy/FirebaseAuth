@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_maps/constants/colors.dart';
 import 'package:flutter_maps/constants/strings.dart';
 import 'package:flutter_maps/logic/cubit/phone_auth_cubit.dart';
-import 'package:flutter_maps/presentaion/screens/create_user_account.dart';
 import 'package:flutter_maps/presentaion/widget/button_shape.dart';
 import 'package:flutter_maps/presentaion/widget/loading_dialog.dart';
 import 'package:flutter_maps/presentaion/widget/upper_view.dart';

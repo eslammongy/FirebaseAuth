@@ -4,15 +4,13 @@ import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_maps/data/drop_down_menu.dart';
 import 'package:meta/meta.dart';
 
 part 'phone_auth_state.dart';
 
 class PhoneAuthCubit extends Cubit<PhoneAuthState> {
-  String countryKey;
+  String countryKey = "+20";
   String verificationCode;
-  Item selectedCountry;
 
   static PhoneAuthCubit get(context) => BlocProvider.of(context);
   PhoneAuthCubit() : super(PhoneAuthInitial());
@@ -20,7 +18,7 @@ class PhoneAuthCubit extends Cubit<PhoneAuthState> {
   Future<void> submitUserPhoneNumber(String phoneNum) async {
     emit(PhoneAuthLoading());
     await FirebaseAuth.instance.verifyPhoneNumber(
-        phoneNumber: "+2$phoneNum",
+        phoneNumber: "$countryKey$phoneNum",
         verificationCompleted: verificationCompleted,
         timeout: const Duration(seconds: 15),
         verificationFailed: verificationFailed,
@@ -28,6 +26,8 @@ class PhoneAuthCubit extends Cubit<PhoneAuthState> {
         codeAutoRetrievalTimeout: (String verificationId) {
           print("codeAutoRetrievalTimeout : $verificationId");
         });
+
+    print("*** $countryKey$phoneNum *********");
   }
 
   void verificationCompleted(PhoneAuthCredential credential) async {

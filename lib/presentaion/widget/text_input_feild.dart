@@ -31,7 +31,7 @@ Widget textInputField({
         enabled: isClickable,
         onFieldSubmitted: onSubmit,
         onChanged: onChange,
-        autofocus: true,
+        autofocus: false,
         style: TextStyle(
             fontSize: 20,
             fontFamily: "Roboto",

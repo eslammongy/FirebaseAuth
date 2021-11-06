@@ -1,3 +1,4 @@
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_maps/constants/colors.dart';
@@ -36,7 +37,7 @@ class PhoneAuthScreen extends StatelessWidget {
                     "What is your phone number?",
                     "Please enter your phone number to verify your account.",
                     ''),
-                buildPhoneFormField(emailTextController),
+                buildPhoneFormField(context, emailTextController),
                 SizedBox(
                   height: 100,
                 ),
@@ -92,15 +93,16 @@ class PhoneAuthScreen extends StatelessWidget {
     }
   }
 
-  Widget buildPhoneFormField(TextEditingController textEditingController) {
+  Widget buildPhoneFormField(
+      BuildContext context, TextEditingController textEditingController) {
+    var width = MediaQuery.of(context).size.width * 0.75;
+    var height = MediaQuery.of(context).size.height * 0.65;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
           flex: 4,
           child: Container(
-            height: 60,
-            padding: EdgeInsets.all(8),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(8),
@@ -111,32 +113,21 @@ class PhoneAuthScreen extends StatelessWidget {
             ),
             child: BlocBuilder<PhoneAuthCubit, PhoneAuthState>(
               builder: (context, state) {
-                return Container(
-                  height: 200,
-                  child: DropdownButton<Item>(
-                    hint: Text("Select item"),
-                    value: PhoneAuthCubit.get(context).selectedCountry,
-                    onChanged: (Item value) {
-                      PhoneAuthCubit.get(context).selectedCountry = value;
-                    },
-                    items: items.map((Item user) {
-                      return DropdownMenuItem<Item>(
-                        value: user,
-                        child: Row(
-                          children: <Widget>[
-                            user.icon,
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              user.name,
-                              style: TextStyle(color: Colors.black),
-                            ),
-                          ],
-                        ),
-                      );
-                    }).toList(),
-                  ),
+                return CountryCodePicker(
+                  hideSearch: true,
+                  onChanged: (code) {
+                    PhoneAuthCubit.get(context).countryKey = code.dialCode;
+                    print("****" + PhoneAuthCubit.get(context).countryKey);
+                  },
+                  initialSelection: 'EG',
+                  favorite: ['+20', 'EG'],
+                  dialogTextStyle:
+                      TextStyle(fontSize: 15, color: AppColor.textColor),
+                  textStyle: TextStyle(fontSize: 19, color: AppColor.textColor),
+                  showCountryOnly: true,
+                  dialogSize: Size(width, height),
+                  showOnlyCountryWhenClosed: false,
+                  alignLeft: false,
                 );
               },
             ),
