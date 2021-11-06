@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_maps/constants/colors.dart';
 import 'package:flutter_maps/constants/strings.dart';
+import 'package:flutter_maps/logic/cubit/phone_auth_cubit.dart';
+import 'package:flutter_maps/presentaion/screens/create_user_account.dart';
 import 'package:flutter_maps/presentaion/widget/button_shape.dart';
+import 'package:flutter_maps/presentaion/widget/loading_dialog.dart';
 import 'package:flutter_maps/presentaion/widget/upper_view.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 // ignore: must_be_immutable
 class VerifyPhoneNumber extends StatelessWidget {
-  VerifyPhoneNumber({Key key}) : super(key: key);
   var textEditingController = TextEditingController();
+  final String phoneNumber;
+  String otpCode;
+  VerifyPhoneNumber({Key key, @required this.phoneNumber}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -23,7 +29,7 @@ class VerifyPhoneNumber extends StatelessWidget {
                 displayUpperView(
                     "Verify your phone number",
                     "Enter your 6 digit code numbers sent to you at",
-                    "01020260714"),
+                    "$phoneNumber"),
                 buildPinCodeContainer(context),
                 SizedBox(
                   height: 40,
@@ -33,9 +39,10 @@ class VerifyPhoneNumber extends StatelessWidget {
                     buttonText: "Verify",
                     context: context,
                     onPressed: () {
-                      Navigator.of(context)
-                          .pushReplacementNamed(createAccountScreen);
+                      showLoadingDialog(context);
+                      signInWithPhoneNumber(context);
                     }),
+                verifiyUserPhoneNumber(),
                 SizedBox(
                   height: 90,
                 ),
@@ -98,6 +105,32 @@ class VerifyPhoneNumber extends StatelessWidget {
     );
   }
 
+  Widget verifiyUserPhoneNumber() {
+    return BlocListener<PhoneAuthCubit, PhoneAuthState>(
+      listenWhen: (previos, current) {
+        return previos != current;
+      },
+      listener: (context, state) {
+        if (state is PhoneAuthLoading) {
+          showLoadingDialog(context);
+        }
+        if (state is PhoneOtpCodeVerified) {
+          Navigator.pop(context);
+          Navigator.of(context).pushReplacementNamed(createAccountScreen);
+        }
+        if (state is PhoneAuthErrorOccured) {
+          String errorMesg = state.message;
+          showFlushbar(context, errorMesg);
+        }
+      },
+      child: Container(),
+    );
+  }
+
+  void signInWithPhoneNumber(BuildContext context) {
+    PhoneAuthCubit.get(context).submitOtbCode(otpCode);
+  }
+
   Widget buildPinCodeContainer(BuildContext context) {
     return Container(
       child: PinCodeTextField(
@@ -122,7 +155,8 @@ class VerifyPhoneNumber extends StatelessWidget {
         backgroundColor: AppColor.backgroundColor,
         enableActiveFill: true,
         controller: textEditingController,
-        onCompleted: (v) {
+        onCompleted: (code) {
+          otpCode = code;
           print("Completed");
         },
         onChanged: (value) {

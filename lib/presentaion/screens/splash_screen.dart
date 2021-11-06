@@ -1,9 +1,11 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_maps/constants/colors.dart';
 import 'package:flutter_maps/constants/strings.dart';
-import 'package:flutter_maps/presentaion/screens/phone_auth.dart';
+
+String initialRoute;
 
 class SpalshScreen extends StatefulWidget {
   const SpalshScreen({Key key}) : super(key: key);
@@ -16,8 +18,15 @@ class _SpalshScreenState extends State<SpalshScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 3),
-        () => Navigator.pushReplacementNamed(context, phoneAuthScreen));
+    Timer(Duration(seconds: 3), () {
+      FirebaseAuth.instance.authStateChanges().listen((user) {
+        if (user == null) {
+          Navigator.pushReplacementNamed(context, phoneAuthScreen);
+        } else {
+          Navigator.pushReplacementNamed(context, wellDoneScreen);
+        }
+      });
+    });
   }
 
   @override

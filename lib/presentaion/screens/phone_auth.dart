@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_maps/constants/colors.dart';
 import 'package:flutter_maps/constants/strings.dart';
 import 'package:flutter_maps/data/drop_down_menu.dart';
-import 'package:flutter_maps/presentaion/screens/Verify_phone_number.dart';
-import 'package:flutter_maps/presentaion/screens/create_user_account.dart';
+import 'package:flutter_maps/logic/cubit/phone_auth_cubit.dart';
 import 'package:flutter_maps/presentaion/widget/button_shape.dart';
+import 'package:flutter_maps/presentaion/widget/loading_dialog.dart';
 import 'package:flutter_maps/presentaion/widget/text_input_feild.dart';
 import 'package:flutter_maps/presentaion/widget/upper_view.dart';
 
-class PhoneAuthScreen extends StatefulWidget {
-  @override
-  _PhoneAuthScreenState createState() => _PhoneAuthScreenState();
-}
-
-class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
+// ignore: must_be_immutable
+class PhoneAuthScreen extends StatelessWidget {
   var formKey = GlobalKey<FormState>();
   var emailTextController = TextEditingController();
   String phoneNumber;
@@ -39,17 +36,18 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
                     "What is your phone number?",
                     "Please enter your phone number to verify your account.",
                     ''),
-                buildPhoneFormField(selectedUser, emailTextController),
+                buildPhoneFormField(emailTextController),
                 SizedBox(
                   height: 100,
                 ),
+                submitUserPhoneNumber(),
                 buildButtonShape(
                     buttonWidth: 160.0,
                     buttonText: "Next",
                     context: context,
                     onPressed: () {
-                      Navigator.of(context)
-                          .pushReplacementNamed(verifyPhoneScreen);
+                      showLoadingDialog(context);
+                      submitPhone(context);
                     })
               ],
             ),
@@ -59,8 +57,42 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
     ));
   }
 
-  Widget buildPhoneFormField(
-      Item seletedItem, TextEditingController textEditingController) {
+  Widget submitUserPhoneNumber() {
+    return BlocListener<PhoneAuthCubit, PhoneAuthState>(
+      listenWhen: (previos, current) {
+        return previos != current;
+      },
+      listener: (context, state) {
+        if (state is PhoneAuthLoading) {
+          showLoadingDialog(context);
+        }
+        if (state is PhoneNumberSubmited) {
+          Navigator.pop(context);
+          Navigator.of(context)
+              .pushNamed(verifyPhoneScreen, arguments: phoneNumber);
+        }
+        if (state is PhoneAuthErrorOccured) {
+          // Navigator.pop(context);
+          String errorMesg = state.message;
+          showFlushbar(context, errorMesg);
+        }
+      },
+      child: Container(),
+    );
+  }
+
+  Future<void> submitPhone(BuildContext context) async {
+    if (!formKey.currentState.validate()) {
+      Navigator.pop(context);
+      return;
+    } else {
+      Navigator.pop(context);
+      formKey.currentState.save();
+      PhoneAuthCubit.get(context).submitUserPhoneNumber(phoneNumber);
+    }
+  }
+
+  Widget buildPhoneFormField(TextEditingController textEditingController) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -77,31 +109,36 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
                 width: 2,
               ),
             ),
-            child: DropdownButton<Item>(
-              hint: Text("Select item"),
-              value: selectedUser,
-              onChanged: (Item value) {
-                setState(() {
-                  selectedUser = value;
-                });
-              },
-              items: items.map((Item user) {
-                return DropdownMenuItem<Item>(
-                  value: user,
-                  child: Row(
-                    children: <Widget>[
-                      user.icon,
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        user.name,
-                        style: TextStyle(color: Colors.black),
-                      ),
-                    ],
+            child: BlocBuilder<PhoneAuthCubit, PhoneAuthState>(
+              builder: (context, state) {
+                return Container(
+                  height: 200,
+                  child: DropdownButton<Item>(
+                    hint: Text("Select item"),
+                    value: PhoneAuthCubit.get(context).selectedCountry,
+                    onChanged: (Item value) {
+                      PhoneAuthCubit.get(context).selectedCountry = value;
+                    },
+                    items: items.map((Item user) {
+                      return DropdownMenuItem<Item>(
+                        value: user,
+                        child: Row(
+                          children: <Widget>[
+                            user.icon,
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              user.name,
+                              style: TextStyle(color: Colors.black),
+                            ),
+                          ],
+                        ),
+                      );
+                    }).toList(),
                   ),
                 );
-              }).toList(),
+              },
             ),
           ),
         ),

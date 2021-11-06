@@ -28,6 +28,7 @@ dependencies:
   firebase_core: ^1.8.0
   flutter_bloc: ^7.3.1
   hexcolor: ^2.0.5
+  flushbar: ^1.10.4
   pin_code_fields: ^7.3.0
 
 dev_dependencies:

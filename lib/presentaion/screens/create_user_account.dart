@@ -81,7 +81,7 @@ class CreateUserAccount extends StatelessWidget {
                     type: TextInputType.name,
                     validate: (_) {},
                     label: "last name",
-                    prefix: Icons.person),
+                    prefix: Icons.email_rounded),
                 SizedBox(
                   height: 90,
                 ),
