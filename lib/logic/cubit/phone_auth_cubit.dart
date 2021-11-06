@@ -1,9 +1,14 @@
 import 'dart:ffi';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_maps/data/user_model.dart';
+import 'package:flutter_maps/presentaion/widget/loading_dialog.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:meta/meta.dart';
 
 part 'phone_auth_state.dart';
@@ -13,6 +18,7 @@ class PhoneAuthCubit extends Cubit<PhoneAuthState> {
   String verificationCode;
 
   static PhoneAuthCubit get(context) => BlocProvider.of(context);
+
   PhoneAuthCubit() : super(PhoneAuthInitial());
 
   Future<void> submitUserPhoneNumber(String phoneNum) async {
@@ -37,12 +43,12 @@ class PhoneAuthCubit extends Cubit<PhoneAuthState> {
 
   void verificationFailed(FirebaseAuthException exception) {
     print("verificationFailed : ${exception.toString()}");
-    emit(PhoneAuthErrorOccured(message: exception.toString()));
+    emit(PhoneAuthErrorOccurred(message: exception.toString()));
   }
 
   void codeSentToUser(String verficationID, int reSentCode) {
     verificationCode = verficationID;
-    emit(PhoneNumberSubmited());
+    emit(PhoneNumberSubmitted());
   }
 
   Future<void> submitOtbCode(String otpCode) async {
@@ -57,7 +63,7 @@ class PhoneAuthCubit extends Cubit<PhoneAuthState> {
       await FirebaseAuth.instance.signInWithCredential(credential);
       emit(PhoneOtpCodeVerified());
     } catch (error) {
-      emit(PhoneAuthErrorOccured(message: error.toString()));
+      emit(PhoneAuthErrorOccurred(message: error.toString()));
     }
   }
 
@@ -69,5 +75,43 @@ class PhoneAuthCubit extends Cubit<PhoneAuthState> {
   User getUserInfo() {
     User user = FirebaseAuth.instance.currentUser;
     return user;
+  }
+
+  File profileImage;
+  final imagePicker = ImagePicker();
+
+  Future<void> getProfileImage(BuildContext context) async {
+    final pickedFile = await imagePicker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      profileImage = File(pickedFile.path);
+      emit(ChangeProfileImageSuccess());
+    } else {
+      print("No Image Selected ..");
+      showFlushbar(context, "No Image Selected ..");
+      emit(ChangeProfileImageError());
+    }
+  }
+
+  void createNewUser(
+      {@required String name,
+      @required String phone,
+      @required String email}) {
+
+    emit(CreateNewUserLoading());
+    var userID = FirebaseAuth.instance.currentUser.uid;
+    UserModel userModel = UserModel(
+        name: name, email: email, phone: phone, uId: userID, image: "eww");
+
+    print("UserID : $userID");
+    FirebaseFirestore.instance.collection("users")
+    .doc(userID)
+    .set(userModel.toMap())
+    .then((value) {
+      emit(CreateNewUserSuccess());
+    }).catchError((onError){
+      print(onError.toString());
+      emit(CreateNewUserError(errorMessage: onError.toString()));
+    });
+
   }
 }

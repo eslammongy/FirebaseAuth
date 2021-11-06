@@ -60,22 +60,22 @@ class PhoneAuthScreen extends StatelessWidget {
 
   Widget submitUserPhoneNumber() {
     return BlocListener<PhoneAuthCubit, PhoneAuthState>(
-      listenWhen: (previos, current) {
-        return previos != current;
+      listenWhen: (previous, current) {
+        return previous != current;
       },
       listener: (context, state) {
         if (state is PhoneAuthLoading) {
           showLoadingDialog(context);
         }
-        if (state is PhoneNumberSubmited) {
+        if (state is PhoneNumberSubmitted) {
           Navigator.pop(context);
           Navigator.of(context)
               .pushNamed(verifyPhoneScreen, arguments: phoneNumber);
         }
-        if (state is PhoneAuthErrorOccured) {
-          // Navigator.pop(context);
-          String errorMesg = state.message;
-          showFlushbar(context, errorMesg);
+        if (state is PhoneAuthErrorOccurred) {
+          Navigator.pop(context);
+          String errorMeg = state.message;
+          showFlushbar(context, errorMeg);
         }
       },
       child: Container(),

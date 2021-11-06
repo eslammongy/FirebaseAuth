@@ -23,7 +23,7 @@ class _SpalshScreenState extends State<SpalshScreen> {
         if (user == null) {
           Navigator.pushReplacementNamed(context, phoneAuthScreen);
         } else {
-          Navigator.pushReplacementNamed(context, wellDoneScreen);
+          Navigator.pushReplacementNamed(context, createAccountScreen);
         }
       });
     });

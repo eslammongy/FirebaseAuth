@@ -33,7 +33,7 @@ Widget textInputField({
         onChanged: onChange,
         autofocus: false,
         style: TextStyle(
-            fontSize: 20,
+            fontSize: 18,
             fontFamily: "Roboto",
             fontWeight: FontWeight.w600,
             letterSpacing: 2.0),
@@ -41,12 +41,12 @@ Widget textInputField({
         validator: validate,
         cursorColor: Colors.amberAccent,
         decoration: InputDecoration(
-          // labelText: label,
-          // labelStyle: TextStyle(
-          //   fontSize: 15,
-          //   fontFamily: "Roboto",
-          //   fontWeight: FontWeight.w400,
-          // ),
+          labelText: label,
+          labelStyle: TextStyle(
+            fontSize: 15,
+            fontFamily: "Roboto",
+            fontWeight: FontWeight.w400,
+          ),
           border: InputBorder.none,
           focusedBorder: InputBorder.none,
           enabledBorder: InputBorder.none,

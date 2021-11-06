@@ -7,11 +7,30 @@ class PhoneAuthInitial extends PhoneAuthState {}
 
 class PhoneAuthLoading extends PhoneAuthState {}
 
-class PhoneAuthErrorOccured extends PhoneAuthState {
+class PhoneAuthErrorOccurred extends PhoneAuthState {
   final String message;
-  PhoneAuthErrorOccured({this.message});
+
+  PhoneAuthErrorOccurred({this.message});
 }
 
-class PhoneNumberSubmited extends PhoneAuthState {}
+class PhoneNumberSubmitted extends PhoneAuthState {}
 
 class PhoneOtpCodeVerified extends PhoneAuthState {}
+
+class ChangeProfileImageSuccess extends PhoneAuthState {}
+
+class ChangeProfileImageError extends PhoneAuthState {
+  final String errorMessage;
+
+  ChangeProfileImageError({this.errorMessage});
+}
+
+class CreateNewUserLoading extends PhoneAuthState {}
+
+class CreateNewUserSuccess extends PhoneAuthState {}
+
+class CreateNewUserError extends PhoneAuthState {
+  final String errorMessage;
+
+  CreateNewUserError({this.errorMessage});
+}

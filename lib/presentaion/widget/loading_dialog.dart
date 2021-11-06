@@ -22,7 +22,7 @@ void showLoadingDialog(BuildContext context) {
               height: 20,
             ),
             Text(
-              "please loading...",
+              "please waiting...",
               style: TextStyle(
                   fontSize: 20,
                   fontFamily: "Roboto",
@@ -58,14 +58,10 @@ void showFlushbar(context, String message) {
                 fontWeight: FontWeight.w600))),
     flushbarPosition: FlushbarPosition.BOTTOM,
     backgroundColor: Colors.red,
-    // backgroundGradient: LinearGradient(
-    //   colors: [Colors.red, Colors.blueAccent.shade700],
-    //   stops: [0.6, 1],
-    // ),
     margin: EdgeInsets.all(8),
     padding: EdgeInsets.all(15),
     borderRadius: 15,
-    duration: Duration(seconds: 8),
+    duration: Duration(seconds: 9),
     boxShadows: [
       BoxShadow(
         color: Colors.black45,

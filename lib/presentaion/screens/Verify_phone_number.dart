@@ -41,7 +41,7 @@ class VerifyPhoneNumber extends StatelessWidget {
                       showLoadingDialog(context);
                       signInWithPhoneNumber(context);
                     }),
-                verifiyUserPhoneNumber(),
+                verifiedUserPhoneNumber(),
                 SizedBox(
                   height: 90,
                 ),
@@ -104,10 +104,10 @@ class VerifyPhoneNumber extends StatelessWidget {
     );
   }
 
-  Widget verifiyUserPhoneNumber() {
+  Widget verifiedUserPhoneNumber() {
     return BlocListener<PhoneAuthCubit, PhoneAuthState>(
-      listenWhen: (previos, current) {
-        return previos != current;
+      listenWhen: (previous, current) {
+        return previous != current;
       },
       listener: (context, state) {
         if (state is PhoneAuthLoading) {
@@ -115,11 +115,12 @@ class VerifyPhoneNumber extends StatelessWidget {
         }
         if (state is PhoneOtpCodeVerified) {
           Navigator.pop(context);
-          Navigator.of(context).pushReplacementNamed(createAccountScreen);
+          Navigator.of(context).pushReplacementNamed(createAccountScreen , arguments: phoneNumber);
         }
-        if (state is PhoneAuthErrorOccured) {
-          String errorMesg = state.message;
-          showFlushbar(context, errorMesg);
+        if (state is PhoneAuthErrorOccurred) {
+          Navigator.pop(context);
+          String errorMessage = state.message;
+          showFlushbar(context, errorMessage);
         }
       },
       child: Container(),

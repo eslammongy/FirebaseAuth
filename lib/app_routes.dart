@@ -16,6 +16,7 @@ class AppRouter {
     phoneAuthCubit = PhoneAuthCubit();
   }
   Route generateRoute(RouteSettings routeSettings) {
+    final phoneNumber = routeSettings.arguments;
     switch (routeSettings.name) {
       case spalshScreen:
         return MaterialPageRoute(builder: (_) => SpalshScreen());
@@ -28,7 +29,7 @@ class AppRouter {
                 ));
 
       case verifyPhoneScreen:
-        final phoneNumber = routeSettings.arguments;
+
         return MaterialPageRoute(
             builder: (_) => BlocProvider<PhoneAuthCubit>.value(
                   value: phoneAuthCubit,
@@ -38,7 +39,14 @@ class AppRouter {
                 ));
 
       case createAccountScreen:
-        return MaterialPageRoute(builder: (_) => CreateUserAccount());
+
+        return MaterialPageRoute(
+            builder: (_) => BlocProvider<PhoneAuthCubit>.value(
+              value: phoneAuthCubit,
+              child: CreateUserAccount(
+                phoneNumber: phoneNumber,
+              ),
+            ));
 
       case wellDoneScreen:
         return MaterialPageRoute(builder: (_) => SuccessScreen());
