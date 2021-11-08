@@ -55,3 +55,11 @@ GetUserInfoErrorStatus({this.errorMessage});
 }
 
 class UpdateUserInfo extends PhoneAuthState{}
+
+class UpdateCurrentUserInfoLoading extends PhoneAuthState{}
+class UpdateCurrentUserInfoSuccess extends PhoneAuthState{}
+class UpdateCurrentUserInfoError extends PhoneAuthState{
+  final String errorMessage;
+
+  UpdateCurrentUserInfoError({this.errorMessage});
+}

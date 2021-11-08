@@ -78,7 +78,7 @@ class PhoneAuthCubit extends Cubit<PhoneAuthState> {
     return user;
   }
 
-  String getUserID(){
+  String getUserID() {
     var userID = FirebaseAuth.instance.currentUser.uid;
     return userID;
   }
@@ -101,14 +101,15 @@ class PhoneAuthCubit extends Cubit<PhoneAuthState> {
   UserModel userModel;
 
   void setUserInfo(
-      {@required String id, @required String name, @required String phone, @required String email, @required String profilePhoto}) {
+      {@required String id,
+      @required String name,
+      @required String phone,
+      @required String email,
+      @required String profilePhoto}) {
     emit(CreateNewUserLoading());
 
-    userModel = UserModel(name: name,
-        email: email,
-        phone: phone,
-        uId: id,
-        image: profilePhoto);
+    userModel = UserModel(
+        name: name, email: email, phone: phone, uId: id, image: profilePhoto);
     print("UserID : $id");
     FirebaseFirestore.instance
         .collection("users")
@@ -127,15 +128,12 @@ class PhoneAuthCubit extends Cubit<PhoneAuthState> {
     var userID = FirebaseAuth.instance.currentUser.uid;
     FirebaseStorage.instance
         .ref()
-        .child(
-        'users/$name/${Uri
-            .file(profileImage.path)
-            .pathSegments
-            .last}')
+        .child('users/$name/${Uri.file(profileImage.path).pathSegments.last}')
         .putFile(profileImage)
         .then((value) {
       value.ref.getDownloadURL().then((value) {
-        setUserInfo(id: userID,
+        setUserInfo(
+            id: userID,
             name: name,
             phone: phone,
             email: email,
@@ -149,25 +147,57 @@ class PhoneAuthCubit extends Cubit<PhoneAuthState> {
     });
   }
 
-  void getCurrentUserInfo(){
+  void getCurrentUserInfo() {
     var userID = FirebaseAuth.instance.currentUser.uid;
     emit(GetUserInfoLoadingStatus());
-    FirebaseFirestore.instance.collection('users')
-    .doc(userID)
-    .get()
-    .then((value) {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(userID)
+        .get()
+        .then((value) {
       userModel = UserModel.fromJson(value.data());
       emit(GetUserInfoSuccessStatus());
-    }).catchError((onError){
+    }).catchError((onError) {
       print(onError.toString());
       emit(GetUserInfoErrorStatus(errorMessage: onError.toString()));
     });
   }
 
-  void updateInfo(TextEditingController name , TextEditingController email){
+  void updateCurrentUser (
+      {@required String name, @required String phone,@required String email ,String profileImage}) async{
+    UserModel user = UserModel(
+        name: name, uId: getUserID(), email: email,phone: phone, image: profileImage ?? userModel.image);
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(userModel.uId)
+        .update(user.toMap())
+        .then((value) {
+      getCurrentUserInfo();
+    }).catchError((onError) {});
+  }
+
+  void updateCurrentUserFullInfo(
+      {@required String name, @required String email  ,@required String phone}) {
+    emit(UpdateCurrentUserInfoLoading());
+   FirebaseStorage.instance
+        .ref()
+        .child('users/$name/${Uri.file(profileImage.path).pathSegments.last}')
+        .putFile(profileImage)
+        .then((value) => value.ref.getDownloadURL().then((value) {
+              updateCurrentUser(
+                  name: name, phone: phone , email: email ,profileImage: value);
+              emit(UpdateCurrentUserInfoSuccess());
+            }).catchError((onError) {
+              emit(UpdateCurrentUserInfoError(errorMessage: onError.toString()));
+            }))
+        .catchError((onError) {
+     emit(UpdateCurrentUserInfoError(errorMessage: onError.toString()));
+    });
+  }
+
+  void updateInfo(TextEditingController name, TextEditingController email) {
     userModel.name = name.text;
     userModel.email = email.text;
     emit(UpdateUserInfo());
   }
-
 }
