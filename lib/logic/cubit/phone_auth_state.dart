@@ -34,3 +34,22 @@ class CreateNewUserError extends PhoneAuthState {
 
   CreateNewUserError({this.errorMessage});
 }
+
+
+class UploadUserProfileImageSuccess extends PhoneAuthState {}
+
+class UploadUserProfileImageError extends PhoneAuthState {
+  final String errorMessage;
+
+  UploadUserProfileImageError({this.errorMessage});
+}
+
+class GetUserInfoLoadingStatus extends PhoneAuthState {}
+
+class GetUserInfoSuccessStatus extends PhoneAuthState {}
+
+class GetUserInfoErrorStatus extends PhoneAuthState {
+final String errorMessage;
+
+GetUserInfoErrorStatus({this.errorMessage});
+}

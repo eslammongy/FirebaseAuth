@@ -17,16 +17,13 @@ class MyApp extends StatelessWidget {
   const MyApp({this.appRouter});
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<PhoneAuthCubit>(
-      create: (context)=> PhoneAuthCubit(),
-      child: MaterialApp(
-        title: 'Flutter Maps',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        onGenerateRoute: appRouter.generateRoute,
+    return MaterialApp(
+      title: 'Flutter Maps',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
       ),
+      onGenerateRoute: appRouter.generateRoute,
     );
   }
 }

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_maps/data/user_model.dart';
@@ -77,6 +78,11 @@ class PhoneAuthCubit extends Cubit<PhoneAuthState> {
     return user;
   }
 
+  String getUserID(){
+    var userID = FirebaseAuth.instance.currentUser.uid;
+    return userID;
+  }
+
   File profileImage;
   final imagePicker = ImagePicker();
 
@@ -92,26 +98,70 @@ class PhoneAuthCubit extends Cubit<PhoneAuthState> {
     }
   }
 
-  void createNewUser(
-      {@required String name,
-      @required String phone,
-      @required String email}) {
+  UserModel userModel;
 
+  void setUserInfo(
+      {@required String id, @required String name, @required String phone, @required String email, @required String profilePhoto}) {
     emit(CreateNewUserLoading());
-    var userID = FirebaseAuth.instance.currentUser.uid;
-    UserModel userModel = UserModel(
-        name: name, email: email, phone: phone, uId: userID, image: "eww");
 
-    print("UserID : $userID");
-    FirebaseFirestore.instance.collection("users")
-    .doc(userID)
-    .set(userModel.toMap())
-    .then((value) {
+    userModel = UserModel(name: name,
+        email: email,
+        phone: phone,
+        uId: id,
+        image: profilePhoto);
+    print("UserID : $id");
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(id)
+        .set(userModel.toMap())
+        .then((value) {
       emit(CreateNewUserSuccess());
-    }).catchError((onError){
+    }).catchError((onError) {
       print(onError.toString());
       emit(CreateNewUserError(errorMessage: onError.toString()));
     });
-
   }
+
+  void createNewUser(
+      {@required String name, @required String phone, @required String email}) {
+    var userID = FirebaseAuth.instance.currentUser.uid;
+    FirebaseStorage.instance
+        .ref()
+        .child(
+        'users/$name/${Uri
+            .file(profileImage.path)
+            .pathSegments
+            .last}')
+        .putFile(profileImage)
+        .then((value) {
+      value.ref.getDownloadURL().then((value) {
+        setUserInfo(id: userID,
+            name: name,
+            phone: phone,
+            email: email,
+            profilePhoto: value);
+        emit(UploadUserProfileImageSuccess());
+      }).catchError((onError) {
+        emit(UploadUserProfileImageError(errorMessage: onError.toString()));
+      });
+    }).catchError((onError) {
+      emit(UploadUserProfileImageError(errorMessage: onError.toString()));
+    });
+  }
+
+  void getCurrentUserInfo(){
+    var userID = FirebaseAuth.instance.currentUser.uid;
+    emit(GetUserInfoLoadingStatus());
+    FirebaseFirestore.instance.collection('users')
+    .doc(userID)
+    .get()
+    .then((value) {
+      userModel = UserModel.fromJson(value.data());
+      emit(GetUserInfoSuccessStatus());
+    }).catchError((onError){
+      print(onError.toString());
+      emit(GetUserInfoErrorStatus(errorMessage: onError.toString()));
+    });
+  }
+
 }

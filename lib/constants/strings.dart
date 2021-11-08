@@ -5,3 +5,5 @@ const createAccountScreen = '/createAccount-Screen';
 const wellDoneScreen = '/wellDone-Screen';
 
 const googleMapsScreen = '/googleMaps-Screen';
+
+const userProfileScreen = "/userProfileScreen";

@@ -67,9 +67,9 @@ flutter:
         - asset: assets/fonts/Roboto-Medium.ttf
           weight: 400
 
-    - family: Public Sans
+    - family: Nunito
       fonts:
-        - asset: assets/fonts/PublicSans-Regular.ttf
+        - asset: assets/fonts/Nunito-Regular.ttf
 
     - family: Allan
       fonts:

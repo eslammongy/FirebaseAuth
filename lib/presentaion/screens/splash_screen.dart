@@ -7,23 +7,24 @@ import 'package:flutter_maps/constants/strings.dart';
 
 String initialRoute;
 
-class SpalshScreen extends StatefulWidget {
-  const SpalshScreen({Key key}) : super(key: key);
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({Key key}) : super(key: key);
 
   @override
-  _SpalshScreenState createState() => _SpalshScreenState();
+  _SplashScreenState createState() => _SplashScreenState();
 }
 
-class _SpalshScreenState extends State<SpalshScreen> {
+class _SplashScreenState extends State<SplashScreen> {
+   Timer timer;
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 3), () {
+    timer = Timer(Duration(seconds: 3), () {
       FirebaseAuth.instance.authStateChanges().listen((user) {
         if (user == null) {
           Navigator.pushReplacementNamed(context, phoneAuthScreen);
         } else {
-          Navigator.pushReplacementNamed(context, createAccountScreen);
+          Navigator.pushReplacementNamed(context, wellDoneScreen);
         }
       });
     });
@@ -58,5 +59,10 @@ class _SpalshScreenState extends State<SpalshScreen> {
         )),
       ),
     );
+  }
+  @override
+  void dispose() {
+    super.dispose();
+    timer.cancel();
   }
 }

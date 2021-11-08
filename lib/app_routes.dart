@@ -9,6 +9,7 @@ import 'package:flutter_maps/presentaion/screens/map_screen.dart';
 import 'package:flutter_maps/presentaion/screens/phone_auth.dart';
 import 'package:flutter_maps/presentaion/screens/splash_screen.dart';
 import 'package:flutter_maps/presentaion/screens/success_screen.dart';
+import 'package:flutter_maps/presentaion/screens/user_profile.dart';
 
 class AppRouter {
   PhoneAuthCubit phoneAuthCubit;
@@ -19,7 +20,7 @@ class AppRouter {
     final phoneNumber = routeSettings.arguments;
     switch (routeSettings.name) {
       case spalshScreen:
-        return MaterialPageRoute(builder: (_) => SpalshScreen());
+        return MaterialPageRoute(builder: (_) => SplashScreen());
 
       case phoneAuthScreen:
         return MaterialPageRoute(
@@ -49,11 +50,19 @@ class AppRouter {
             ));
 
       case wellDoneScreen:
-        return MaterialPageRoute(builder: (_) => SuccessScreen());
+        return MaterialPageRoute(
+            builder: (_) => BlocProvider<PhoneAuthCubit>.value(
+              value: phoneAuthCubit,
+              child: SuccessScreen(),
+            ));
 
-      case googleMapsScreen:
-        return MaterialPageRoute(builder: (_) => MapsScreen());
+      case userProfileScreen:
+        return MaterialPageRoute(
+            builder: (_) => BlocProvider<PhoneAuthCubit>.value(
+              value: phoneAuthCubit,
+              child: UserProfileScreen(),
+            ));
     }
-    return MaterialPageRoute(builder: (_) => SpalshScreen());
+    return MaterialPageRoute(builder: (_) => SplashScreen());
   }
 }

@@ -61,7 +61,8 @@ void showFlushbar(context, String message) {
     margin: EdgeInsets.all(8),
     padding: EdgeInsets.all(15),
     borderRadius: 15,
-    duration: Duration(seconds: 9),
+    animationDuration: Duration(seconds: 2),
+    duration: Duration(seconds: 2),
     boxShadows: [
       BoxShadow(
         color: Colors.black45,
