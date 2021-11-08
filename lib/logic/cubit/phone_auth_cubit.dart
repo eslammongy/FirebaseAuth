@@ -89,11 +89,11 @@ class PhoneAuthCubit extends Cubit<PhoneAuthState> {
   Future<void> getProfileImage(BuildContext context) async {
     final pickedFile = await imagePicker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
-      profileImage = File(pickedFile.path);
       emit(ChangeProfileImageSuccess());
+      profileImage = File(pickedFile.path);
     } else {
       print("No Image Selected ..");
-      showFlushbar(context, "No Image Selected ..");
+      showFlushBar(context, "No Image Selected ..");
       emit(ChangeProfileImageError());
     }
   }
@@ -162,6 +162,12 @@ class PhoneAuthCubit extends Cubit<PhoneAuthState> {
       print(onError.toString());
       emit(GetUserInfoErrorStatus(errorMessage: onError.toString()));
     });
+  }
+
+  void updateInfo(TextEditingController name , TextEditingController email){
+    userModel.name = name.text;
+    userModel.email = email.text;
+    emit(UpdateUserInfo());
   }
 
 }

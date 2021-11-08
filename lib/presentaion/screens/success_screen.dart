@@ -39,7 +39,7 @@ class SuccessScreen extends StatelessWidget {
               Text(
                 "You're almost done to get started, let's do it...",
                 style: TextStyle(
-                    fontSize: 30,
+                    fontSize: 25,
                     fontFamily: "Nunito",
                     fontWeight: FontWeight.w800,
                     color: AppColor.textColor),
@@ -100,7 +100,7 @@ class SuccessScreen extends StatelessWidget {
         if (state is GetUserInfoErrorStatus) {
           Navigator.pop(context);
           String errorMeg = state.errorMessage;
-          showFlushbar(context, errorMeg);
+          showFlushBar(context, errorMeg);
         }
       },
       child: Container(),

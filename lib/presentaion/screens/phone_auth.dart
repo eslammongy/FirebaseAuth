@@ -75,7 +75,7 @@ class PhoneAuthScreen extends StatelessWidget {
         if (state is PhoneAuthErrorOccurred) {
           Navigator.pop(context);
           String errorMeg = state.message;
-          showFlushbar(context, errorMeg);
+          showFlushBar(context, errorMeg);
         }
       },
       child: Container(),

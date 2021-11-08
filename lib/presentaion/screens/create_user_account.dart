@@ -229,7 +229,7 @@ class CreateUserAccount extends StatelessWidget {
           if (state is CreateNewUserError) {
             Navigator.pop(context);
             String errorMeg = state.errorMessage;
-            showFlushbar(context, errorMeg);
+            showFlushBar(context, errorMeg);
           }
         },
         child: Container(),

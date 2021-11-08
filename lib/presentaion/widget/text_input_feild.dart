@@ -30,6 +30,7 @@ Widget textInputField({
         keyboardType: type,
         enabled: isClickable,
         onFieldSubmitted: onSubmit,
+
         onChanged: onChange,
         autofocus: false,
         style: TextStyle(

@@ -120,7 +120,7 @@ class VerifyPhoneNumber extends StatelessWidget {
         if (state is PhoneAuthErrorOccurred) {
           Navigator.pop(context);
           String errorMessage = state.message;
-          showFlushbar(context, errorMessage);
+          showFlushBar(context, errorMessage);
         }
       },
       child: Container(),

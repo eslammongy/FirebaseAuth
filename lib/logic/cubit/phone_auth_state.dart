@@ -53,3 +53,5 @@ final String errorMessage;
 
 GetUserInfoErrorStatus({this.errorMessage});
 }
+
+class UpdateUserInfo extends PhoneAuthState{}
