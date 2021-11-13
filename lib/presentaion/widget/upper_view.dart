@@ -12,7 +12,7 @@ Widget displayUpperView(String text1, String text2, String phoneNumber) {
           height: 100,
         ),
       ),
-      SizedBox(
+      const SizedBox(
         height: 50,
       ),
       Text(
@@ -23,7 +23,7 @@ Widget displayUpperView(String text1, String text2, String phoneNumber) {
             fontWeight: FontWeight.w800,
             color: AppColor.textColor),
       ),
-      SizedBox(
+      const SizedBox(
         height: 15,
       ),
       Container(
@@ -47,7 +47,7 @@ Widget displayUpperView(String text1, String text2, String phoneNumber) {
                         color: AppColor.textColor),
                     children: <TextSpan>[
                       TextSpan(
-                          text: "$phoneNumber",
+                          text: phoneNumber,
                           style: TextStyle(
                               fontSize: 20,
                               fontFamily: "Roboto",
@@ -57,7 +57,7 @@ Widget displayUpperView(String text1, String text2, String phoneNumber) {
                     ]),
               ),
       ),
-      SizedBox(
+      const SizedBox(
         height: 70,
       ),
     ],

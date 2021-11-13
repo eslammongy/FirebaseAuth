@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_maps/constants/colors.dart';
-import 'package:flutter_maps/logic/cubit/phone_auth_cubit.dart';
+import 'package:flutter_maps/constants/strings.dart';
+import 'package:flutter_maps/logic/bloc/phone_auth_bloc.dart';
+import 'package:flutter_maps/logic/bloc/phone_auth_state.dart';
 import 'package:flutter_maps/presentaion/widget/loading_dialog.dart';
 import 'package:hexcolor/hexcolor.dart';
 
+
+// ignore: must_be_immutable
 class UserProfileScreen extends StatelessWidget {
   var eTextNameController = TextEditingController();
   var eTextEmailController = TextEditingController();
   var formKey = GlobalKey<FormState>();
 
-  UserProfileScreen({Key key}) : super(key: key);
+  UserProfileScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,27 +37,29 @@ class UserProfileScreen extends StatelessWidget {
           backgroundColor: HexColor("DEDEDE"),
           body: SingleChildScrollView(
             child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 40,
                   ),
                   Align(
                     alignment: AlignmentDirectional.topStart,
                     child: IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushReplacementNamed(context, googleMapsScreen);
+                      },
                       icon: CircleAvatar(
                           backgroundColor: AppColor.backgroundColor,
                           radius: 30,
-                          child: Icon(
+                          child: const Icon(
                             Icons.arrow_back,
                             size: 25,
                           )),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   BlocBuilder<PhoneAuthCubit, PhoneAuthState>(
@@ -64,15 +69,16 @@ class UserProfileScreen extends StatelessWidget {
                         child: Stack(
                             alignment: AlignmentDirectional.bottomEnd,
                             children: [
-                          CircleAvatar(
-                            radius: 68.0,
-                            backgroundColor: Colors.white,
-                            child: CircleAvatar(
-                                radius: 65.0,
-                                backgroundImage: profileImage == null
-                                    ? NetworkImage(userModel.image)
-                                    : FileImage(profileImage)),
-                          ),
+                              CircleAvatar(
+                                radius: 68.0,
+                                backgroundColor: Colors.white,
+                                child: profileImage == null ?  CircleAvatar(
+                                    radius: 65.0,
+                                    backgroundImage: NetworkImage(userModel.image))
+                                    :CircleAvatar(
+                                    radius: 65.0,
+                                    backgroundImage:FileImage(profileImage)),
+                              ),
                           IconButton(
                             onPressed: () {
                               PhoneAuthCubit.get(context)
@@ -81,28 +87,28 @@ class UserProfileScreen extends StatelessWidget {
                             icon: CircleAvatar(
                                 backgroundColor: AppColor.backgroundColor,
                                 radius: 30,
-                                child: Icon(
+                                child: const Icon(
                                   Icons.camera_alt_rounded,
                                   size: 20,
                                 )),
                           ),
                         ]));
                   }),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Container(
                       width: 50,
                       height: 50,
-                      margin: EdgeInsets.symmetric(horizontal: 100),
+                      margin: const EdgeInsets.symmetric(horizontal: 100),
                       decoration: BoxDecoration(
                           color: AppColor.shapesColor,
-                          borderRadius: BorderRadius.all(Radius.circular(50)),
+                          borderRadius: const BorderRadius.all(Radius.circular(50)),
                           boxShadow: [
                             BoxShadow(
                               blurRadius: 10,
                               color: Colors.black.withOpacity(0.5),
-                              offset: Offset(0, 3),
+                              offset: const Offset(0, 3),
                             )
                           ]),
                       child: IconButton(
@@ -113,33 +119,33 @@ class UserProfileScreen extends StatelessWidget {
                             Icons.edit_road_outlined,
                             color: AppColor.backgroundColor,
                           ))),
-                  SizedBox(
+                  const SizedBox(
                     height: 50,
                   ),
                   buildTextViewShape(context, userModel.name),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   buildTextViewShape(context, userModel.phone),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   buildTextViewShape(context, userModel.email),
-                  SizedBox(
+                  const SizedBox(
                     height: 60,
                   ),
                   Container(
                     width: double.infinity,
                     height: 60,
-                    margin: EdgeInsets.symmetric(horizontal: 30),
+                    margin: const EdgeInsets.symmetric(horizontal: 30),
                     decoration: BoxDecoration(
                         color: AppColor.shapesColor,
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        borderRadius: const BorderRadius.all(Radius.circular(10)),
                         boxShadow: [
                           BoxShadow(
                             blurRadius: 10,
                             color: Colors.black.withOpacity(0.5),
-                            offset: Offset(0, 3),
+                            offset: const Offset(0, 3),
                           )
                         ]),
                     child: TextButton(
@@ -149,7 +155,7 @@ class UserProfileScreen extends StatelessWidget {
                               phone: userModel.phone,
                               email: userModel.email);
                         },
-                        child: Text(
+                        child: const Text(
                           "Save",
                           style: TextStyle(
                               fontSize: 20,
@@ -171,7 +177,7 @@ class UserProfileScreen extends StatelessWidget {
         height: 60,
         decoration: BoxDecoration(
           color: AppColor.backgroundColor,
-          borderRadius: BorderRadius.all(Radius.circular(25)),
+          borderRadius: const BorderRadius.all(Radius.circular(25)),
           border: Border.all(
             color: AppColor.backgroundColor,
             width: 1,

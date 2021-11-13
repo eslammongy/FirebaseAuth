@@ -1,28 +1,28 @@
 class UserModel {
-  String name;
-  String email;
-  String phone;
-  String uId;
-  String image;
+  late String name;
+  late String email;
+  late String phone;
+  late String uId;
+  late String image;
 
 
   UserModel({
-    this.email,
-    this.name,
-    this.phone,
-    this.uId,
-    this.image,
+    required this.email,
+    required this.name,
+    required this.phone,
+    required this.uId,
+    required this.image,
   });
 
-  UserModel.fromJson(Map<String, dynamic> json) {
-    email = json['email'];
+  UserModel.fromJson(Map<String, dynamic>? json) {
+    email = json!['email'];
     name = json['name'];
     phone = json['phone'];
     uId = json['uId'];
     image = json['image'];
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic?> toMap() {
     return {
       'name': name,
       'email': email,

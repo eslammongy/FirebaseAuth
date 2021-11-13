@@ -1,11 +1,9 @@
-import 'dart:ui';
-
+import 'package:another_flushbar/flushbar.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_maps/constants/colors.dart';
-import 'package:flutter_maps/logic/cubit/phone_auth_cubit.dart';
+import 'package:flutter_maps/logic/bloc/phone_auth_bloc.dart';
 import 'package:flutter_maps/presentaion/widget/button_shape.dart';
 import 'package:flutter_maps/presentaion/widget/text_input_feild.dart';
 
@@ -13,18 +11,18 @@ void showLoadingDialog(BuildContext context) {
   AlertDialog alertDialog = AlertDialog(
     backgroundColor: Colors.white,
     elevation: 10,
-    contentPadding: EdgeInsets.all(5),
-    content: Container(
+    contentPadding: const EdgeInsets.all(5),
+    content: SizedBox(
       height: 150,
       child: Center(
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
-            CircularProgressIndicator(
+            const CircularProgressIndicator(
                 valueColor: AlwaysStoppedAnimation<Color>(Colors.orange)),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Text(
@@ -57,35 +55,35 @@ void showFlushBar(context, String message) {
         onPressed: () {
           Navigator.of(context).pop();
         },
-        child: Text("Undo",
+        child: const Text("Undo",
             style: TextStyle(
                 color: Colors.black87,
                 fontSize: 20,
                 fontWeight: FontWeight.w600))),
     flushbarPosition: FlushbarPosition.BOTTOM,
     backgroundColor: Colors.red,
-    margin: EdgeInsets.all(8),
-    padding: EdgeInsets.all(15),
-    borderRadius: 15,
-    animationDuration: Duration(seconds: 2),
-    duration: Duration(seconds: 2),
-    boxShadows: [
+    margin: const EdgeInsets.all(8),
+    padding: const EdgeInsets.all(15),
+    borderRadius: BorderRadius.circular(15),
+    animationDuration: const Duration(seconds: 2),
+    duration: const Duration(seconds: 2),
+    boxShadows: const [
       BoxShadow(
         color: Colors.black45,
         offset: Offset(3, 3),
         blurRadius: 8,
       ),
     ],
-    titleText: Text(
+    titleText: const Text(
       "Error",
       style: TextStyle(
           color: Colors.black87, fontSize: 20, fontWeight: FontWeight.w600),
     ),
     messageText: Text(
       message,
-      style: TextStyle(color: Colors.white, fontSize: 15),
+      style: const TextStyle(color: Colors.white, fontSize: 15),
     ),
-    icon: Icon(
+    icon: const Icon(
       Icons.info_sharp,
       color: Colors.black87,
     ),
@@ -99,7 +97,7 @@ void showEditingInfoDialog(BuildContext context) {
   var eTextNameController = TextEditingController();
   var eTextEmailController = TextEditingController();
   var formKey = GlobalKey<FormState>();
-  eTextNameController.text= userModel.name;
+  eTextNameController.text = userModel.name;
   eTextEmailController.text = userModel.email;
 
   AwesomeDialog(
@@ -115,61 +113,72 @@ void showEditingInfoDialog(BuildContext context) {
     ),
     body: Form(
       key: formKey,
-      child: Container(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              height: 50,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const SizedBox(
+            height: 50,
+          ),
+          Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: const BorderRadius.all(Radius.circular(5)),
+                border: Border.all(
+                  color: AppColor.shapesColor,
+                  width: 2,
+                ),
+              ),
+              child: textInputFormField(
+                  textEditingController: eTextNameController,
+                  label: "full name",
+                  prefix: const Icon(Icons.person),
+                  autoFocus: false,
+                  textSize: 18.0)),
+          const SizedBox(
+            height: 30,
+          ),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: const BorderRadius.all(Radius.circular(5)),
+              border: Border.all(
+                color: AppColor.shapesColor,
+                width: 2,
+              ),
             ),
-            textInputField(
-                controller: eTextNameController,
-                type: TextInputType.name,
-                validate: (String value) {
-                  if (value.isEmpty) {
-                    return "please enter your name !";
-                  }
-                },
-                label: "full name",
-                prefix: Icons.person),
-            SizedBox(
-              height: 30,
-            ),
-            textInputField(
-                controller: eTextEmailController,
-                type: TextInputType.emailAddress,
-                validate: (String value) {
-                  if (value.isEmpty) {
-                    return "please enter your name !";
-                  }
-                },
+            child: textInputFormField(
+                textEditingController: eTextNameController,
                 label: "email",
-                prefix: Icons.email_rounded),
-            SizedBox(
-              height: 50,
-            ),
-            Align(
-              alignment: AlignmentDirectional.bottomCenter,
-              child: buildButtonShape(buttonText: "Save" , buttonWidth: 150.0 , context: context , onPressed: (){
-                if (!formKey.currentState.validate()) {
-                  return;
-                } else {
-
-                  formKey.currentState.save();
-                  PhoneAuthCubit.get(context).updateInfo(eTextNameController, eTextEmailController);
-                  Navigator.pop(context);
-                }
-                //AwesomeDialog(context: context).dismiss();
-              }),
-            ),
-            SizedBox(
-              height: 30,
-            ),
-          ],
-        ),
+                autoFocus: false,
+                prefix: const Icon(Icons.email),
+                textSize: 18.0),
+          ),
+          const SizedBox(
+            height: 50,
+          ),
+          Align(
+            alignment: AlignmentDirectional.bottomCenter,
+            child: buildButtonShape(
+                buttonText: "Save",
+                buttonWidth: 150.0,
+                context: context,
+                onPressed: () {
+                  if (!formKey.currentState!.validate()) {
+                    return;
+                  } else {
+                    formKey.currentState!.save();
+                    PhoneAuthCubit.get(context)
+                        .updateInfo(eTextNameController, eTextEmailController);
+                    Navigator.pop(context);
+                  }
+                  //AwesomeDialog(context: context).dismiss();
+                }),
+          ),
+          const SizedBox(
+            height: 30,
+          ),
+        ],
       ),
     ),
-
-  )..show();
+  ).show();
 }
-

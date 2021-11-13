@@ -2,25 +2,26 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_maps/constants/strings.dart';
-import 'package:flutter_maps/logic/cubit/phone_auth_cubit.dart';
-import 'package:flutter_maps/presentaion/screens/Verify_phone_number.dart';
+import 'package:flutter_maps/presentaion/screens/verify_user_phone.dart';
 import 'package:flutter_maps/presentaion/screens/create_user_account.dart';
-import 'package:flutter_maps/presentaion/screens/map_screen.dart';
-import 'package:flutter_maps/presentaion/screens/phone_auth.dart';
-import 'package:flutter_maps/presentaion/screens/splash_screen.dart';
-import 'package:flutter_maps/presentaion/screens/success_screen.dart';
 import 'package:flutter_maps/presentaion/screens/user_profile.dart';
+import 'logic/bloc/phone_auth_bloc.dart';
+import 'presentaion/screens/map_screen.dart';
+import 'presentaion/screens/phone_auth.dart';
+import 'presentaion/screens/splash_screen.dart';
+import 'presentaion/screens/success_screen.dart';
+
 
 class AppRouter {
-  PhoneAuthCubit phoneAuthCubit;
+  late PhoneAuthCubit phoneAuthCubit;
   AppRouter() {
     phoneAuthCubit = PhoneAuthCubit();
   }
   Route generateRoute(RouteSettings routeSettings) {
     final phoneNumber = routeSettings.arguments;
     switch (routeSettings.name) {
-      case spalshScreen:
-        return MaterialPageRoute(builder: (_) => SplashScreen());
+      case splashScreen:
+        return MaterialPageRoute(builder: (_) => const SplashScreen());
 
       case phoneAuthScreen:
         return MaterialPageRoute(
@@ -35,7 +36,7 @@ class AppRouter {
             builder: (_) => BlocProvider<PhoneAuthCubit>.value(
                   value: phoneAuthCubit,
                   child: VerifyPhoneNumber(
-                    phoneNumber: phoneNumber,
+                    phoneNumber: phoneNumber.toString(),
                   ),
                 ));
 
@@ -45,7 +46,7 @@ class AppRouter {
             builder: (_) => BlocProvider<PhoneAuthCubit>.value(
               value: phoneAuthCubit,
               child: CreateUserAccount(
-                phoneNumber: phoneNumber,
+                phoneNumber: phoneNumber.toString(),
               ),
             ));
 
@@ -53,7 +54,14 @@ class AppRouter {
         return MaterialPageRoute(
             builder: (_) => BlocProvider<PhoneAuthCubit>.value(
               value: phoneAuthCubit,
-              child: SuccessScreen(),
+              child: const SuccessScreen(),
+            ));
+
+      case googleMapsScreen:
+        return MaterialPageRoute(
+            builder: (_) => BlocProvider<PhoneAuthCubit>.value(
+              value: phoneAuthCubit,
+              child: const MapsScreen(),
             ));
 
       case userProfileScreen:
@@ -62,7 +70,10 @@ class AppRouter {
               value: phoneAuthCubit,
               child: UserProfileScreen(),
             ));
+      default:{
+        return MaterialPageRoute(builder: (_) => const SplashScreen());
+      }
     }
-    return MaterialPageRoute(builder: (_) => SplashScreen());
+
   }
 }
