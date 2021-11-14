@@ -101,8 +101,8 @@ class CreateUserAccount extends StatelessWidget {
                         ),
                         child: textInputFormField(
                             textEditingController: eTextNameController,
-                            label: "enter email",
-                            prefix: const Icon(Icons.email),
+                            label: "enter name",
+                            prefix: const Icon(Icons.person),
                             textSize: 18.0,
                             autoFocus: false)),
                     const SizedBox(
@@ -121,7 +121,7 @@ class CreateUserAccount extends StatelessWidget {
                       child: textInputFormField(
                           textEditingController: eTextEmailController,
                           label: "enter email",
-                          prefix: const Icon(Icons.person),
+                          prefix: const Icon(Icons.email),
                           textSize: 20.0,
                           autoFocus: false)
                     ),

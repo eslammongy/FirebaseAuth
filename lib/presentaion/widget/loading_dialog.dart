@@ -147,7 +147,7 @@ void showEditingInfoDialog(BuildContext context) {
               ),
             ),
             child: textInputFormField(
-                textEditingController: eTextNameController,
+                textEditingController: eTextEmailController,
                 label: "email",
                 autoFocus: false,
                 prefix: const Icon(Icons.email),

@@ -21,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     timer = Timer(const Duration(seconds: 3), () {
       FirebaseAuth.instance.authStateChanges().listen((user) {
-        if (user == null) {
+        if (user != null) {
           Navigator.pushReplacementNamed(context, phoneAuthScreen);
         } else {
           Navigator.pushReplacementNamed(context, googleMapsScreen);
