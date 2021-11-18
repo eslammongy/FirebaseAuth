@@ -6,8 +6,8 @@ import 'package:flutter_maps/constants/colors.dart';
 import 'package:flutter_maps/constants/strings.dart';
 import 'package:flutter_maps/logic/bloc/phone_auth_bloc.dart';
 import 'package:flutter_maps/logic/bloc/phone_auth_state.dart';
+import 'package:flutter_maps/presentaion/screens/success_screen.dart';
 import 'package:flutter_maps/presentaion/widget/loading_dialog.dart';
-import 'package:flutter_maps/presentaion/widget/social_card.dart';
 import 'package:flutter_maps/presentaion/widget/text_input_feild.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -38,9 +38,9 @@ class UserLoginScreen extends StatelessWidget {
                       child: IconButton(
                         onPressed: () {
                           Navigator.pushNamed(context, wellDoneScreen);
-                        },
+                           },
                         icon: Icon(
-                          FontAwesomeIcons.arrowAltCircleLeft,
+                          FontAwesomeIcons.arrowLeft,
                           size: 30,
                           color: CustomColors.colorGrey,
                         ),
@@ -70,6 +70,7 @@ class UserLoginScreen extends StatelessWidget {
                         label: "enter your email",
                         prefix: const Icon(Icons.email),
                         textSize: 20.0,
+                        textInputType: TextInputType.emailAddress,
                         autoFocus: false),
                     const SizedBox(
                       height: 20,
@@ -79,13 +80,16 @@ class UserLoginScreen extends StatelessWidget {
                         label: "enter your password",
                         prefix: const Icon(Icons.lock_rounded),
                         textSize: 20.0,
+                        textInputType: TextInputType.visiblePassword,
                         autoFocus: false),
                     const SizedBox(
                       height: 5,
                     ),
                     Align(
                       alignment: AlignmentDirectional.centerEnd,
-                      child: Text(
+                      child: TextButton(onPressed: (){
+                        Navigator.pushNamed(context, userForgetPasswordScreen);
+                      }, child: Text(
                         "Forget Password ?",
                         textAlign: TextAlign.end,
                         style: TextStyle(
@@ -94,7 +98,7 @@ class UserLoginScreen extends StatelessWidget {
                             fontFamily: "Roboto",
                             fontWeight: FontWeight.w600,
                             color: CustomColors.colorYellow),
-                      ),
+                      ),)
                     ),
                     const SizedBox(
                       height: 50,
@@ -189,4 +193,5 @@ class UserLoginScreen extends StatelessWidget {
       child: Container(),
     );
   }
+
 }

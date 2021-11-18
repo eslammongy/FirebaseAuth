@@ -21,7 +21,7 @@ class WelcomesScreen extends StatelessWidget {
             child: Column(
               children: [
                 const SizedBox(
-                  height: 10,
+                  height: 20,
                 ),
                 Text(
                   "Welcome Back 😊",
@@ -36,7 +36,7 @@ class WelcomesScreen extends StatelessWidget {
                   height: 10,
                 ),
                 Container(
-                  height: MediaQuery.of(context).size.height * 0.35,
+                  height: MediaQuery.of(context).size.height * 0.45,
                   width: double.infinity,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
@@ -65,7 +65,7 @@ class WelcomesScreen extends StatelessWidget {
                         Navigator.pushNamed(context, userLoginScreen);
                       },
                       child: const Text(
-                        "Login With Email",
+                        "Login With Your Email",
                         style: TextStyle(
                             fontSize: 20,
                             letterSpacing: 1.2,
@@ -74,33 +74,7 @@ class WelcomesScreen extends StatelessWidget {
                             color: Colors.white),
                       )),
                 ),
-                buildSpacer(),
-                Container(
-                  width: double.infinity,
-                  height: 65,
-                  margin: const EdgeInsets.symmetric(horizontal: 15),
-                  decoration: BoxDecoration(
-                    color: CustomColors.colorOrange,
-                    borderRadius: const BorderRadius.all(Radius.circular(8)),
-                    border: Border.all(
-                      color: CustomColors.colorOrange,
-                      width: 2,
-                    ),
-                  ),
-                  child: TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, userRegistrationScreen);
-                      },
-                      child: const Text(
-                        "REGISTER",
-                        style: TextStyle(
-                            fontSize: 20,
-                            letterSpacing: 1.2,
-                            fontFamily: "Roboto",
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white),
-                      )),
-                ),
+
                 buildSpacer(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -134,7 +108,7 @@ class WelcomesScreen extends StatelessWidget {
     return Column(
       children: [
         const SizedBox(
-          height: 15,
+          height: 25,
         ),
         Text(
           "OR",
@@ -146,7 +120,7 @@ class WelcomesScreen extends StatelessWidget {
               color: CustomColors.colorYellow),
         ),
         const SizedBox(
-          height: 15,
+          height: 25,
         )
       ],
     );

@@ -11,6 +11,8 @@ import 'package:flutter_maps/presentaion/widget/text_input_feild.dart';
 class CreateUserAccount extends StatelessWidget {
   var eTextNameController = TextEditingController();
   var eTextEmailController = TextEditingController();
+  var eTextPhoneController = TextEditingController();
+  var eTextPasswordController = TextEditingController();
   var formKey = GlobalKey<FormState>();
   String phoneNumber;
 
@@ -55,7 +57,6 @@ class CreateUserAccount extends StatelessWidget {
                         builder: (context, state) {
                       var profileImage =
                           PhoneAuthCubit.get(context).profileImage;
-                      var toggleForegroundImage = false;
                       return Stack(
                           alignment: AlignmentDirectional.bottomEnd,
                           children: [
@@ -123,6 +124,7 @@ class CreateUserAccount extends StatelessWidget {
                           label: "enter email",
                           prefix: const Icon(Icons.email),
                           textSize: 20.0,
+                          textInputType: TextInputType.name,
                           autoFocus: false)
                     ),
                     const SizedBox(
@@ -199,7 +201,7 @@ class CreateUserAccount extends StatelessWidget {
                             child: TextButton(
                                 onPressed: () {
                                   showLoadingDialog(context);
-                                  createUserAccount(context);
+                                 // createUserAccount(context);
                                 },
                                 child: const Text(
                                   "Get Started",
@@ -246,16 +248,5 @@ class CreateUserAccount extends StatelessWidget {
     );
   }
 
-  void createUserAccount(BuildContext context) {
-    if (!formKey.currentState!.validate()) {
-      Navigator.pop(context);
-      return;
-    } else {
-      formKey.currentState!.save();
-      PhoneAuthCubit.get(context).createNewUser(
-          name: eTextNameController.text,
-          phone: phoneNumber,
-          email: eTextEmailController.text);
-    }
-  }
+
 }

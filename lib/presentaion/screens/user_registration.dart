@@ -10,8 +10,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 // ignore: must_be_immutable
 class UserRegistrationScreen extends StatelessWidget {
-  var eTextNameController = TextEditingController();
-  var eTextEmailController = TextEditingController();
+  var etNameController = TextEditingController();
+  var etEmailController = TextEditingController();
+  var etPhoneController = TextEditingController();
+  var etPasswordController = TextEditingController();
   var formKey = GlobalKey<FormState>();
   UserRegistrationScreen({Key? key}) : super(key: key);
 
@@ -23,6 +25,7 @@ class UserRegistrationScreen extends StatelessWidget {
         body: SingleChildScrollView(
           child: Form(
               key: formKey,
+              autovalidate: true,
               child: Container(
                 margin:
                     const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
@@ -89,37 +92,41 @@ class UserRegistrationScreen extends StatelessWidget {
                       height: 30,
                     ),
                     textInputFormField(
-                        textEditingController: eTextEmailController,
+                        textEditingController: etNameController,
                         label: "enter your name",
                         prefix: const Icon(FontAwesomeIcons.userAlt),
                         textSize: 20.0,
+                        textInputType: TextInputType.name,
                         autoFocus: false),
                     const SizedBox(
                       height: 20,
                     ),
                     textInputFormField(
-                        textEditingController: eTextEmailController,
+                        textEditingController: etEmailController,
                         label: "enter your email",
                         prefix: const Icon(Icons.email),
                         textSize: 20.0,
+                        textInputType: TextInputType.emailAddress,
                         autoFocus: false),
                     const SizedBox(
                       height: 20,
                     ),
                     textInputFormField(
-                        textEditingController: eTextEmailController,
+                        textEditingController: etPhoneController,
                         label: "enter your phone",
                         prefix: const Icon(FontAwesomeIcons.phoneAlt),
                         textSize: 20.0,
+                        textInputType: TextInputType.phone,
                         autoFocus: false),
                     const SizedBox(
                       height: 20,
                     ),
                     textInputFormField(
-                        textEditingController: eTextEmailController,
+                        textEditingController: etPasswordController,
                         label: "enter your password",
                         prefix: const Icon(FontAwesomeIcons.lock),
                         textSize: 20.0,
+                        textInputType: TextInputType.visiblePassword,
                         autoFocus: false),
                     const SizedBox(
                       height: 20,
@@ -148,6 +155,7 @@ class UserRegistrationScreen extends StatelessWidget {
                           child: TextButton(
                               onPressed: () {
                                 showLoadingDialog(context);
+                                createUserAccount(context);
                               },
                               child: const Text(
                                 "Register",
@@ -203,14 +211,14 @@ class UserRegistrationScreen extends StatelessWidget {
         return previous != current;
       },
       listener: (context, state) {
-        if (state is CreateNewUserLoading) {
+        if (state is UserSignUpLoading) {
           showLoadingDialog(context);
         }
-        if (state is CreateNewUserSuccess) {
+        if (state is UserSignUpSuccess) {
           Navigator.pop(context);
-          Navigator.of(context).pushNamed(wellDoneScreen);
+          Navigator.of(context).pushNamed(userLoginScreen);
         }
-        if (state is CreateNewUserError) {
+        if (state is UserSignUpError) {
           Navigator.pop(context);
           String errorMeg = state.errorMessage;
           showFlushBar(context, errorMeg);
@@ -219,4 +227,18 @@ class UserRegistrationScreen extends StatelessWidget {
       child: Container(),
     );
   }
+
+  void createUserAccount(BuildContext context) {
+    if (!formKey.currentState!.validate()) {
+      Navigator.pop(context);
+      return;
+    } else {
+      formKey.currentState!.save();
+      PhoneAuthCubit.get(context).userRegister(
+          name: etNameController.text,
+          phone: etPhoneController.text,
+          email: etEmailController.text , password: etPasswordController.text);
+    }
+  }
+
 }

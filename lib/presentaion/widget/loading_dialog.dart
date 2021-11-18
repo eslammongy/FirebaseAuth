@@ -65,8 +65,8 @@ void showFlushBar(context, String message) {
     margin: const EdgeInsets.all(8),
     padding: const EdgeInsets.all(15),
     borderRadius: BorderRadius.circular(15),
-    animationDuration: const Duration(seconds: 2),
-    duration: const Duration(seconds: 2),
+    animationDuration: const Duration(seconds: 5),
+    duration: const Duration(seconds: 8),
     boxShadows: const [
       BoxShadow(
         color: Colors.black45,

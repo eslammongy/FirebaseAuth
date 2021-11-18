@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_maps/constants/colors.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 Widget textInputFormField(
@@ -6,8 +7,9 @@ Widget textInputFormField(
     required String label,
     required Widget prefix,
     required double textSize,
-    required bool autoFocus}) {
+    required bool autoFocus , TextInputType? textInputType}) {
   return Container(
+    height: 60,
     decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(15)),
         color: HexColor("2C313C")),
@@ -16,20 +18,26 @@ Widget textInputFormField(
       controller: textEditingController,
       style: TextStyle(
         fontSize: textSize,
+        color: CustomColors.colorGrey,
         letterSpacing: 1.5,
       ),
       decoration: InputDecoration(
-          label: Text(label),
-          labelStyle: TextStyle(
+          labelStyle: const TextStyle(
             fontSize: 15,
             fontFamily: "Roboto",
-            color: Colors.grey[600],
             fontWeight: FontWeight.w400,
           ),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+          border: InputBorder.none,
+          focusedBorder: InputBorder.none,
+          enabledBorder: InputBorder.none,
+          errorBorder: InputBorder.none,
+          disabledBorder: InputBorder.none,
+          contentPadding:
+          const EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
+          label: Text(label),
           prefixIcon: prefix),
       cursorColor: Colors.black,
-      keyboardType: TextInputType.emailAddress,
+      keyboardType: textInputType,
       validator: (value) {
         if (value!.isEmpty) {
           return "please $label !";

@@ -4,6 +4,7 @@ class UserModel {
   late String phone;
   late String uId;
   late String image;
+  String? password;
 
 
   UserModel({
@@ -12,6 +13,7 @@ class UserModel {
     required this.phone,
     required this.uId,
     required this.image,
+    this.password,
   });
 
   UserModel.fromJson(Map<String, dynamic>? json) {
@@ -20,6 +22,7 @@ class UserModel {
     phone = json['phone'];
     uId = json['uId'];
     image = json['image'];
+    password = json['password'];
   }
 
   Map<String, dynamic?> toMap() {
@@ -29,6 +32,7 @@ class UserModel {
       'phone': phone,
       'uId': uId,
       'image': image,
+      'password': password,
     };
   }
 }
