@@ -1,4 +1,3 @@
-
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,6 +8,7 @@ import 'package:flutter_maps/logic/bloc/phone_auth_state.dart';
 import 'package:flutter_maps/presentaion/widget/button_shape.dart';
 import 'package:flutter_maps/presentaion/widget/loading_dialog.dart';
 import 'package:flutter_maps/presentaion/widget/upper_view.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 // ignore: must_be_immutable
 class PhoneAuthScreen extends StatelessWidget {
@@ -22,7 +22,7 @@ class PhoneAuthScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      backgroundColor: AppColor.backgroundColor,
+      backgroundColor: CustomColors.backgroundColor,
       body: SingleChildScrollView(
         child: Form(
           key: formKey,
@@ -32,7 +32,20 @@ class PhoneAuthScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(
-                  height: 50,
+                  height: 10,
+                ),
+                Align(
+                  alignment: AlignmentDirectional.topStart,
+                  child: IconButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, userLoginScreen);
+                    },
+                    icon: Icon(
+                      FontAwesomeIcons.arrowAltCircleLeft,
+                      size: 30,
+                      color: CustomColors.colorGrey,
+                    ),
+                  ),
                 ),
                 displayUpperView(
                     "What is your phone number?",
@@ -116,7 +129,6 @@ class PhoneAuthScreen extends StatelessWidget {
                 hideSearch: true,
                 onChanged: (code) {
                   PhoneAuthCubit.get(context).countryKey = code.dialCode!;
-                  print("****" + PhoneAuthCubit.get(context).countryKey);
                 },
                 initialSelection: 'EG',
                 favorite: const ['+20', 'EG'],
@@ -138,24 +150,24 @@ class PhoneAuthScreen extends StatelessWidget {
       Expanded(
         flex: 7,
         child: Container(
-          padding:const EdgeInsets.all(10),
-          decoration: BoxDecoration(
+          height: 70,
+          padding: const EdgeInsets.all(10),
+          decoration: const BoxDecoration(
             color: Colors.white,
-            borderRadius:
-            const BorderRadius.all(Radius.circular(5)),
-            border: Border.all(
-              color: AppColor.shapesColor,
-              width: 2,
-            ),
+            borderRadius: BorderRadius.all(Radius.circular(5)),
           ),
           child: TextFormField(
-    controller: textEditingController,
+            controller: textEditingController,
             autofocus: true,
             style: const TextStyle(
               fontSize: 20,
               letterSpacing: 2.0,
             ),
-            decoration: const InputDecoration(border: InputBorder.none),
+            decoration: const InputDecoration(
+                contentPadding: EdgeInsets.all(10),
+                constraints: BoxConstraints(
+                    maxHeight: double.infinity, maxWidth: double.infinity),
+                border: InputBorder.none),
             cursorColor: Colors.black,
             keyboardType: TextInputType.phone,
             validator: (value) {
@@ -166,13 +178,12 @@ class PhoneAuthScreen extends StatelessWidget {
               }
               return null;
             },
-           onSaved: (value) {
+            onSaved: (value) {
               phoneNumber = value!;
             },
           ),
         ),
       ),
-
     ]);
   }
 }

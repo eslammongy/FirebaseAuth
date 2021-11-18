@@ -7,7 +7,7 @@ Widget displayUpperView(String text1, String text2, String phoneNumber) {
     children: [
       Center(
         child: Image.asset(
-          "assets/images/location.png",
+          "assets/images/firebase_logo.png",
           width: 100,
           height: 100,
         ),
@@ -21,7 +21,7 @@ Widget displayUpperView(String text1, String text2, String phoneNumber) {
             fontSize: 25,
             fontFamily: "Roboto",
             fontWeight: FontWeight.w800,
-            color: AppColor.textColor),
+            color: CustomColors.colorGrey),
       ),
       const SizedBox(
         height: 15,
@@ -34,7 +34,7 @@ Widget displayUpperView(String text1, String text2, String phoneNumber) {
                     fontSize: 20,
                     fontFamily: "Roboto",
                     fontWeight: FontWeight.w500,
-                    color: AppColor.textColor),
+                    color: CustomColors.colorGrey),
               )
             : RichText(
                 text: TextSpan(

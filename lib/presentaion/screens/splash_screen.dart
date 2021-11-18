@@ -15,16 +15,16 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-   late Timer timer;
+  late Timer timer;
   @override
   void initState() {
     super.initState();
     timer = Timer(const Duration(seconds: 3), () {
       FirebaseAuth.instance.authStateChanges().listen((user) {
-        if (user != null) {
-          Navigator.pushReplacementNamed(context, phoneAuthScreen);
+        if (user == null) {
+          Navigator.pushReplacementNamed(context, wellDoneScreen);
         } else {
-          Navigator.pushReplacementNamed(context, googleMapsScreen);
+          Navigator.pushReplacementNamed(context, userProfileScreen);
         }
       });
     });
@@ -33,13 +33,13 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.backgroundColor,
+      backgroundColor: CustomColors.backgroundColor,
       body: Center(
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image.asset(
-            "assets/images/location.png",
+            "assets/images/firebase_logo.png",
             width: 150,
             height: 150,
           ),
@@ -47,17 +47,18 @@ class _SplashScreenState extends State<SplashScreen> {
             height: 10,
           ),
           Text(
-            "MAPS",
+            "Authentication",
             style: TextStyle(
                 fontSize: 30,
                 fontFamily: "Pacifico",
                 fontWeight: FontWeight.w800,
-                color: AppColor.textColor),
+                color: CustomColors.colorGrey),
           )
         ],
       )),
     );
   }
+
   @override
   void dispose() {
     super.dispose();

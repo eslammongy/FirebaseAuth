@@ -5,84 +5,150 @@ import 'package:flutter_maps/constants/colors.dart';
 import 'package:flutter_maps/logic/bloc/phone_auth_bloc.dart';
 import 'package:flutter_maps/logic/bloc/phone_auth_state.dart';
 import 'package:flutter_maps/presentaion/widget/loading_dialog.dart';
+import 'package:flutter_maps/presentaion/widget/social_card.dart';
 
-
-class SuccessScreen extends StatelessWidget {
-  const SuccessScreen({Key? key}) : super(key: key);
+class WelcomesScreen extends StatelessWidget {
+  const WelcomesScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: AppColor.backgroundColor,
-        body: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 30),
-          child: Column(
-            children: [
-              Stack(alignment: AlignmentDirectional.topCenter, children: [
+        backgroundColor: CustomColors.backgroundColor,
+        body: SingleChildScrollView(
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 30),
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  "Welcome Back 😊",
+                  style: TextStyle(
+                      fontSize: 25,
+                      letterSpacing: 1.0,
+                      fontFamily: "Roboto",
+                      fontWeight: FontWeight.w700,
+                      color: CustomColors.colorYellow),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
                 Container(
-                  height: MediaQuery.of(context).size.height * 0.55,
+                  height: MediaQuery.of(context).size.height * 0.35,
                   width: double.infinity,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
                     image: const DecorationImage(
-                      image: AssetImage("assets/images/maps_image.png"),
-                      fit: BoxFit.fill,
+                      image: AssetImage("assets/images/welcome.png"),
+                      fit: BoxFit.contain,
                     ),
                   ),
                 ),
-                Image.asset(
-                  "assets/images/correction.png",
-                  width: 180,
-                  height: 180,
+                const SizedBox(
+                  height: 30,
                 ),
-              ]),
-              const Spacer(),
-              Text(
-                "You're almost done to get started, let's do it...",
-                style: TextStyle(
-                    fontSize: 25,
-                    fontFamily: "Nunito",
-                    fontWeight: FontWeight.w800,
-                    color: AppColor.textColor),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Container(
-                width: double.infinity,
-                height: 60,
-                margin: const EdgeInsets.symmetric(horizontal: 15),
-                decoration: BoxDecoration(
-                    color: AppColor.shapesColor,
+                Container(
+                  width: double.infinity,
+                  height: 65,
+                  margin: const EdgeInsets.symmetric(horizontal: 15),
+                  decoration: BoxDecoration(
                     borderRadius: const BorderRadius.all(Radius.circular(8)),
-                    boxShadow: [
-                      BoxShadow(
-                        blurRadius: 10,
-                        color: Colors.black.withOpacity(0.5),
-                        offset: const Offset(0, 3),
-                      )
-                    ]),
-                child: TextButton(
-                    onPressed: () {
-                     showLoadingDialog(context);
-                     PhoneAuthCubit.get(context).getCurrentUserInfo();
-                    },
-                    child: const Text(
-                      "Done",
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontFamily: "Roboto",
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white),
-                    )),
-              ),
-              getUserStates()
-            ],
+                    border: Border.all(
+                      color: AppColor.shapesColor,
+                      width: 2,
+                    ),
+                  ),
+                  child: TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, userLoginScreen);
+                      },
+                      child: const Text(
+                        "Login With Email",
+                        style: TextStyle(
+                            fontSize: 20,
+                            letterSpacing: 1.2,
+                            fontFamily: "Roboto",
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white),
+                      )),
+                ),
+                buildSpacer(),
+                Container(
+                  width: double.infinity,
+                  height: 65,
+                  margin: const EdgeInsets.symmetric(horizontal: 15),
+                  decoration: BoxDecoration(
+                    color: CustomColors.colorOrange,
+                    borderRadius: const BorderRadius.all(Radius.circular(8)),
+                    border: Border.all(
+                      color: CustomColors.colorOrange,
+                      width: 2,
+                    ),
+                  ),
+                  child: TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, userRegistrationScreen);
+                      },
+                      child: const Text(
+                        "REGISTER",
+                        style: TextStyle(
+                            fontSize: 20,
+                            letterSpacing: 1.2,
+                            fontFamily: "Roboto",
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white),
+                      )),
+                ),
+                buildSpacer(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    SocalCard(
+                      icon: "assets/icons/google.png",
+                      press: () {},
+                    ),
+                    SocalCard(
+                      icon: "assets/icons/facebook.png",
+                      press: () {},
+                    ),
+                    SocalCard(
+                      icon: "assets/icons/telephone.png",
+                      press: () {
+                        Navigator.pushNamed(context, phoneAuthScreen);
+                      },
+                    ),
+                  ],
+                ),
+                getUserStates()
+              ],
+            ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget buildSpacer() {
+    return Column(
+      children: [
+        const SizedBox(
+          height: 15,
+        ),
+        Text(
+          "OR",
+          style: TextStyle(
+              fontSize: 25,
+              letterSpacing: 1.0,
+              fontFamily: "Roboto",
+              fontWeight: FontWeight.w700,
+              color: CustomColors.colorYellow),
+        ),
+        const SizedBox(
+          height: 15,
+        )
+      ],
     );
   }
 
@@ -97,7 +163,7 @@ class SuccessScreen extends StatelessWidget {
         }
         if (state is GetUserInfoSuccessStatus) {
           Navigator.pop(context);
-          Navigator.of(context).pushReplacementNamed(userProfileScreen);
+          Navigator.of(context).pushReplacementNamed(googleMapsScreen);
         }
         if (state is GetUserInfoErrorStatus) {
           Navigator.pop(context);
@@ -107,6 +173,5 @@ class SuccessScreen extends StatelessWidget {
       },
       child: Container(),
     );
-
   }
 }

@@ -48,7 +48,7 @@ class UserProfileScreen extends StatelessWidget {
                     alignment: AlignmentDirectional.topStart,
                     child: IconButton(
                       onPressed: () {
-                        Navigator.pushReplacementNamed(context, googleMapsScreen);
+                        Navigator.pushNamed(context, googleMapsScreen);
                       },
                       icon: CircleAvatar(
                           backgroundColor: AppColor.backgroundColor,

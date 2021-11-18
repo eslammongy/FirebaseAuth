@@ -13,7 +13,7 @@ Widget buildButtonShape(
       width: buttonWidth,
       height: 60,
       decoration: BoxDecoration(
-          color: AppColor.shapesColor,
+          color: CustomColors.colorOrange,
           borderRadius: const BorderRadius.all(Radius.circular(8)),
           boxShadow: [
             BoxShadow(
