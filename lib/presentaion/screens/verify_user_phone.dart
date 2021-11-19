@@ -107,7 +107,7 @@ class VerifyPhoneNumber extends StatelessWidget {
   }
 
   Widget verifiedUserPhoneNumber() {
-    return BlocListener<PhoneAuthCubit, PhoneAuthState>(
+    return BlocListener<FirebaseAuthAppCubit, FirebaseAuthAppState>(
       listenWhen: (previous, current) {
         return previous != current;
       },
@@ -130,7 +130,7 @@ class VerifyPhoneNumber extends StatelessWidget {
   }
 
   void signInWithPhoneNumber(BuildContext context) {
-    PhoneAuthCubit.get(context).submitOtbCode(otpCode);
+    FirebaseAuthAppCubit.get(context).submitOtbCode(otpCode);
   }
 
   Widget buildPinCodeContainer(BuildContext context) {

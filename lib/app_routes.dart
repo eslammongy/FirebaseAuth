@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_maps/constants/strings.dart';
-import 'package:flutter_maps/logic/map_cubit/maps_cubit.dart';
 import 'package:flutter_maps/presentaion/screens/forget_password.dart';
+import 'package:flutter_maps/presentaion/screens/lets_go.dart';
 import 'package:flutter_maps/presentaion/screens/user_registration.dart';
 import 'package:flutter_maps/presentaion/screens/user_sign_in.dart';
 import 'package:flutter_maps/presentaion/screens/verify_user_phone.dart';
@@ -15,9 +15,9 @@ import 'presentaion/screens/splash_screen.dart';
 import 'presentaion/screens/success_screen.dart';
 
 class AppRouter {
-  late PhoneAuthCubit phoneAuthCubit;
+  late FirebaseAuthAppCubit phoneAuthCubit;
   AppRouter() {
-    phoneAuthCubit = PhoneAuthCubit();
+    phoneAuthCubit = FirebaseAuthAppCubit();
   }
   Route generateRoute(RouteSettings routeSettings) {
     final phoneNumber = routeSettings.arguments;
@@ -27,35 +27,35 @@ class AppRouter {
 
       case userLoginScreen:
         return MaterialPageRoute(
-            builder: (_) => BlocProvider<PhoneAuthCubit>.value(
+            builder: (_) => BlocProvider<FirebaseAuthAppCubit>.value(
                   value: phoneAuthCubit,
                   child: UserLoginScreen(),
                 ));
 
       case userRegistrationScreen:
         return MaterialPageRoute(
-            builder: (_) => BlocProvider<PhoneAuthCubit>.value(
+            builder: (_) => BlocProvider<FirebaseAuthAppCubit>.value(
                   value: phoneAuthCubit,
                   child: UserRegistrationScreen(),
                 ));
 
       case userForgetPasswordScreen:
         return MaterialPageRoute(
-            builder: (_) => BlocProvider<PhoneAuthCubit>.value(
+            builder: (_) => BlocProvider<FirebaseAuthAppCubit>.value(
                   value: phoneAuthCubit,
                   child: const ForgetPasswordScreen(),
                 ));
 
       case phoneAuthScreen:
         return MaterialPageRoute(
-            builder: (_) => BlocProvider<PhoneAuthCubit>.value(
+            builder: (_) => BlocProvider<FirebaseAuthAppCubit>.value(
                   value: phoneAuthCubit,
                   child: PhoneAuthScreen(),
                 ));
 
       case verifyPhoneScreen:
         return MaterialPageRoute(
-            builder: (_) => BlocProvider<PhoneAuthCubit>.value(
+            builder: (_) => BlocProvider<FirebaseAuthAppCubit>.value(
                   value: phoneAuthCubit,
                   child: VerifyPhoneNumber(
                     phoneNumber: phoneNumber.toString(),
@@ -64,23 +64,23 @@ class AppRouter {
 
       case createAccountScreen:
         return MaterialPageRoute(
-            builder: (_) => BlocProvider<PhoneAuthCubit>.value(
+            builder: (_) => BlocProvider<FirebaseAuthAppCubit>.value(
                   value: phoneAuthCubit,
                   child: CreateUserAccount(
                     phoneNumber: phoneNumber.toString(),
                   ),
                 ));
 
-      case wellDoneScreen:
+      case welcomeScreen:
         return MaterialPageRoute(
-            builder: (_) => BlocProvider<PhoneAuthCubit>.value(
+            builder: (_) => BlocProvider<FirebaseAuthAppCubit>.value(
                   value: phoneAuthCubit,
                   child: const WelcomesScreen(),
                 ));
 
       case userProfileScreen:
         return MaterialPageRoute(
-            builder: (_) => BlocProvider<PhoneAuthCubit>.value(
+            builder: (_) => BlocProvider<FirebaseAuthAppCubit>.value(
                   value: phoneAuthCubit,
                   child: UserProfileScreen(),
                 ));

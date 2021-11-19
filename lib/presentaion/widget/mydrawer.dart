@@ -9,7 +9,7 @@ class MainDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var userModel = PhoneAuthCubit.get(context).userModel;
+    var userModel = FirebaseAuthAppCubit.get(context).userModel;
     return Drawer(
      backgroundColor: AppColor.backgroundColor,
       child: Column(
@@ -78,7 +78,7 @@ class MainDrawer extends StatelessWidget {
 
           const SizedBox(height: 10,),
           buildTextViewShape(context: context, text: "Logout", iconData: FontAwesomeIcons.signOutAlt , onTap: (){
-            PhoneAuthCubit.get(context).userSignOut();
+            FirebaseAuthAppCubit.get(context).userSignOut();
             Navigator.of(context).pushReplacementNamed(phoneAuthScreen);
           }),
 

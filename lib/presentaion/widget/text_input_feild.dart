@@ -7,7 +7,10 @@ Widget textInputFormField(
     required String label,
     required Widget prefix,
     required double textSize,
-    required bool autoFocus , TextInputType? textInputType}) {
+       required bool isTextPassword,
+    required bool autoFocus , TextInputType? textInputType , IconData? suffix,
+      Function()? suffixPressed,}) {
+
   return Container(
     height: 60,
     decoration: BoxDecoration(
@@ -15,6 +18,7 @@ Widget textInputFormField(
         color: HexColor("2C313C")),
     child: TextFormField(
       autofocus: autoFocus,
+      obscureText: isTextPassword,
       controller: textEditingController,
       style: TextStyle(
         fontSize: textSize,
@@ -35,7 +39,16 @@ Widget textInputFormField(
           contentPadding:
           const EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
           label: Text(label),
-          prefixIcon: prefix),
+          prefixIcon: prefix,
+        suffixIcon: suffix != null
+            ? IconButton(
+          onPressed: suffixPressed,
+          icon: Icon(
+            suffix,
+          ),
+        )
+            : null,
+      ),
       cursorColor: Colors.black,
       keyboardType: textInputType,
       validator: (value) {

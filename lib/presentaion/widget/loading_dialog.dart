@@ -93,7 +93,7 @@ void showFlushBar(context, String message) {
 }
 
 void showEditingInfoDialog(BuildContext context) {
-  var userModel = PhoneAuthCubit.get(context).userModel;
+  var userModel = FirebaseAuthAppCubit.get(context).userModel;
   var eTextNameController = TextEditingController();
   var eTextEmailController = TextEditingController();
   var formKey = GlobalKey<FormState>();
@@ -131,6 +131,7 @@ void showEditingInfoDialog(BuildContext context) {
               child: textInputFormField(
                   textEditingController: eTextNameController,
                   label: "full name",
+                  isTextPassword:false,
                   prefix: const Icon(Icons.person),
                   autoFocus: false,
                   textSize: 18.0)),
@@ -149,6 +150,7 @@ void showEditingInfoDialog(BuildContext context) {
             child: textInputFormField(
                 textEditingController: eTextEmailController,
                 label: "email",
+                isTextPassword:false,
                 autoFocus: false,
                 prefix: const Icon(Icons.email),
                 textSize: 18.0),
@@ -167,7 +169,7 @@ void showEditingInfoDialog(BuildContext context) {
                     return;
                   } else {
                     formKey.currentState!.save();
-                    PhoneAuthCubit.get(context)
+                    FirebaseAuthAppCubit.get(context)
                         .updateInfo(eTextNameController, eTextEmailController);
                     Navigator.pop(context);
                   }

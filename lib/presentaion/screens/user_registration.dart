@@ -46,10 +46,10 @@ class UserRegistrationScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    BlocBuilder<PhoneAuthCubit, PhoneAuthState>(
+                    BlocBuilder<FirebaseAuthAppCubit, FirebaseAuthAppState>(
                         builder: (context, state) {
                       var profileImage =
-                          PhoneAuthCubit.get(context).profileImage;
+                          FirebaseAuthAppCubit.get(context).profileImage;
                       return Stack(
                           alignment: AlignmentDirectional.bottomEnd,
                           children: [
@@ -65,7 +65,7 @@ class UserRegistrationScreen extends StatelessWidget {
                             ),
                             IconButton(
                               onPressed: () {
-                                PhoneAuthCubit.get(context)
+                                FirebaseAuthAppCubit.get(context)
                                     .getProfileImage(context);
                               },
                               icon: CircleAvatar(
@@ -96,6 +96,7 @@ class UserRegistrationScreen extends StatelessWidget {
                         label: "enter your name",
                         prefix: const Icon(FontAwesomeIcons.userAlt),
                         textSize: 20.0,
+                        isTextPassword:false,
                         textInputType: TextInputType.name,
                         autoFocus: false),
                     const SizedBox(
@@ -106,6 +107,7 @@ class UserRegistrationScreen extends StatelessWidget {
                         label: "enter your email",
                         prefix: const Icon(Icons.email),
                         textSize: 20.0,
+                        isTextPassword:false,
                         textInputType: TextInputType.emailAddress,
                         autoFocus: false),
                     const SizedBox(
@@ -116,6 +118,7 @@ class UserRegistrationScreen extends StatelessWidget {
                         label: "enter your phone",
                         prefix: const Icon(FontAwesomeIcons.phoneAlt),
                         textSize: 20.0,
+                        isTextPassword:false,
                         textInputType: TextInputType.phone,
                         autoFocus: false),
                     const SizedBox(
@@ -126,6 +129,7 @@ class UserRegistrationScreen extends StatelessWidget {
                         label: "enter your password",
                         prefix: const Icon(FontAwesomeIcons.lock),
                         textSize: 20.0,
+                        isTextPassword: FirebaseAuthAppCubit.get(context).isPasswordShowing,
                         textInputType: TextInputType.visiblePassword,
                         autoFocus: false),
                     const SizedBox(
@@ -155,7 +159,7 @@ class UserRegistrationScreen extends StatelessWidget {
                           child: TextButton(
                               onPressed: () {
                                 showLoadingDialog(context);
-                                createUserAccount(context);
+                                userSignUpCreateAccount(context);
                               },
                               child: const Text(
                                 "Register",
@@ -206,7 +210,7 @@ class UserRegistrationScreen extends StatelessWidget {
   }
 
   Widget createUserStates() {
-    return BlocListener<PhoneAuthCubit, PhoneAuthState>(
+    return BlocListener<FirebaseAuthAppCubit, FirebaseAuthAppState>(
       listenWhen: (previous, current) {
         return previous != current;
       },
@@ -228,13 +232,13 @@ class UserRegistrationScreen extends StatelessWidget {
     );
   }
 
-  void createUserAccount(BuildContext context) {
+  void userSignUpCreateAccount(BuildContext context) {
     if (!formKey.currentState!.validate()) {
       Navigator.pop(context);
       return;
     } else {
       formKey.currentState!.save();
-      PhoneAuthCubit.get(context).userRegister(
+      FirebaseAuthAppCubit.get(context).userRegister(
           name: etNameController.text,
           phone: etPhoneController.text,
           email: etEmailController.text , password: etPasswordController.text);

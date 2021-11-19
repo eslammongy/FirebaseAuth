@@ -12,7 +12,7 @@ import 'package:flutter_maps/presentaion/widget/text_input_feild.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class UserLoginScreen extends StatelessWidget {
-  var eTextNameController = TextEditingController();
+  var etPasswordController = TextEditingController();
   var eTextEmailController = TextEditingController();
   var formKey = GlobalKey<FormState>();
 
@@ -26,6 +26,7 @@ class UserLoginScreen extends StatelessWidget {
         body: SingleChildScrollView(
           child: Form(
               key: formKey,
+              autovalidate: true,
               child: Container(
                 margin:
                     const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
@@ -37,10 +38,10 @@ class UserLoginScreen extends StatelessWidget {
                       alignment: AlignmentDirectional.topStart,
                       child: IconButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, wellDoneScreen);
+                          Navigator.pushNamed(context, welcomeScreen);
                            },
                         icon: Icon(
-                          FontAwesomeIcons.arrowLeft,
+                          FontAwesomeIcons.arrowAltCircleLeft,
                           size: 30,
                           color: CustomColors.colorGrey,
                         ),
@@ -70,18 +71,29 @@ class UserLoginScreen extends StatelessWidget {
                         label: "enter your email",
                         prefix: const Icon(Icons.email),
                         textSize: 20.0,
+                        isTextPassword: false,
                         textInputType: TextInputType.emailAddress,
                         autoFocus: false),
                     const SizedBox(
                       height: 20,
                     ),
-                    textInputFormField(
-                        textEditingController: eTextEmailController,
+                    BlocBuilder<FirebaseAuthAppCubit , FirebaseAuthAppState>(
+                      builder: (context , state){
+                        return textInputFormField(
+                        textEditingController: etPasswordController,
                         label: "enter your password",
                         prefix: const Icon(Icons.lock_rounded),
                         textSize: 20.0,
+                        isTextPassword:  FirebaseAuthAppCubit.get(context).isPasswordShowing,
                         textInputType: TextInputType.visiblePassword,
-                        autoFocus: false),
+                        suffix:FirebaseAuthAppCubit.get(context).suffix ,
+                        suffixPressed:(){
+                        FirebaseAuthAppCubit.get(context).changePasswordVisibility();
+                        },
+                        autoFocus: false);
+                      }
+
+                    ),
                     const SizedBox(
                       height: 5,
                     ),
@@ -121,6 +133,7 @@ class UserLoginScreen extends StatelessWidget {
                       child: TextButton(
                           onPressed: () {
                             showLoadingDialog(context);
+                            userSignInToAccount(context);
                           },
                           child: const Text(
                             "LOGIN",
@@ -172,19 +185,19 @@ class UserLoginScreen extends StatelessWidget {
   }
 
   Widget createUserStates() {
-    return BlocListener<PhoneAuthCubit, PhoneAuthState>(
+    return BlocListener<FirebaseAuthAppCubit, FirebaseAuthAppState>(
       listenWhen: (previous, current) {
         return previous != current;
       },
       listener: (context, state) {
-        if (state is CreateNewUserLoading) {
+        if (state is UserLoginLoadingState) {
           showLoadingDialog(context);
         }
-        if (state is CreateNewUserSuccess) {
+        if (state is UserLoginSuccessState) {
           Navigator.pop(context);
-          Navigator.of(context).pushNamed(wellDoneScreen);
+          Navigator.of(context).pushNamed(welcomeScreen);
         }
-        if (state is CreateNewUserError) {
+        if (state is UserLoginErrorState) {
           Navigator.pop(context);
           String errorMeg = state.errorMessage;
           showFlushBar(context, errorMeg);
@@ -192,6 +205,19 @@ class UserLoginScreen extends StatelessWidget {
       },
       child: Container(),
     );
+  }
+
+  void userSignInToAccount(BuildContext context) {
+    if (!formKey.currentState!.validate()) {
+      Navigator.pop(context);
+      return;
+    } else {
+      formKey.currentState!.save();
+      FirebaseAuthAppCubit.get(context).userLogin(
+          email: eTextEmailController.text,
+          password: etPasswordController.text,
+        );
+    }
   }
 
 }

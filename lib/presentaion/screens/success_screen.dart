@@ -127,7 +127,7 @@ class WelcomesScreen extends StatelessWidget {
   }
 
   Widget getUserStates() {
-    return BlocListener<PhoneAuthCubit, PhoneAuthState>(
+    return BlocListener<FirebaseAuthAppCubit, FirebaseAuthAppState>(
       listenWhen: (previous, current) {
         return previous != current;
       },

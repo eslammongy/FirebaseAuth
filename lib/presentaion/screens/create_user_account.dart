@@ -53,10 +53,10 @@ class CreateUserAccount extends StatelessWidget {
                           color: AppColor.textColor),
                     ),
                     const SizedBox(height: 30),
-                    Center(child: BlocBuilder<PhoneAuthCubit, PhoneAuthState>(
+                    Center(child: BlocBuilder<FirebaseAuthAppCubit, FirebaseAuthAppState>(
                         builder: (context, state) {
                       var profileImage =
-                          PhoneAuthCubit.get(context).profileImage;
+                          FirebaseAuthAppCubit.get(context).profileImage;
                       return Stack(
                           alignment: AlignmentDirectional.bottomEnd,
                           children: [
@@ -74,7 +74,7 @@ class CreateUserAccount extends StatelessWidget {
                             ),
                             IconButton(
                               onPressed: () {
-                                PhoneAuthCubit.get(context)
+                                FirebaseAuthAppCubit.get(context)
                                     .getProfileImage(context);
                               },
                               icon: CircleAvatar(
@@ -103,6 +103,7 @@ class CreateUserAccount extends StatelessWidget {
                         child: textInputFormField(
                             textEditingController: eTextNameController,
                             label: "enter name",
+                            isTextPassword:false,
                             prefix: const Icon(Icons.person),
                             textSize: 18.0,
                             autoFocus: false)),
@@ -124,6 +125,7 @@ class CreateUserAccount extends StatelessWidget {
                           label: "enter email",
                           prefix: const Icon(Icons.email),
                           textSize: 20.0,
+                          isTextPassword:false,
                           textInputType: TextInputType.name,
                           autoFocus: false)
                     ),
@@ -225,7 +227,7 @@ class CreateUserAccount extends StatelessWidget {
   }
 
   Widget createUserStates() {
-    return BlocListener<PhoneAuthCubit, PhoneAuthState>(
+    return BlocListener<FirebaseAuthAppCubit, FirebaseAuthAppState>(
       listenWhen: (previous, current) {
         return previous != current;
       },
@@ -236,7 +238,7 @@ class CreateUserAccount extends StatelessWidget {
         if (state is CreateNewUserSuccess) {
           Navigator.pop(context);
           Navigator.of(context)
-              .pushNamed(wellDoneScreen, arguments: phoneNumber);
+              .pushNamed(welcomeScreen, arguments: phoneNumber);
         }
         if (state is CreateNewUserError) {
           Navigator.pop(context);

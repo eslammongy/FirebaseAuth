@@ -73,7 +73,7 @@ class PhoneAuthScreen extends StatelessWidget {
   }
 
   Widget submitUserPhoneNumber() {
-    return BlocListener<PhoneAuthCubit, PhoneAuthState>(
+    return BlocListener<FirebaseAuthAppCubit, FirebaseAuthAppState>(
       listenWhen: (previous, current) {
         return previous != current;
       },
@@ -103,7 +103,7 @@ class PhoneAuthScreen extends StatelessWidget {
     } else {
       Navigator.pop(context);
       formKey.currentState!.save();
-      PhoneAuthCubit.get(context).submitUserPhoneNumber(phoneNumber!);
+      FirebaseAuthAppCubit.get(context).submitUserPhoneNumber(phoneNumber!);
     }
   }
 
@@ -123,12 +123,12 @@ class PhoneAuthScreen extends StatelessWidget {
               width: 2,
             ),
           ),
-          child: BlocBuilder<PhoneAuthCubit, PhoneAuthState>(
+          child: BlocBuilder<FirebaseAuthAppCubit, FirebaseAuthAppState>(
             builder: (context, state) {
               return CountryCodePicker(
                 hideSearch: true,
                 onChanged: (code) {
-                  PhoneAuthCubit.get(context).countryKey = code.dialCode!;
+                  FirebaseAuthAppCubit.get(context).countryKey = code.dialCode!;
                 },
                 initialSelection: 'EG',
                 favorite: const ['+20', 'EG'],

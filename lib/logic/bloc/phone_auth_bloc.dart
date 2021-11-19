@@ -10,14 +10,15 @@ import 'package:flutter_maps/logic/bloc/phone_auth_state.dart';
 import 'package:flutter_maps/presentaion/widget/loading_dialog.dart';
 import 'package:image_picker/image_picker.dart';
 
-class PhoneAuthCubit extends Cubit<PhoneAuthState> {
+class FirebaseAuthAppCubit extends Cubit<FirebaseAuthAppState> {
   String countryKey = "+20";
  late String verificationCode;
 
-  static PhoneAuthCubit get(context) => BlocProvider.of(context);
+  static FirebaseAuthAppCubit get(context) => BlocProvider.of(context);
 
-  PhoneAuthCubit(): super(PhoneAuthInitial());
+  FirebaseAuthAppCubit(): super(PhoneAuthInitial());
 
+  //*** start user signIn with phone number ***//
   Future<void> submitUserPhoneNumber(String phoneNum) async {
     emit(PhoneAuthLoading());
     await FirebaseAuth.instance.verifyPhoneNumber(
@@ -29,7 +30,6 @@ class PhoneAuthCubit extends Cubit<PhoneAuthState> {
         codeAutoRetrievalTimeout: (String verificationId) {
 
         });
-    print("^^^^ $countryKey$phoneNum ^^^^");
 
   }
 
@@ -62,6 +62,8 @@ class PhoneAuthCubit extends Cubit<PhoneAuthState> {
     }
   }
 
+  //*** end user signIn with phone number ***//
+
   Future userSignOut() async {
     await FirebaseAuth.instance.signOut();
   }
@@ -91,7 +93,28 @@ class PhoneAuthCubit extends Cubit<PhoneAuthState> {
   }
 
   late UserModel userModel;
+  IconData suffix = Icons.visibility_outlined;
 
+  bool isPasswordShowing = true;
+  void changePasswordVisibility() {
+    isPasswordShowing = !isPasswordShowing;
+    suffix = isPasswordShowing
+        ? Icons.visibility_off_outlined
+        : Icons.visibility_outlined;
+
+    emit(UserChangePasswordVisibilityState());
+  }
+
+  void userLogin({required String email, required String password}) {
+    emit(UserLoginLoadingState());
+    FirebaseAuth.instance
+        .signInWithEmailAndPassword(email: email, password: password)
+        .then((value) {
+      emit(UserLoginSuccessState(userID: value.user!.uid));
+    }).catchError((onError) {
+      emit(UserLoginErrorState(errorMessage: onError.toString()));
+    });
+  }
   void userRegister(
       {required String name,
         required String phone,

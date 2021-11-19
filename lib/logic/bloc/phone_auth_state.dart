@@ -1,71 +1,87 @@
-abstract class PhoneAuthState {}
+abstract class FirebaseAuthAppState {}
 
-class PhoneAuthInitial extends PhoneAuthState {}
+class PhoneAuthInitial extends FirebaseAuthAppState {}
 
-class PhoneAuthLoading extends PhoneAuthState {}
+class PhoneAuthLoading extends FirebaseAuthAppState {}
 
-class PhoneAuthErrorOccurred extends PhoneAuthState {
+class PhoneAuthErrorOccurred extends FirebaseAuthAppState {
   final String message;
 
   PhoneAuthErrorOccurred({required this.message});
 }
 
-class PhoneNumberSubmitted extends PhoneAuthState {}
+class PhoneNumberSubmitted extends FirebaseAuthAppState {}
 
-class PhoneOtpCodeVerified extends PhoneAuthState {}
+class PhoneOtpCodeVerified extends FirebaseAuthAppState {}
 
-class ChangeProfileImageSuccess extends PhoneAuthState {}
+class UserLoginLoadingState extends FirebaseAuthAppState {}
 
-class ChangeProfileImageError extends PhoneAuthState {
-  final String errorMessage;
-
-  ChangeProfileImageError({required this.errorMessage});
+class UserLoginSuccessState extends FirebaseAuthAppState {
+  final String userID;
+  UserLoginSuccessState({required this.userID});
 }
 
-class UserSignUpLoading extends PhoneAuthState {}
+class UserChangePasswordVisibilityState extends FirebaseAuthAppState {}
 
-class UserSignUpSuccess extends PhoneAuthState {}
+class UserLoginErrorState extends FirebaseAuthAppState {
+  final String errorMessage;
+  UserLoginErrorState({required this.errorMessage});
+}
 
-class UserSignUpError extends PhoneAuthState {
+
+class UserSignUpLoading extends FirebaseAuthAppState {}
+
+class UserSignUpSuccess extends FirebaseAuthAppState {}
+
+class UserSignUpError extends FirebaseAuthAppState {
   final String errorMessage;
 
   UserSignUpError({required this.errorMessage});
 }
 
-class CreateNewUserLoading extends PhoneAuthState {}
+class CreateNewUserLoading extends FirebaseAuthAppState {}
 
-class CreateNewUserSuccess extends PhoneAuthState {}
+class CreateNewUserSuccess extends FirebaseAuthAppState {}
 
-class CreateNewUserError extends PhoneAuthState {
+class CreateNewUserError extends FirebaseAuthAppState {
   final String errorMessage;
 
   CreateNewUserError({required this.errorMessage});
 }
 
+class ChangeProfileImageSuccess extends FirebaseAuthAppState {}
 
-class UploadUserProfileImageSuccess extends PhoneAuthState {}
+class ChangeProfileImageError extends FirebaseAuthAppState {
+  final String errorMessage;
 
-class UploadUserProfileImageError extends PhoneAuthState {
+  ChangeProfileImageError({required this.errorMessage});
+}
+
+
+
+class UploadUserProfileImageSuccess extends FirebaseAuthAppState {}
+
+class UploadUserProfileImageError extends FirebaseAuthAppState {
   final String errorMessage;
 
   UploadUserProfileImageError({required this.errorMessage});
 }
 
-class GetUserInfoLoadingStatus extends PhoneAuthState {}
+class GetUserInfoLoadingStatus extends FirebaseAuthAppState {}
 
-class GetUserInfoSuccessStatus extends PhoneAuthState {}
+class GetUserInfoSuccessStatus extends FirebaseAuthAppState {}
 
-class GetUserInfoErrorStatus extends PhoneAuthState {
+class GetUserInfoErrorStatus extends FirebaseAuthAppState {
   final String errorMessage;
 
   GetUserInfoErrorStatus({required this.errorMessage});
 }
 
-class UpdateUserInfo extends PhoneAuthState{}
+class UpdateUserInfo extends FirebaseAuthAppState{}
 
-class UpdateCurrentUserInfoLoading extends PhoneAuthState{}
-class UpdateCurrentUserInfoSuccess extends PhoneAuthState{}
-class UpdateCurrentUserInfoError extends PhoneAuthState{
+class UpdateCurrentUserInfoLoading extends FirebaseAuthAppState{}
+class UpdateCurrentUserInfoSuccess extends FirebaseAuthAppState{}
+class UpdateCurrentUserInfoError extends FirebaseAuthAppState{
   final String errorMessage;
 
   UpdateCurrentUserInfoError({required this.errorMessage});

@@ -2,8 +2,9 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_maps/constants/strings.dart';
 import 'package:flutter_maps/constants/colors.dart';
+import 'package:flutter_maps/constants/strings.dart';
+import 'package:flutter_maps/logic/bloc/phone_auth_bloc.dart';
 
 late String initialRoute;
 
@@ -22,9 +23,10 @@ class _SplashScreenState extends State<SplashScreen> {
     timer = Timer(const Duration(seconds: 3), () {
       FirebaseAuth.instance.authStateChanges().listen((user) {
         if (user == null) {
-          Navigator.pushReplacementNamed(context, wellDoneScreen);
+          Navigator.pushReplacementNamed(context, welcomeScreen);
         } else {
           Navigator.pushReplacementNamed(context, userProfileScreen);
+
         }
       });
     });
@@ -32,31 +34,32 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: CustomColors.backgroundColor,
-      body: Center(
+          return  Scaffold(
+          backgroundColor: CustomColors.backgroundColor,
+          body: Center(
           child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
           Image.asset(
-            "assets/images/firebase_logo.png",
-            width: 150,
-            height: 150,
+          "assets/images/firebase_logo.png",
+          width: 150,
+          height: 150,
           ),
           const SizedBox(
-            height: 10,
+          height: 10,
           ),
           Text(
-            "Authentication",
-            style: TextStyle(
-                fontSize: 30,
-                fontFamily: "Pacifico",
-                fontWeight: FontWeight.w800,
-                color: CustomColors.colorGrey),
+          "Authentication",
+          style: TextStyle(
+          fontSize: 30,
+          fontFamily: "Pacifico",
+          fontWeight: FontWeight.w800,
+          color: CustomColors.colorGrey),
           )
-        ],
-      )),
-    );
+          ],
+          )),
+          );
+
   }
 
   @override
