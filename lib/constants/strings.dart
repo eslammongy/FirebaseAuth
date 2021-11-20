@@ -20,4 +20,3 @@ const googleMapsScreen = '/googleMaps-Screen';
 
 const userProfileScreen = "/userProfileScreen";
 
-const googleMapsApiKey = 'AIzaSyCrD2LL-KcZPLA-lEdsOeivZMDojkhmJ6c';

@@ -197,7 +197,7 @@ class UserLoginScreen extends StatelessWidget {
         }
         if (state is UserLoginSuccessState) {
           Navigator.pop(context);
-          Navigator.of(context).pushNamed(welcomeScreen);
+          Navigator.of(context).pushReplacementNamed(userProfileScreen);
         }
         if (state is UserLoginErrorState) {
           Navigator.pop(context);

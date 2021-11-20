@@ -6,25 +6,27 @@ import 'package:flutter_maps/constants/strings.dart';
 import 'package:flutter_maps/data/user_model.dart';
 import 'package:flutter_maps/logic/bloc/phone_auth_bloc.dart';
 import 'package:flutter_maps/logic/bloc/phone_auth_state.dart';
+import 'package:flutter_maps/presentaion/widget/button_shape.dart';
 import 'package:flutter_maps/presentaion/widget/display_bottom_sheet.dart';
 import 'package:flutter_maps/presentaion/widget/loading_dialog.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-
+// ignore: must_be_immutable
 class UserProfileScreen extends StatelessWidget {
-  var eTextNameController = TextEditingController();
-  var eTextEmailController = TextEditingController();
+  var etNameController = TextEditingController();
+  var etEmailController = TextEditingController();
+  var etPhoneController = TextEditingController();
+  var etBioController = TextEditingController();
   var formKey = GlobalKey<FormState>();
-
-  UserProfileScreen({Key? key}) : super(key: key);
+   UserProfileScreen({Key? key}) : super(key: key);
 
 
   @override
   Widget build(BuildContext context) {
     FirebaseAuthAppCubit
         .get(context)
-        .userModel = UserModel(name: '', uId: '', phone: '', email: '', image: '');
+        .userModel = UserModel(name: '', uId: '', phone: '', email: '', image: '' , bio: "");
     FirebaseAuthAppCubit.get(context).getCurrentUserInfo();
 
     return BlocConsumer<FirebaseAuthAppCubit, FirebaseAuthAppState>(
@@ -51,10 +53,14 @@ class UserProfileScreen extends StatelessWidget {
                     const SizedBox(
                       height: 40,
                     ),
+                    if(state is UpdateCurrentUserInfoLoading)
+                      LinearProgressIndicator(
+                        minHeight: 10,
+                        color: CustomColors.googleBackground, backgroundColor: CustomColors.colorOrange,),
                     if(state is GetUserInfoLoadingStatus)
-                       LinearProgressIndicator(
-                         minHeight: 10,
-                         color: CustomColors.googleBackground, backgroundColor: CustomColors.colorOrange,),
+                      LinearProgressIndicator(
+                        minHeight: 10,
+                        color: CustomColors.googleBackground, backgroundColor: CustomColors.colorOrange,),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -80,7 +86,7 @@ class UserProfileScreen extends StatelessWidget {
                                ),
                             child: IconButton(
                                 onPressed: () {
-                                   displayingBottomSheet(context);
+                                   showingGeneralDialog(context);
                                 },
                                 icon: Icon(
                                   Icons.edit_road_outlined,
@@ -88,53 +94,41 @@ class UserProfileScreen extends StatelessWidget {
                                 ))),
                       ],
                     ),
-                    const SizedBox(
-                      height: 20,
-                    ),
+
                     BlocBuilder<FirebaseAuthAppCubit, FirebaseAuthAppState>(
                         builder: (context, state) {
                           var profileImage = FirebaseAuthAppCubit
                               .get(context)
                               .profileImage;
-                          return Center(
-                              child: Stack(
-                                  alignment: AlignmentDirectional.bottomEnd,
-                                  children: [
-                                    CircleAvatar(
-                                      radius: 68.0,
-                                      backgroundColor: Colors.white,
-                                      child: profileImage == null
-                                          ? CircleAvatar(
-                                          radius: 65.0,
-                                          backgroundImage: NetworkImage(
-                                              userModel.image))
-                                          : CircleAvatar(
-                                          radius: 65.0,
-                                          backgroundImage: FileImage(
-                                              profileImage)),
-                                    ),
-                                    IconButton(
-                                      onPressed: () {
-                                        FirebaseAuthAppCubit.get(context)
-                                            .getProfileImage(context);
-                                      },
-                                      icon: CircleAvatar(
-                                          backgroundColor: AppColor
-                                              .backgroundColor,
-                                          radius: 30,
-                                          child: const Icon(
-                                            Icons.camera_alt_rounded,
-                                            size: 20,
-                                          )),
-                                    ),
-                                  ]));
+                          return Stack(
+                              alignment: AlignmentDirectional.bottomEnd,
+                              children: [
+                                Container(
+                                  child: profileImage == null
+                                      ?   CircleAvatar(
+                                          radius: 60.0,
+                                          backgroundImage: NetworkImage(userModel.image.isEmpty ? "https://cdn-icons-png.flaticon.com/512/1177/1177568.png" : userModel.image))
+                                      : CircleAvatar(
+                                      radius: 60.0,
+                                      backgroundImage: FileImage(profileImage)),
+                                ),
+                                IconButton(
+                                  onPressed: () {
+                                    FirebaseAuthAppCubit.get(context)
+                                        .getProfileImage(context);
+                                  },
+                                  icon: CircleAvatar(
+                                      backgroundColor: AppColor.backgroundColor,
+                                      radius: 30,
+                                      child: const Icon(
+                                        FontAwesomeIcons.arrowAltCircleUp,
+                                        size: 20,
+                                      )),
+                                ),
+                              ]);
                         }),
                     const SizedBox(
-                      height: 20,
-                    ),
-
-                    const SizedBox(
-                      height: 50,
+                      height: 40,
                     ),
                     buildTextViewShape(context, userModel.name , false , FontAwesomeIcons.userAlt),
                     const SizedBox(
@@ -148,8 +142,22 @@ class UserProfileScreen extends StatelessWidget {
                     const SizedBox(
                       height: 15,
                     ),
-                    buildTextViewShape(context, userModel.email , true , FontAwesomeIcons.infoCircle),
-
+                    buildTextViewShape(context, userModel.bio , true , FontAwesomeIcons.infoCircle),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Align(
+                      alignment: AlignmentDirectional.bottomCenter,
+                      child: buildButtonShape(
+                          buttonText: "Update",
+                          buttonWidth: double.infinity,
+                          context: context,
+                          onPressed: () {
+                              FirebaseAuthAppCubit.get(context).updateCurrentUser(
+                                  name: userModel.name , email: userModel.email , phone: userModel.phone , bio: userModel.bio
+                              );
+                          }),
+                    ),
 
                   ],
                 ),
@@ -158,32 +166,11 @@ class UserProfileScreen extends StatelessWidget {
       });
   }
 
-  Widget createUserStates() {
-    return BlocListener<FirebaseAuthAppCubit, FirebaseAuthAppState>(
-      listenWhen: (previous, current) {
-        return previous != current;
-      },
-      listener: (context, state) {
-        if (state is GetUserInfoLoadingStatus) {
-          showLoadingDialog(context);
-        }
-        if (state is GetUserInfoSuccessStatus) {
-         // Navigator.pop(context);
-        }
-        if (state is GetUserInfoErrorStatus) {
-          Navigator.pop(context);
-          String errorMeg = state.errorMessage;
-          showFlushBar(context, errorMeg);
-        }
-      },
-      child: Container(),
-    );
-  }
 
   Widget buildTextViewShape(BuildContext context, String text , bool isTextBio , IconData iconData) {
     return Container(
         width: double.infinity,
-        height: isTextBio ? 180 : 60,
+        height: isTextBio ? 160 : 60,
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           color: HexColor("2C313C"),
@@ -200,14 +187,19 @@ class UserProfileScreen extends StatelessWidget {
               const SizedBox(width: 5,),
               Icon(iconData , size: 22, color: CustomColors.colorAmber),
               const SizedBox(width: 5,),
-              Text(
-                text,
-                style: TextStyle(
-                    fontSize: isTextBio ? 18 : 20,
-                    letterSpacing: 1.0,
-                    fontFamily: "Roboto",
-                    fontWeight: FontWeight.w600,
-                    color: CustomColors.colorGrey),
+              Expanded(
+                child: Text(
+                  text,
+                  textAlign: TextAlign.justify,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 4,
+                  style: TextStyle(
+                      fontSize: isTextBio ? 18 : 20,
+                      letterSpacing: isTextBio ? 0.0 : 1.0,
+                      fontFamily: "Roboto",
+                      fontWeight: FontWeight.w600,
+                      color: CustomColors.colorGrey),
+                ),
               ),
             ],
           ),

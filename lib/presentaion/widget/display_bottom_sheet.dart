@@ -1,111 +1,131 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_maps/constants/colors.dart';
+import 'package:flutter_maps/data/user_model.dart';
 import 'package:flutter_maps/logic/bloc/phone_auth_bloc.dart';
 import 'package:flutter_maps/presentaion/widget/button_shape.dart';
 import 'package:flutter_maps/presentaion/widget/text_input_feild.dart';
 
-void displayingBottomSheet(BuildContext context){
+
+void showingGeneralDialog(BuildContext context){
   var userModel = FirebaseAuthAppCubit.get(context).userModel;
   var etNameController = TextEditingController();
   var etEmailController = TextEditingController();
   var etPhoneController = TextEditingController();
   var etBioController = TextEditingController();
   var formKey = GlobalKey<FormState>();
-  showModalBottomSheet(context: context ,
-      backgroundColor: CustomColors.backgroundColor,
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(20),
-        ),
-      ),
-      builder:(context){
-    etNameController.text = userModel.name;
-    etEmailController.text = userModel.email;
-    etPhoneController.text = userModel.phone;
-      etBioController.text = userModel.bio!;
-
+  etNameController.text = userModel.name;
+  etEmailController.text = userModel.email;
+  etPhoneController.text = userModel.phone;
+  etBioController.text = userModel.bio;
+  showGeneralDialog(
+      context: context,
+      barrierDismissible: true,
+      barrierLabel: MaterialLocalizations.of(context)
+          .modalBarrierDismissLabel,
+      barrierColor: Colors.black45,
+      transitionDuration: const Duration(milliseconds: 400),
+      pageBuilder: (BuildContext buildContext,
+          Animation animation,
+          Animation secondaryAnimation) {
         return Container(
-          width: double.infinity,
-          height:  MediaQuery.of(context).size.height * 0.9,
-          margin: const EdgeInsets.all(10),
-          child: Form(
-            key: formKey,
-            child: Column(
-
+          margin:const EdgeInsets.only(top: 80),
+          child: Material(
+            animationDuration: const Duration(milliseconds: 400),
+            color: Colors.black54.withAlpha(0),
+            child: Stack(
+              alignment: AlignmentDirectional.center,
               children: [
-                const SizedBox(
-                  height: 60,
-                ),
-                     textInputFormField(
-                        textEditingController: etNameController,
-                        label: "full name",
-                        isTextPassword:false,
-                         isTextBio: false,
-                        prefix: const Icon(Icons.person),
-                        autoFocus: false,
-                        textSize: 18.0),
-                const SizedBox(
-                  height: 20,
-                ),
-                 textInputFormField(
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.95,
+                  height: MediaQuery.of(context).size.height * 0.75,
+                  decoration:  BoxDecoration(
+                    color: CustomColors.backgroundColor,
+                    borderRadius: const BorderRadius.all(
+                        Radius.circular(15)),
+                  ),
+                  padding: const EdgeInsets.all(10),
+                  child: Column(
+                    children: [
+                      const SizedBox(
+                        height: 50,
+                      ),
+                      textInputFormField(
+                      textEditingController: etNameController,
+                      label: "full name",
+                      isTextPassword:false,
+                      isTextBio: false,
+                      prefix: const Icon(Icons.person),
+                      autoFocus: false,
+                      textSize: 18.0),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  textInputFormField(
                       textEditingController: etEmailController,
                       label: "email",
                       isTextPassword:false,
                       autoFocus: false,
-                     isTextBio: false,
+                      isTextBio: false,
                       prefix: const Icon(Icons.email),
                       textSize: 18.0),
-                const SizedBox(
-                  height: 20,
-                ),
-                textInputFormField(
-                    textEditingController: etPhoneController,
-                     label: "phone",
-                    isTextBio: false,
-                    isTextPassword:false,
-                    prefix: const Icon(Icons.person),
-                    autoFocus: false,
-                    textSize: 18.0),
-                const SizedBox(
-                  height: 20,
-                ),
-                textInputFormField(
-                    textEditingController: etBioController,
-                    label: "Bio",
-                    isTextBio: true,
-                    isTextPassword:false,
-                    prefix: const Icon(Icons.info),
-                    autoFocus: false,
-                    textSize: 18.0),
-                const SizedBox(
-                  height: 60,
-                ),
-                Align(
-                  alignment: AlignmentDirectional.bottomCenter,
-                  child: buildButtonShape(
-                      buttonText: "Save",
-                      buttonWidth: 150.0,
-                      context: context,
-                      onPressed: () {
-                        if (!formKey.currentState!.validate()) {
-                          return;
-                        } else {
-                          formKey.currentState!.save();
-                          FirebaseAuthAppCubit.get(context).updateCurrentUserFullInfo(
-                          name: etNameController.text , email: etEmailController.text , phone: etPhoneController.text , bio: etBioController.text
-                          );
-                          Navigator.pop(context);
-                        }
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  textInputFormField(
+                      textEditingController: etPhoneController,
+                      label: "phone",
+                      isTextBio: false,
+                      isTextPassword:false,
+                      prefix: const Icon(Icons.person),
+                      autoFocus: false,
+                      textSize: 18.0),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  textInputFormField(
+                      textEditingController: etBioController,
+                      label: "Bio",
+                      isTextBio: true,
+                      isTextPassword:false,
+                      textInputType: TextInputType.multiline,
+                      prefix: const Icon(Icons.info),
+                      autoFocus: false,
+                      textSize: 16.0),
+                  const SizedBox(
+                    height: 40,
+                  ),
+                  Align(
+                    alignment: AlignmentDirectional.bottomCenter,
+                    child: buildButtonShape(
+                        buttonText: "Save",
+                        buttonWidth: 150.0,
+                        context: context,
+                        onPressed: () {
+                          FirebaseAuthAppCubit
+                              .get(context)
+                              .userModel = UserModel(name: '', uId: '', phone: '', email: '', image: userModel.image , bio: "");
 
-                      }),
-                ),
+                            FirebaseAuthAppCubit.get(context).updateInfo(etNameController , etEmailController , etPhoneController ,etBioController);
+                            Navigator.pop(context);
 
+
+                        }),
+                    )]
+                ),
+                ),
               ],
             ),
           ),
         );
-      });
+      },
+  transitionBuilder: (context, anim1, anim2, child) {
+    return SlideTransition(
+      position: Tween(begin:const Offset(0 , 1), end: const Offset(0 , 0)).animate(anim1),
+      child: child,
+    );
+  });
 }
+

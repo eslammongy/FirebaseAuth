@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_maps/constants/colors.dart';
 import 'package:flutter_maps/constants/strings.dart';
 import 'package:flutter_maps/logic/bloc/phone_auth_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 late String initialRoute;
 
@@ -17,19 +18,17 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   late Timer timer;
+  var user = FirebaseAuth.instance.currentUser;
   @override
   void initState() {
     super.initState();
     timer = Timer(const Duration(seconds: 3), () {
-      FirebaseAuth.instance.authStateChanges().listen((user) {
         if (user == null) {
           Navigator.pushReplacementNamed(context, welcomeScreen);
         } else {
-          Navigator.pushReplacementNamed(context, userRegistrationScreen);
-
-        }
-      });
-    });
+          Navigator.pushReplacementNamed(context, userProfileScreen);
+        }}
+      );
   }
 
   @override
@@ -62,9 +61,5 @@ class _SplashScreenState extends State<SplashScreen> {
 
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    timer.cancel();
-  }
+
 }

@@ -5,7 +5,7 @@ class UserModel {
   late String uId;
   late String image;
   String? password;
-  String? bio;
+  late String bio;
 
 
   UserModel({
@@ -15,7 +15,7 @@ class UserModel {
     required this.uId,
     required this.image,
     this.password,
-    this.bio
+    required this.bio
   });
 
   UserModel.fromJson(Map<String, dynamic>? json) {

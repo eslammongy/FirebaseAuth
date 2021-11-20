@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_maps/constants/strings.dart';
 import 'package:flutter_maps/constants/colors.dart';
-import 'package:flutter_maps/logic/bloc/phone_auth_bloc.dart';
-import 'package:flutter_maps/logic/bloc/phone_auth_state.dart';
-import 'package:flutter_maps/presentaion/widget/loading_dialog.dart';
 import 'package:flutter_maps/presentaion/widget/social_card.dart';
 
 class WelcomesScreen extends StatelessWidget {
@@ -95,7 +92,7 @@ class WelcomesScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                getUserStates()
+
               ],
             ),
           ),
@@ -126,26 +123,5 @@ class WelcomesScreen extends StatelessWidget {
     );
   }
 
-  Widget getUserStates() {
-    return BlocListener<FirebaseAuthAppCubit, FirebaseAuthAppState>(
-      listenWhen: (previous, current) {
-        return previous != current;
-      },
-      listener: (context, state) {
-        if (state is GetUserInfoLoadingStatus) {
-          showLoadingDialog(context);
-        }
-        if (state is GetUserInfoSuccessStatus) {
-          Navigator.pop(context);
-          Navigator.of(context).pushReplacementNamed(googleMapsScreen);
-        }
-        if (state is GetUserInfoErrorStatus) {
-          Navigator.pop(context);
-          String errorMeg = state.errorMessage;
-          showFlushBar(context, errorMeg);
-        }
-      },
-      child: Container(),
-    );
-  }
+
 }

@@ -20,6 +20,7 @@ Widget textInputFormField(
     child: TextFormField(
       autofocus: autoFocus,
       obscureText: isTextPassword,
+      maxLines: isTextPassword ? 1 : 4,
       controller: textEditingController,
       style: TextStyle(
         fontSize: textSize,

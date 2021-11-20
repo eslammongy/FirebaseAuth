@@ -80,12 +80,13 @@ class FirebaseAuthAppCubit extends Cubit<FirebaseAuthAppState> {
 
    File? profileImage;
   final imagePicker = ImagePicker();
-
   Future<void> getProfileImage(BuildContext context) async {
     final pickedFile = await imagePicker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       emit(ChangeProfileImageSuccess());
       profileImage = File(pickedFile.path);
+      uploadUserProfileImage(context);
+
     } else {
       showFlushBar(context, "No Image Selected ..");
       emit(ChangeProfileImageError(errorMessage: 'No Image Selected ..'));
@@ -115,6 +116,7 @@ class FirebaseAuthAppCubit extends Cubit<FirebaseAuthAppState> {
       emit(UserLoginErrorState(errorMessage: onError.toString()));
     });
   }
+
   void userRegister(
       {required String name,
         required String phone,
@@ -123,14 +125,32 @@ class FirebaseAuthAppCubit extends Cubit<FirebaseAuthAppState> {
         required String password}) {
      emit(UserSignUpLoading());
     FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password,).then((value) {
-      createNewUser(uId: value.user!.uid, name: name, phone: phone, email: email, password: password , bio: bio);
+      createNewUser(id: value.user!.uid , name: name, phone: phone, email: email, password: password , bio: bio, profilePhoto: userModel.image);
       emit(UserSignUpSuccess());
     }).catchError((onError) {
      emit(UserSignUpError(errorMessage:onError.toString()));
     });
   }
 
-  void setUserInfo(
+
+  void uploadUserProfileImage(BuildContext context){
+    FirebaseStorage.instance
+        .ref()
+        .child('users/${Uri.file(profileImage!.path).pathSegments.last}')
+        .putFile(profileImage!)
+        .then((value) {
+      value.ref.getDownloadURL().then((value) {
+         userModel.image = value;
+        emit(UploadUserProfileImageSuccess());
+      }).catchError((onError) {
+        emit(UploadUserProfileImageError(errorMessage: onError.toString()));
+      });
+    }).catchError((onError) {
+      emit(UploadUserProfileImageError(errorMessage: onError.toString()));
+    });
+  }
+
+  void createNewUser(
       {required String id,
         required String name,
         required String phone,
@@ -151,37 +171,11 @@ class FirebaseAuthAppCubit extends Cubit<FirebaseAuthAppState> {
     });
   }
 
-  void createNewUser(
-      {required String uId , required String name, required String phone, required String email , required String password , required String bio}) {
-
-    FirebaseStorage.instance
-        .ref()
-        .child('users/$name/${Uri.file(profileImage!.path).pathSegments.last}')
-        .putFile(profileImage!)
-        .then((value) {
-      value.ref.getDownloadURL().then((value) {
-        setUserInfo(
-            id: uId,
-            name: name,
-            phone: phone,
-            email: email,
-            bio: bio,
-            profilePhoto: value , password: password);
-        emit(UploadUserProfileImageSuccess());
-      }).catchError((onError) {
-        emit(UploadUserProfileImageError(errorMessage: onError.toString()));
-      });
-    }).catchError((onError) {
-      emit(UploadUserProfileImageError(errorMessage: onError.toString()));
-    });
-  }
-
   void getCurrentUserInfo() {
-    var userID = FirebaseAuth.instance.currentUser!.uid;
     emit(GetUserInfoLoadingStatus());
     FirebaseFirestore.instance
         .collection('users')
-        .doc(userID)
+        .doc(getUserID())
         .get()
         .then((value) {
       userModel = UserModel.fromJson(value.data());
@@ -191,33 +185,18 @@ class FirebaseAuthAppCubit extends Cubit<FirebaseAuthAppState> {
     });
   }
 
-  void updateCurrentUser ({required String name, required String phone,required String email , required String profileImage , required String bio}) async{
-    UserModel user = UserModel(
-        name: name, uId: getUserID(), email: email,phone: phone, image: profileImage);
+  void updateCurrentUser ({required String name, required String phone,required String email , required String bio}) async{
+    emit(UpdateCurrentUserInfoLoading());
+   userModel = UserModel(
+        name: name, uId: getUserID(), email: email,phone: phone, image: userModel.image , bio: bio);
     FirebaseFirestore.instance
         .collection('users')
-        .doc(userModel.uId)
-        .update(user.toMap())
+        .doc(getUserID())
+        .update(userModel.toMap())
         .then((value) {
       getCurrentUserInfo();
-    }).catchError((onError) {});
-  }
-
-  void updateCurrentUserFullInfo({required String name, required String email  ,required String phone , required String bio}) {
-    String imagePath = Uri.file(profileImage!.path).pathSegments.last;
-    emit(UpdateCurrentUserInfoLoading());
-    FirebaseStorage.instance
-        .ref()
-        .child('users/$name/$imagePath')
-        .putFile(profileImage!)
-        .then((value) => value.ref.getDownloadURL().then((value) {
-
-      updateCurrentUser(name: name, phone: phone , email: email ,profileImage: value , bio: bio);
       emit(UpdateCurrentUserInfoSuccess());
     }).catchError((onError) {
-      emit(UpdateCurrentUserInfoError(errorMessage: onError.toString()));
-    }))
-        .catchError((onError) {
       emit(UpdateCurrentUserInfoError(errorMessage: onError.toString()));
     });
   }
@@ -229,4 +208,5 @@ class FirebaseAuthAppCubit extends Cubit<FirebaseAuthAppState> {
     userModel.phone = phone.text;
     emit(UpdateUserInfo());
   }
+
 }

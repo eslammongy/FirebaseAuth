@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_maps/constants/colors.dart';
 import 'package:flutter_maps/constants/strings.dart';
+import 'package:flutter_maps/data/user_model.dart';
 import 'package:flutter_maps/logic/bloc/phone_auth_bloc.dart';
 import 'package:flutter_maps/logic/bloc/phone_auth_state.dart';
 import 'package:flutter_maps/presentaion/widget/loading_dialog.dart';
@@ -19,6 +20,10 @@ class UserRegistrationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    FirebaseAuthAppCubit
+        .get(context)
+        .userModel = UserModel(name: '', uId: '', phone: '', email: '', image: "" , bio: "");
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: CustomColors.backgroundColor,
@@ -48,6 +53,7 @@ class UserRegistrationScreen extends StatelessWidget {
                     ),
                     BlocBuilder<FirebaseAuthAppCubit, FirebaseAuthAppState>(
                         builder: (context, state) {
+
                       var profileImage =
                           FirebaseAuthAppCubit.get(context).profileImage;
                       return Stack(
@@ -55,10 +61,8 @@ class UserRegistrationScreen extends StatelessWidget {
                           children: [
                             Container(
                               child: profileImage == null
-                                  ? const CircleAvatar(
-                                      radius: 55.0,
-                                      backgroundImage: NetworkImage(
-                                          "https://cdn-icons-png.flaticon.com/512/1177/1177568.png"))
+                                  ?  Image.asset("assets/images/user.png" , width: 110, height: 110
+                                ,)
                                   : CircleAvatar(
                                       radius: 55.0,
                                       backgroundImage: FileImage(profileImage)),
@@ -230,6 +234,9 @@ class UserRegistrationScreen extends StatelessWidget {
           Navigator.pop(context);
           String errorMeg = state.errorMessage;
           showFlushBar(context, errorMeg);
+        }
+        if(state is UploadUserProfileImageSuccess){
+          showFlushBar(context, "Your Profile Photo Uploaded Successfully.");
         }
       },
       child: Container(),
