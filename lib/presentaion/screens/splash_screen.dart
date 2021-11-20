@@ -25,7 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
         if (user == null) {
           Navigator.pushReplacementNamed(context, welcomeScreen);
         } else {
-          Navigator.pushReplacementNamed(context, userProfileScreen);
+          Navigator.pushReplacementNamed(context, userRegistrationScreen);
 
         }
       });

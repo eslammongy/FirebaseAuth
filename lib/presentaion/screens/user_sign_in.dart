@@ -72,6 +72,7 @@ class UserLoginScreen extends StatelessWidget {
                         prefix: const Icon(Icons.email),
                         textSize: 20.0,
                         isTextPassword: false,
+                        isTextBio: false,
                         textInputType: TextInputType.emailAddress,
                         autoFocus: false),
                     const SizedBox(
@@ -84,6 +85,7 @@ class UserLoginScreen extends StatelessWidget {
                         label: "enter your password",
                         prefix: const Icon(Icons.lock_rounded),
                         textSize: 20.0,
+                            isTextBio: false,
                         isTextPassword:  FirebaseAuthAppCubit.get(context).isPasswordShowing,
                         textInputType: TextInputType.visiblePassword,
                         suffix:FirebaseAuthAppCubit.get(context).suffix ,

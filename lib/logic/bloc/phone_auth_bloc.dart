@@ -119,10 +119,11 @@ class FirebaseAuthAppCubit extends Cubit<FirebaseAuthAppState> {
       {required String name,
         required String phone,
         required String email,
+        required String bio,
         required String password}) {
      emit(UserSignUpLoading());
     FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password,).then((value) {
-      createNewUser(uId: value.user!.uid, name: name, phone: phone, email: email, password: password);
+      createNewUser(uId: value.user!.uid, name: name, phone: phone, email: email, password: password , bio: bio);
       emit(UserSignUpSuccess());
     }).catchError((onError) {
      emit(UserSignUpError(errorMessage:onError.toString()));
@@ -134,11 +135,11 @@ class FirebaseAuthAppCubit extends Cubit<FirebaseAuthAppState> {
         required String name,
         required String phone,
         required String email,
-        required String profilePhoto , required String password}) {
+        required String profilePhoto , required String password , required String bio}) {
     emit(CreateNewUserLoading());
 
     userModel = UserModel(
-        name: name, email: email, phone: phone, uId: id, image: profilePhoto , password: password);
+        name: name, email: email, phone: phone, uId: id, image: profilePhoto , password: password , bio: bio);
     FirebaseFirestore.instance
         .collection("users")
         .doc(id)
@@ -151,7 +152,7 @@ class FirebaseAuthAppCubit extends Cubit<FirebaseAuthAppState> {
   }
 
   void createNewUser(
-      {required String uId , required String name, required String phone, required String email , required String password}) {
+      {required String uId , required String name, required String phone, required String email , required String password , required String bio}) {
 
     FirebaseStorage.instance
         .ref()
@@ -164,6 +165,7 @@ class FirebaseAuthAppCubit extends Cubit<FirebaseAuthAppState> {
             name: name,
             phone: phone,
             email: email,
+            bio: bio,
             profilePhoto: value , password: password);
         emit(UploadUserProfileImageSuccess());
       }).catchError((onError) {
@@ -189,10 +191,9 @@ class FirebaseAuthAppCubit extends Cubit<FirebaseAuthAppState> {
     });
   }
 
-  void updateCurrentUser (
-      {required String name, required String phone,required String email , required String? profileImage}) async{
+  void updateCurrentUser ({required String name, required String phone,required String email , required String profileImage , required String bio}) async{
     UserModel user = UserModel(
-        name: name, uId: getUserID(), email: email,phone: phone, image: profileImage ?? userModel.image);
+        name: name, uId: getUserID(), email: email,phone: phone, image: profileImage);
     FirebaseFirestore.instance
         .collection('users')
         .doc(userModel.uId)
@@ -202,16 +203,16 @@ class FirebaseAuthAppCubit extends Cubit<FirebaseAuthAppState> {
     }).catchError((onError) {});
   }
 
-  void updateCurrentUserFullInfo(
-      {required String name, required String email  ,required String phone}) {
+  void updateCurrentUserFullInfo({required String name, required String email  ,required String phone , required String bio}) {
+    String imagePath = Uri.file(profileImage!.path).pathSegments.last;
     emit(UpdateCurrentUserInfoLoading());
     FirebaseStorage.instance
         .ref()
-        .child('users/$name/${Uri.file(profileImage!.path).pathSegments.last}')
+        .child('users/$name/$imagePath')
         .putFile(profileImage!)
         .then((value) => value.ref.getDownloadURL().then((value) {
-      updateCurrentUser(
-          name: name, phone: phone , email: email ,profileImage: value);
+
+      updateCurrentUser(name: name, phone: phone , email: email ,profileImage: value , bio: bio);
       emit(UpdateCurrentUserInfoSuccess());
     }).catchError((onError) {
       emit(UpdateCurrentUserInfoError(errorMessage: onError.toString()));
@@ -221,9 +222,11 @@ class FirebaseAuthAppCubit extends Cubit<FirebaseAuthAppState> {
     });
   }
 
-  void updateInfo(TextEditingController name, TextEditingController email) {
+  void updateInfo(TextEditingController name, TextEditingController email , TextEditingController phone , TextEditingController bio) {
     userModel.name = name.text;
     userModel.email = email.text;
+    userModel.bio = bio.text;
+    userModel.phone = phone.text;
     emit(UpdateUserInfo());
   }
 }

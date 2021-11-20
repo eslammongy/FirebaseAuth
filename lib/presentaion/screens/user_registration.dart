@@ -96,6 +96,7 @@ class UserRegistrationScreen extends StatelessWidget {
                         label: "enter your name",
                         prefix: const Icon(FontAwesomeIcons.userAlt),
                         textSize: 20.0,
+                        isTextBio: false,
                         isTextPassword:false,
                         textInputType: TextInputType.name,
                         autoFocus: false),
@@ -107,6 +108,7 @@ class UserRegistrationScreen extends StatelessWidget {
                         label: "enter your email",
                         prefix: const Icon(Icons.email),
                         textSize: 20.0,
+                        isTextBio: false,
                         isTextPassword:false,
                         textInputType: TextInputType.emailAddress,
                         autoFocus: false),
@@ -118,6 +120,7 @@ class UserRegistrationScreen extends StatelessWidget {
                         label: "enter your phone",
                         prefix: const Icon(FontAwesomeIcons.phoneAlt),
                         textSize: 20.0,
+                        isTextBio: false,
                         isTextPassword:false,
                         textInputType: TextInputType.phone,
                         autoFocus: false),
@@ -129,6 +132,7 @@ class UserRegistrationScreen extends StatelessWidget {
                         label: "enter your password",
                         prefix: const Icon(FontAwesomeIcons.lock),
                         textSize: 20.0,
+                        isTextBio: false,
                         isTextPassword: FirebaseAuthAppCubit.get(context).isPasswordShowing,
                         textInputType: TextInputType.visiblePassword,
                         autoFocus: false),
@@ -241,7 +245,7 @@ class UserRegistrationScreen extends StatelessWidget {
       FirebaseAuthAppCubit.get(context).userRegister(
           name: etNameController.text,
           phone: etPhoneController.text,
-          email: etEmailController.text , password: etPasswordController.text);
+          email: etEmailController.text , password: etPasswordController.text , bio: "hello, there I'm a mobile application developer");
     }
   }
 

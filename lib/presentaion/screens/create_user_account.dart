@@ -6,13 +6,14 @@ import 'package:flutter_maps/logic/bloc/phone_auth_bloc.dart';
 import 'package:flutter_maps/logic/bloc/phone_auth_state.dart';
 import 'package:flutter_maps/presentaion/widget/loading_dialog.dart';
 import 'package:flutter_maps/presentaion/widget/text_input_feild.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 // ignore: must_be_immutable
 class CreateUserAccount extends StatelessWidget {
-  var eTextNameController = TextEditingController();
-  var eTextEmailController = TextEditingController();
-  var eTextPhoneController = TextEditingController();
-  var eTextPasswordController = TextEditingController();
+  var etNameController = TextEditingController();
+  var etEmailController = TextEditingController();
+  var etPhoneController = TextEditingController();
+  var etPasswordController = TextEditingController();
   var formKey = GlobalKey<FormState>();
   String phoneNumber;
 
@@ -22,7 +23,7 @@ class CreateUserAccount extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: AppColor.backgroundColor,
+        backgroundColor: CustomColors.backgroundColor,
         body: SingleChildScrollView(
           child: Form(
               key: formKey,
@@ -32,27 +33,19 @@ class CreateUserAccount extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 40),
+                    const SizedBox(height: 30),
                     Text(
                       "What about you?",
                       style: TextStyle(
                           fontSize: 25,
                           fontFamily: "Roboto",
                           fontWeight: FontWeight.w800,
-                          color: AppColor.textColor),
+                          color: CustomColors.colorGrey),
                     ),
                     const SizedBox(
                       height: 15,
                     ),
-                    Text(
-                      "Please enter your phone number to verify your account.",
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontFamily: "Roboto",
-                          fontWeight: FontWeight.w400,
-                          color: AppColor.textColor),
-                    ),
-                    const SizedBox(height: 30),
+
                     Center(child: BlocBuilder<FirebaseAuthAppCubit, FirebaseAuthAppState>(
                         builder: (context, state) {
                       var profileImage =
@@ -61,15 +54,15 @@ class CreateUserAccount extends StatelessWidget {
                           alignment: AlignmentDirectional.bottomEnd,
                           children: [
                             CircleAvatar(
-                              radius: 68.0,
+                              radius: 60.0,
                               backgroundColor: Colors.white,
                               child: profileImage == null
                                   ? const CircleAvatar(
-                                      radius: 65.0,
+                                      radius: 60.0,
                                       backgroundImage: NetworkImage(
                                           "https://cdn-icons-png.flaticon.com/512/1177/1177568.png"))
                                   : CircleAvatar(
-                                      radius: 65.0,
+                                      radius: 60.0,
                                       backgroundImage: FileImage(profileImage)),
                             ),
                             IconButton(
@@ -88,49 +81,56 @@ class CreateUserAccount extends StatelessWidget {
                           ]);
                     })),
                     const SizedBox(
+                      height: 30,
+                    ),
+                    textInputFormField(
+                        textEditingController: etNameController,
+                        label: "enter your name",
+                        prefix: const Icon(FontAwesomeIcons.userAlt),
+                        textSize: 20.0,
+                        isTextBio: false,
+                        isTextPassword:false,
+                        textInputType: TextInputType.name,
+                        autoFocus: false),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    textInputFormField(
+                        textEditingController: etEmailController,
+                        label: "enter your email",
+                        prefix: const Icon(Icons.email),
+                        textSize: 20.0,
+                        isTextBio: false,
+                        isTextPassword:false,
+                        textInputType: TextInputType.emailAddress,
+                        autoFocus: false),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    textInputFormField(
+                        textEditingController: etPhoneController,
+                        label: "enter your phone",
+                        prefix: const Icon(FontAwesomeIcons.phoneAlt),
+                        textSize: 20.0,
+                        isTextBio: false,
+                        isTextPassword:false,
+                        textInputType: TextInputType.phone,
+                        autoFocus: false),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    textInputFormField(
+                        textEditingController: etPasswordController,
+                        label: "enter your password",
+                        prefix: const Icon(FontAwesomeIcons.lock),
+                        textSize: 20.0,
+                        isTextBio: false,
+                        isTextPassword: FirebaseAuthAppCubit.get(context).isPasswordShowing,
+                        textInputType: TextInputType.visiblePassword,
+                        autoFocus: false),
+
+                    const SizedBox(
                       height: 40,
-                    ),
-                    Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(5)),
-                          border: Border.all(
-                            color: AppColor.shapesColor,
-                            width: 2,
-                          ),
-                        ),
-                        child: textInputFormField(
-                            textEditingController: eTextNameController,
-                            label: "enter name",
-                            isTextPassword:false,
-                            prefix: const Icon(Icons.person),
-                            textSize: 18.0,
-                            autoFocus: false)),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(5)),
-                        border: Border.all(
-                          color: AppColor.shapesColor,
-                          width: 2,
-                        ),
-                      ),
-                      child: textInputFormField(
-                          textEditingController: eTextEmailController,
-                          label: "enter email",
-                          prefix: const Icon(Icons.email),
-                          textSize: 20.0,
-                          isTextPassword:false,
-                          textInputType: TextInputType.name,
-                          autoFocus: false)
-                    ),
-                    const SizedBox(
-                      height: 60,
                     ),
                     Align(
                       alignment: Alignment.bottomCenter,
@@ -146,7 +146,7 @@ class CreateUserAccount extends StatelessWidget {
                                     fontFamily: "Roboto",
                                     height: 1.5,
                                     fontWeight: FontWeight.w400,
-                                    color: AppColor.textColor),
+                                    color: CustomColors.colorGrey),
                                 children: <TextSpan>[
                                   TextSpan(
                                       text: "Terms & Conditions",
@@ -155,7 +155,7 @@ class CreateUserAccount extends StatelessWidget {
                                           fontFamily: "Roboto",
                                           fontWeight: FontWeight.w600,
                                           letterSpacing: 1.2,
-                                          color: AppColor.shapesColor)),
+                                          color: CustomColors.colorOrange)),
                                   TextSpan(
                                       text: " and ",
                                       style: TextStyle(
@@ -163,7 +163,7 @@ class CreateUserAccount extends StatelessWidget {
                                           fontFamily: "Roboto",
                                           height: 1.5,
                                           fontWeight: FontWeight.w400,
-                                          color: AppColor.textColor)),
+                                          color: CustomColors.colorGrey)),
                                   TextSpan(
                                       text: "Privacy Policy",
                                       style: TextStyle(
@@ -171,7 +171,7 @@ class CreateUserAccount extends StatelessWidget {
                                           fontFamily: "Roboto",
                                           fontWeight: FontWeight.w600,
                                           letterSpacing: 1.2,
-                                          color: AppColor.shapesColor)),
+                                          color: CustomColors.colorOrange)),
                                   TextSpan(
                                       text: " of the app ",
                                       style: TextStyle(
@@ -179,7 +179,7 @@ class CreateUserAccount extends StatelessWidget {
                                           fontFamily: "Roboto",
                                           height: 1.5,
                                           fontWeight: FontWeight.w400,
-                                          color: AppColor.textColor))
+                                          color: CustomColors.colorGrey))
                                 ]),
                           ),
                           const SizedBox(

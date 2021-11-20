@@ -8,11 +8,12 @@ Widget textInputFormField(
     required Widget prefix,
     required double textSize,
        required bool isTextPassword,
+      required bool isTextBio,
     required bool autoFocus , TextInputType? textInputType , IconData? suffix,
       Function()? suffixPressed,}) {
 
   return Container(
-    height: 60,
+    height: isTextBio ? 120 : 60,
     decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(15)),
         color: HexColor("2C313C")),
