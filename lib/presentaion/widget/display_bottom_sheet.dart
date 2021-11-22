@@ -7,6 +7,7 @@ import 'package:flutter_maps/data/user_model.dart';
 import 'package:flutter_maps/logic/bloc/phone_auth_bloc.dart';
 import 'package:flutter_maps/presentaion/widget/button_shape.dart';
 import 'package:flutter_maps/presentaion/widget/text_input_feild.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 
 void showingGeneralDialog(BuildContext context , String signInMethod){
@@ -62,24 +63,20 @@ void showingGeneralDialog(BuildContext context , String signInMethod){
                   const SizedBox(
                     height: 20,
                   ),
-                  textInputFormField(
-                      textEditingController: etEmailController,
-                      label: "email",
-                      isTextPassword:false,
-                      autoFocus: false,
-                      isTextBio: false,
-                      prefix: const Icon(Icons.email),
-                      textSize: 18.0),
-                  const SizedBox(
-                    height: 20,
-                  ),
                   Container(
-                    child: signInMethod == "Phone"? const SizedBox(height: 1,)  : textInputFormField(
+                    child: signInMethod == "Phone" ? textInputFormField(
+                        textEditingController: etEmailController,
+                        label: "email",
+                        isTextPassword:false,
+                        autoFocus: false,
+                        isTextBio: false,
+                        prefix: const Icon(Icons.email_rounded),
+                        textSize: 18.0)  : textInputFormField(
                         textEditingController: etPhoneController,
                         label: "phone",
                         isTextBio: false,
                         isTextPassword:false,
-                        prefix: const Icon(Icons.person),
+                        prefix: const Icon(FontAwesomeIcons.phoneAlt),
                         autoFocus: false,
                         textSize: 18.0)
                   ),

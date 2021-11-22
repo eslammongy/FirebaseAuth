@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_maps/data/user_model.dart';
 import 'package:flutter_maps/logic/bloc/phone_auth_state.dart';
 import 'package:flutter_maps/presentaion/widget/loading_dialog.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
 
 class FirebaseAuthAppCubit extends Cubit<FirebaseAuthAppState> {
@@ -118,6 +119,23 @@ class FirebaseAuthAppCubit extends Cubit<FirebaseAuthAppState> {
         : Icons.visibility_outlined;
 
     emit(ChangePasswordVisibilityState());
+  }
+
+  String? googleAccount;
+  Future userSignInWithGoogleAccount()async{
+    final GoogleSignInAccount? signInAccount = await GoogleSignIn().signIn();
+    final GoogleSignInAuthentication googleAuth = await signInAccount!.authentication;
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken
+    );
+    emit(UserLoginLoadingState());
+    return await FirebaseAuth.instance.signInWithCredential(credential).then((value) {
+      googleAccount = value.user!.email;
+      emit(UserLoginSuccessState(userID: value.user!.uid));
+    }).catchError((onError){
+      emit(UserLoginErrorState(errorMessage: onError.toString()));
+    });
   }
 
   void userLogin({required String email, required String password}) {

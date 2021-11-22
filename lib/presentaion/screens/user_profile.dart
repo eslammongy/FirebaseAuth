@@ -89,7 +89,9 @@ class UserProfileScreen extends StatelessWidget {
                                 onPressed: () {
                                   if(phoneNumber.isEmpty){
                                     showingGeneralDialog(context , "Default");
-                                  }else{
+                                  }else if(phoneNumber.length < 15){
+                                    showingGeneralDialog(context, "Email");
+                                  }else if(phoneNumber.length > 15){
                                     showingGeneralDialog(context, "Phone");
                                   }
 
@@ -201,7 +203,7 @@ class UserProfileScreen extends StatelessWidget {
                   maxLines: 4,
                   style: TextStyle(
                       fontSize: isTextBio ? 18 : 20,
-                      letterSpacing: isTextBio ? 0.0 : 1.0,
+                      letterSpacing: isTextBio ? -0.5 : 1.0,
                       fontFamily: "Roboto",
                       fontWeight: FontWeight.w600,
                       color: CustomColors.colorGrey),

@@ -50,6 +50,7 @@ dependencies:
   material_floating_search_bar: ^0.3.6
   font_awesome_flutter: ^9.2.0
   flutter_svg: ^0.22.0
+  google_sign_in: ^5.2.1
 
 dev_dependencies:
   flutter_test:

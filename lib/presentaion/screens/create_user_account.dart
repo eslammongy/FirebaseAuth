@@ -14,6 +14,7 @@ class CreateUserAccount extends StatelessWidget {
   var etNameController = TextEditingController();
   var etEmailController = TextEditingController();
   var etBioController = TextEditingController();
+  var etPhoneController = TextEditingController();
   var etPasswordController = TextEditingController();
   var formKey = GlobalKey<FormState>();
   String phoneNumber;
@@ -99,15 +100,25 @@ class CreateUserAccount extends StatelessWidget {
                   const SizedBox(
                     height: 15,
                   ),
-                  textInputFormField(
-                      textEditingController: etEmailController,
-                      label: "enter your email",
-                      prefix: const Icon(Icons.email),
+                  Container(
+                    child: phoneNumber.length > 15 ? textInputFormField(
+                      textEditingController: etPhoneController,
+                      label: "enter your phone",
+                      prefix: const Icon(FontAwesomeIcons.phoneAlt),
                       textSize: 20.0,
                       isTextBio: false,
                       isTextPassword:false,
-                      textInputType: TextInputType.emailAddress,
-                      autoFocus: false),
+                      textInputType: TextInputType.phone,
+                      autoFocus: false) :textInputFormField(
+                        textEditingController: etEmailController,
+                        label: "enter your email",
+                        prefix: const Icon(Icons.email),
+                        textSize: 20.0,
+                        isTextBio: false,
+                        isTextPassword:false,
+                        textInputType: TextInputType.emailAddress,
+                        autoFocus: false),
+                  ),
                   const SizedBox(
                     height: 15,
                   ),
@@ -194,7 +205,21 @@ class CreateUserAccount extends StatelessWidget {
                           child: TextButton(
                               onPressed: () {
                                 showLoadingDialog(context);
-                                FirebaseAuthAppCubit.get(context).createNewUser(id: FirebaseAuthAppCubit.get(context).getUserID(), name: etNameController.text, phone: phoneNumber, email: etEmailController.text, profilePhoto: FirebaseAuthAppCubit.get(context).userModel.image, password: "password", bio: etBioController.text);
+                                if(phoneNumber.length > 12){
+                                  FirebaseAuthAppCubit.get(context).createNewUser(
+                                    id: FirebaseAuthAppCubit.get(context).getUserID(),
+                                    name: etNameController.text,
+                                    phone: etPhoneController.text, email: FirebaseAuthAppCubit.get(context).googleAccount!,
+                                    profilePhoto: FirebaseAuthAppCubit.get(context).userModel.image,
+                                    password: "password", bio: etBioController.text,);
+                                }else{
+                                  FirebaseAuthAppCubit.get(context).createNewUser(
+                                    id: FirebaseAuthAppCubit.get(context).getUserID(),
+                                    name: etNameController.text,
+                                    phone: phoneNumber, email: etEmailController.text,
+                                    profilePhoto: FirebaseAuthAppCubit.get(context).userModel.image,
+                                    password: "password", bio: etBioController.text,);
+                                }
                               },
                               child: const Text(
                                 "Get Started",
@@ -228,7 +253,7 @@ class CreateUserAccount extends StatelessWidget {
         if (state is CreateNewUserSuccess) {
           Navigator.pop(context);
           Navigator.of(context)
-              .pushNamed(userProfileScreen);
+              .pushReplacementNamed(userProfileScreen);
         }
         if (state is CreateNewUserError) {
           Navigator.pop(context);

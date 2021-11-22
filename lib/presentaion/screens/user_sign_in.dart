@@ -134,7 +134,7 @@ class UserLoginScreen extends StatelessWidget {
                         ]),
                     child: TextButton(
                         onPressed: () {
-                          showLoadingDialog(context);
+                         // showLoadingDialog(context);
                           userSignInToAccount(context);
                         },
                         child: const Text(
