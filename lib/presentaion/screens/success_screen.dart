@@ -9,7 +9,8 @@ import 'package:flutter_maps/presentaion/widget/loading_dialog.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class WelcomesScreen extends StatelessWidget {
-  const WelcomesScreen({Key? key}) : super(key: key);
+  String signInType;
+  WelcomesScreen({Key? key , required this.signInType}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +58,10 @@ class WelcomesScreen extends StatelessWidget {
                 const SizedBox(
                   height: 15,
                 ),
-                buildSignInOptions(context, "SignIn With Facebook", FontAwesomeIcons.facebookF, (){}),
+                buildSignInOptions(context, "SignIn With Facebook", FontAwesomeIcons.facebookF, (){
+                  signInType = "Facebook";
+                  FirebaseAuthAppCubit.get(context).signInWithFacebook();
+                }),
                 createUserStates()
               ],
             ),
@@ -79,7 +83,7 @@ class WelcomesScreen extends StatelessWidget {
         if (state is UserLoginSuccessState) {
           Navigator.pop(context);
           showFlushBar(context, "Finishing signIn with google account successfully" , "Info");
-          Navigator.of(context).pushReplacementNamed(createAccountScreen , arguments:FirebaseAuthAppCubit.get(context).googleAccount);
+          Navigator.of(context).pushReplacementNamed(createAccountScreen , arguments:signInType);
         }
         if (state is UserLoginErrorState) {
 

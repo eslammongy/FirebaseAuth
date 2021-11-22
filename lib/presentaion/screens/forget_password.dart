@@ -33,7 +33,7 @@ class ForgetPasswordScreen extends StatelessWidget {
                     alignment: AlignmentDirectional.topStart,
                     child: IconButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, userLoginScreen);
+                        Navigator.pushReplacementNamed(context, userLoginScreen);
                       },
                       icon: Icon(
                         FontAwesomeIcons.arrowAltCircleLeft,

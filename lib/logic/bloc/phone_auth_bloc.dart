@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_maps/data/user_model.dart';
 import 'package:flutter_maps/logic/bloc/phone_auth_state.dart';
 import 'package:flutter_maps/presentaion/widget/loading_dialog.dart';
@@ -101,7 +102,6 @@ class FirebaseAuthAppCubit extends Cubit<FirebaseAuthAppState> {
       emit(ChangeProfileImageSuccess());
       profileImage = File(pickedFile.path);
       uploadUserProfileImage(context);
-
     } else {
       showFlushBar(context, "No Image Selected .." , "Info");
       emit(ChangeProfileImageError(errorMessage: 'No Image Selected ..'));
@@ -138,6 +138,17 @@ class FirebaseAuthAppCubit extends Cubit<FirebaseAuthAppState> {
     });
   }
 
+  Future signInWithFacebook() async {
+    final LoginResult loginResult = await FacebookAuth.instance.login();
+    final OAuthCredential facebookAuthCredential = FacebookAuthProvider.credential(loginResult.accessToken!.token);
+    // Once signed in, return the UserCredential
+    emit(UserLoginLoadingState());
+    return await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential).then((value){
+      emit(UserLoginSuccessState(userID: value.user!.uid));
+    }).catchError((onError){
+      emit(UserLoginErrorState(errorMessage: onError.toString()));
+    });
+  }
   void userLogin({required String email, required String password}) {
     emit(UserLoginLoadingState());
     FirebaseAuth.instance

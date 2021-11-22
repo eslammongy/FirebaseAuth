@@ -41,7 +41,7 @@ class UserRegistrationScreen extends StatelessWidget {
                     alignment: AlignmentDirectional.topStart,
                     child: IconButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, userLoginScreen);
+                        Navigator.pushReplacementNamed(context, userLoginScreen);
                       },
                       icon: Icon(
                         FontAwesomeIcons.arrowAltCircleLeft,
@@ -235,7 +235,7 @@ class UserRegistrationScreen extends StatelessWidget {
         }
         if (state is UserSignUpSuccess) {
           Navigator.pop(context);
-          Navigator.of(context).pushNamed(userLoginScreen);
+          Navigator.of(context).pushReplacementNamed(userLoginScreen);
         }
         if (state is UserSignUpError) {
           Navigator.pop(context);

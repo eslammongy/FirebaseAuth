@@ -233,6 +233,9 @@ class UserProfileScreen extends StatelessWidget {
           String errorMeg = state.errorMessage;
           showFlushBar(context, errorMeg , "Error");
         }
+        if(state is UploadUserProfileImageSuccess){
+          showFlushBar(context, "Your Profile Photo Uploaded Successfully." , "Info");
+        }
       },
       child: Container(),
     );

@@ -20,7 +20,7 @@ class AppRouter {
     phoneAuthCubit = FirebaseAuthAppCubit();
   }
   Route generateRoute(RouteSettings routeSettings) {
-    final phoneNumber = routeSettings.arguments;
+    final authType = routeSettings.arguments;
     switch (routeSettings.name) {
       case splashScreen:
         return MaterialPageRoute(builder: (_) => const SplashScreen());
@@ -65,7 +65,7 @@ class AppRouter {
             builder: (_) => BlocProvider<FirebaseAuthAppCubit>.value(
                   value: phoneAuthCubit,
                   child: VerifyPhoneNumber(
-                    phoneNumber: phoneNumber.toString(),
+                    phoneNumber: authType.toString(),
                   ),
                 ));
 
@@ -74,7 +74,7 @@ class AppRouter {
             builder: (_) => BlocProvider<FirebaseAuthAppCubit>.value(
                   value: phoneAuthCubit,
                   child: CreateUserAccount(
-                    phoneNumber: phoneNumber.toString(),
+                    phoneNumber: authType.toString(),
                   ),
                 ));
 
@@ -82,14 +82,14 @@ class AppRouter {
         return MaterialPageRoute(
             builder: (_) => BlocProvider<FirebaseAuthAppCubit>.value(
                   value: phoneAuthCubit,
-                  child: const WelcomesScreen(),
+                  child:  WelcomesScreen(signInType: authType.toString(),),
                 ));
 
       case userProfileScreen:
         return MaterialPageRoute(
             builder: (_) => BlocProvider<FirebaseAuthAppCubit>.value(
                   value: phoneAuthCubit,
-                  child: UserProfileScreen(phoneNumber: phoneNumber.toString(),),
+                  child: UserProfileScreen(phoneNumber: authType.toString(),),
                 ));
       default:
         {

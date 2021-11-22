@@ -1,11 +1,7 @@
 import 'package:another_flushbar/flushbar.dart';
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_maps/constants/colors.dart';
-import 'package:flutter_maps/logic/bloc/phone_auth_bloc.dart';
-import 'package:flutter_maps/presentaion/widget/button_shape.dart';
-import 'package:flutter_maps/presentaion/widget/text_input_feild.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 void showLoadingDialog(BuildContext context) {

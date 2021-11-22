@@ -37,7 +37,7 @@ class PhoneAuthScreen extends StatelessWidget {
               alignment: AlignmentDirectional.topStart,
               child: IconButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, welcomeScreen);
+                  Navigator.pushReplacementNamed(context, welcomeScreen);
                 },
                 icon: Icon(
                   FontAwesomeIcons.arrowAltCircleLeft,
@@ -83,7 +83,7 @@ class PhoneAuthScreen extends StatelessWidget {
         if (state is PhoneNumberSubmitted) {
           Navigator.pop(context);
           Navigator.of(context)
-              .pushNamed(verifyPhoneScreen, arguments: phoneNumber);
+              .pushReplacementNamed(verifyPhoneScreen, arguments: phoneNumber);
         }
         if (state is PhoneAuthErrorOccurred) {
           Navigator.pop(context);

@@ -1,12 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_maps/constants/colors.dart';
 import 'package:flutter_maps/constants/strings.dart';
-import 'package:flutter_maps/logic/bloc/phone_auth_bloc.dart';
-import 'package:flutter_maps/logic/bloc/phone_auth_state.dart';
-import 'package:flutter_maps/presentaion/widget/loading_dialog.dart';
-import 'package:flutter_maps/presentaion/widget/text_input_feild.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 // ignore: must_be_immutable
 class ResetCodeSent extends StatelessWidget {
@@ -100,7 +94,6 @@ class ResetCodeSent extends StatelessWidget {
                           )),
                     ),
                   ),
-                  createUserStates()
                 ],
               ),
             )),
@@ -108,27 +101,4 @@ class ResetCodeSent extends StatelessWidget {
     );
   }
 
-  Widget createUserStates() {
-    return BlocListener<FirebaseAuthAppCubit, FirebaseAuthAppState>(
-      listenWhen: (previous, current) {
-        return previous != current;
-      },
-      listener: (context, state) {
-        if (state is UserResetPasswordLoading) {
-          showLoadingDialog(context);
-        }
-        if (state is UserResetPasswordSuccess) {
-          Navigator.pop(context);
-          Navigator.of(context)
-              .pushNamed(userLoginScreen);
-        }
-        if (state is UserResetPasswordError) {
-          Navigator.pop(context);
-          String errorMeg = state.errorMessage;
-          showFlushBar(context, errorMeg , "Error");
-        }
-      },
-      child: Container(),
-    );
-  }
 }

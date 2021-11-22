@@ -37,7 +37,7 @@ class UserLoginScreen extends StatelessWidget {
                     alignment: AlignmentDirectional.topStart,
                     child: IconButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, welcomeScreen);
+                        Navigator.pushReplacementNamed(context, welcomeScreen);
                          },
                       icon: Icon(
                         FontAwesomeIcons.arrowAltCircleLeft,
@@ -134,7 +134,7 @@ class UserLoginScreen extends StatelessWidget {
                         ]),
                     child: TextButton(
                         onPressed: () {
-                         // showLoadingDialog(context);
+                          showLoadingDialog(context);
                           userSignInToAccount(context);
                         },
                         child: const Text(

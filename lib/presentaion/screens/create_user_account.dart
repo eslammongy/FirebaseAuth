@@ -38,7 +38,7 @@ class CreateUserAccount extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 80),
+                  const SizedBox(height: 70),
                   Text(
                     "What about you?",
                     style: TextStyle(
@@ -122,6 +122,23 @@ class CreateUserAccount extends StatelessWidget {
                   const SizedBox(
                     height: 15,
                   ),
+                  Container(
+                    child: phoneNumber=="Facebook" ? textInputFormField(
+                        textEditingController: etPhoneController,
+                        label: "enter your phone",
+                        prefix: const Icon(FontAwesomeIcons.phoneAlt),
+                        textSize: 20.0,
+                        isTextBio: false,
+                        isTextPassword:false,
+                        textInputType: TextInputType.phone,
+                        autoFocus: false) :const SizedBox(
+                      height: 0.5,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 14,
+                  ),
+
                   textInputFormField(
                       textEditingController: etBioController,
                       label: "enter your bio",
@@ -212,11 +229,18 @@ class CreateUserAccount extends StatelessWidget {
                                     phone: etPhoneController.text, email: FirebaseAuthAppCubit.get(context).googleAccount!,
                                     profilePhoto: FirebaseAuthAppCubit.get(context).userModel.image,
                                     password: "password", bio: etBioController.text,);
-                                }else{
+                                }else if(phoneNumber.length > 12){
                                   FirebaseAuthAppCubit.get(context).createNewUser(
                                     id: FirebaseAuthAppCubit.get(context).getUserID(),
                                     name: etNameController.text,
                                     phone: phoneNumber, email: etEmailController.text,
+                                    profilePhoto: FirebaseAuthAppCubit.get(context).userModel.image,
+                                    password: "password", bio: etBioController.text,);
+                                }else{
+                                  FirebaseAuthAppCubit.get(context).createNewUser(
+                                    id: FirebaseAuthAppCubit.get(context).getUserID(),
+                                    name: etNameController.text,
+                                    phone: etPhoneController.text, email: etEmailController.text,
                                     profilePhoto: FirebaseAuthAppCubit.get(context).userModel.image,
                                     password: "password", bio: etBioController.text,);
                                 }
