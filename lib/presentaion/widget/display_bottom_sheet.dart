@@ -9,13 +9,12 @@ import 'package:flutter_maps/presentaion/widget/button_shape.dart';
 import 'package:flutter_maps/presentaion/widget/text_input_feild.dart';
 
 
-void showingGeneralDialog(BuildContext context){
+void showingGeneralDialog(BuildContext context , String signInMethod){
   var userModel = FirebaseAuthAppCubit.get(context).userModel;
   var etNameController = TextEditingController();
   var etEmailController = TextEditingController();
   var etPhoneController = TextEditingController();
   var etBioController = TextEditingController();
-  var formKey = GlobalKey<FormState>();
   etNameController.text = userModel.name;
   etEmailController.text = userModel.email;
   etPhoneController.text = userModel.phone;
@@ -26,7 +25,7 @@ void showingGeneralDialog(BuildContext context){
       barrierLabel: MaterialLocalizations.of(context)
           .modalBarrierDismissLabel,
       barrierColor: Colors.black45,
-      transitionDuration: const Duration(milliseconds: 400),
+      transitionDuration: const Duration(milliseconds: 600),
       pageBuilder: (BuildContext buildContext,
           Animation animation,
           Animation secondaryAnimation) {
@@ -74,14 +73,16 @@ void showingGeneralDialog(BuildContext context){
                   const SizedBox(
                     height: 20,
                   ),
-                  textInputFormField(
-                      textEditingController: etPhoneController,
-                      label: "phone",
-                      isTextBio: false,
-                      isTextPassword:false,
-                      prefix: const Icon(Icons.person),
-                      autoFocus: false,
-                      textSize: 18.0),
+                  Container(
+                    child: signInMethod == "Phone"? const SizedBox(height: 1,)  : textInputFormField(
+                        textEditingController: etPhoneController,
+                        label: "phone",
+                        isTextBio: false,
+                        isTextPassword:false,
+                        prefix: const Icon(Icons.person),
+                        autoFocus: false,
+                        textSize: 18.0)
+                  ),
                   const SizedBox(
                     height: 20,
                   ),

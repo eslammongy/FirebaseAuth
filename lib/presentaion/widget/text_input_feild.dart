@@ -17,51 +17,54 @@ Widget textInputFormField(
     decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(15)),
         color: HexColor("2C313C")),
-    child: TextFormField(
-      autofocus: autoFocus,
-      obscureText: isTextPassword,
-      maxLines: isTextPassword ? 1 : 4,
-      controller: textEditingController,
-      style: TextStyle(
-        fontSize: textSize,
-        color: CustomColors.colorGrey,
-        letterSpacing: 1.5,
+    child: Align(
+      alignment: isTextBio ? AlignmentDirectional.topStart : AlignmentDirectional.centerStart ,
+      child: TextFormField(
+        autofocus: autoFocus,
+        obscureText: isTextPassword,
+        maxLines: isTextPassword ? 1 : 4,
+        controller: textEditingController,
+        style: TextStyle(
+          fontSize: textSize,
+          color: CustomColors.colorGrey,
+          letterSpacing: 1.5,
+        ),
+        decoration: InputDecoration(
+            labelStyle: const TextStyle(
+              fontSize: 15,
+              fontFamily: "Roboto",
+              fontWeight: FontWeight.w400,
+            ),
+            border: InputBorder.none,
+            focusedBorder: InputBorder.none,
+            enabledBorder: InputBorder.none,
+            errorBorder: InputBorder.none,
+            disabledBorder: InputBorder.none,
+            contentPadding:
+            const EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
+            label: Text(label),
+            prefixIcon: prefix,
+          suffixIcon: suffix != null
+              ? IconButton(
+            onPressed: suffixPressed,
+            icon: Icon(
+              suffix,
+            ),
+          )
+              : null,
+        ),
+        cursorColor: Colors.black,
+        keyboardType: textInputType,
+        validator: (value) {
+          if (value!.isEmpty) {
+            return "please $label !";
+          }
+          return null;
+        },
+        onSaved: (value) {
+          textEditingController.text = value!;
+        },
       ),
-      decoration: InputDecoration(
-          labelStyle: const TextStyle(
-            fontSize: 15,
-            fontFamily: "Roboto",
-            fontWeight: FontWeight.w400,
-          ),
-          border: InputBorder.none,
-          focusedBorder: InputBorder.none,
-          enabledBorder: InputBorder.none,
-          errorBorder: InputBorder.none,
-          disabledBorder: InputBorder.none,
-          contentPadding:
-          const EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
-          label: Text(label),
-          prefixIcon: prefix,
-        suffixIcon: suffix != null
-            ? IconButton(
-          onPressed: suffixPressed,
-          icon: Icon(
-            suffix,
-          ),
-        )
-            : null,
-      ),
-      cursorColor: Colors.black,
-      keyboardType: textInputType,
-      validator: (value) {
-        if (value!.isEmpty) {
-          return "please $label !";
-        }
-        return null;
-      },
-      onSaved: (value) {
-        textEditingController.text = value!;
-      },
     ),
   );
 }

@@ -65,7 +65,21 @@ class FirebaseAuthAppCubit extends Cubit<FirebaseAuthAppState> {
   //*** end user signIn with phone number ***//
 
   Future userSignOut() async {
-    await FirebaseAuth.instance.signOut();
+    emit(UserSignOutLoading());
+    await FirebaseAuth.instance.signOut().whenComplete(() {
+      emit(UserSignOutSuccess());
+    }).onError((error, stackTrace) {
+      emit(UserSignUpError(errorMessage: error.toString()));
+    });
+  }
+
+  Future userResetPassword(String email) async {
+    emit(UserResetPasswordLoading());
+    await FirebaseAuth.instance.sendPasswordResetEmail(email: email).whenComplete(() {
+      emit(UserResetPasswordSuccess());
+    }).onError((error, stackTrace) {
+      emit(UserResetPasswordError(errorMessage: error.toString()));
+    });
   }
 
   User? getUserInfo() {
@@ -88,7 +102,7 @@ class FirebaseAuthAppCubit extends Cubit<FirebaseAuthAppState> {
       uploadUserProfileImage(context);
 
     } else {
-      showFlushBar(context, "No Image Selected ..");
+      showFlushBar(context, "No Image Selected .." , "Info");
       emit(ChangeProfileImageError(errorMessage: 'No Image Selected ..'));
     }
   }
@@ -103,7 +117,7 @@ class FirebaseAuthAppCubit extends Cubit<FirebaseAuthAppState> {
         ? Icons.visibility_off_outlined
         : Icons.visibility_outlined;
 
-    emit(UserChangePasswordVisibilityState());
+    emit(ChangePasswordVisibilityState());
   }
 
   void userLogin({required String email, required String password}) {

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_maps/constants/strings.dart';
 import 'package:flutter_maps/presentaion/screens/forget_password.dart';
-import 'package:flutter_maps/presentaion/screens/lets_go.dart';
+import 'package:flutter_maps/presentaion/screens/reset_code_sent.dart';
 import 'package:flutter_maps/presentaion/screens/user_registration.dart';
 import 'package:flutter_maps/presentaion/screens/user_sign_in.dart';
 import 'package:flutter_maps/presentaion/screens/verify_user_phone.dart';
@@ -43,8 +43,15 @@ class AppRouter {
         return MaterialPageRoute(
             builder: (_) => BlocProvider<FirebaseAuthAppCubit>.value(
                   value: phoneAuthCubit,
-                  child: const ForgetPasswordScreen(),
+                  child:  ForgetPasswordScreen(),
                 ));
+
+      case userResetCodeSentScreen:
+        return MaterialPageRoute(
+            builder: (_) => BlocProvider<FirebaseAuthAppCubit>.value(
+              value: phoneAuthCubit,
+              child:  ResetCodeSent(),
+            ));
 
       case phoneAuthScreen:
         return MaterialPageRoute(
@@ -82,7 +89,7 @@ class AppRouter {
         return MaterialPageRoute(
             builder: (_) => BlocProvider<FirebaseAuthAppCubit>.value(
                   value: phoneAuthCubit,
-                  child: UserProfileScreen(),
+                  child: UserProfileScreen(phoneNumber: phoneNumber.toString(),),
                 ));
       default:
         {

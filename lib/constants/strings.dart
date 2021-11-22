@@ -6,6 +6,8 @@ const userRegistrationScreen = "/userRegistrationScreen";
 
 const userForgetPasswordScreen = "/userForgetPasswordScreen";
 
+const userResetCodeSentScreen = "/userResetCodeSentScreen";
+
 const userLetsGoScreen = "/userLetsGoScreen";
 
 const phoneAuthScreen = '/phoneAuth-Screen';

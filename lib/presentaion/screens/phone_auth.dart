@@ -20,56 +20,55 @@ class PhoneAuthScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
+    return Scaffold(
       backgroundColor: CustomColors.backgroundColor,
       body: SingleChildScrollView(
-        child: Form(
-          key: formKey,
-          child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(
-                  height: 10,
-                ),
-                Align(
-                  alignment: AlignmentDirectional.topStart,
-                  child: IconButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, userLoginScreen);
-                    },
-                    icon: Icon(
-                      FontAwesomeIcons.arrowAltCircleLeft,
-                      size: 30,
-                      color: CustomColors.colorGrey,
-                    ),
-                  ),
-                ),
-                displayUpperView(
-                    "What is your phone number?",
-                    "Please enter your phone number to verify your account.",
-                    ''),
-                buildPhoneFormField(context, textEditingController),
-                const SizedBox(
-                  height: 100,
-                ),
-                submitUserPhoneNumber(),
-                buildButtonShape(
-                    buttonWidth: 160.0,
-                    buttonText: "Next",
-                    context: context,
-                    onPressed: () {
-                      showLoadingDialog(context);
-                      submitPhone(context);
-                    })
-              ],
+    child: Form(
+      key: formKey,
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(
+              height: 40,
             ),
-          ),
+            Align(
+              alignment: AlignmentDirectional.topStart,
+              child: IconButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, welcomeScreen);
+                },
+                icon: Icon(
+                  FontAwesomeIcons.arrowAltCircleLeft,
+                  size: 30,
+                  color: CustomColors.colorGrey,
+                ),
+              ),
+            ),
+            displayUpperView(
+                "What is your phone number?",
+                "Please enter your phone number to verify your account.",
+                ''),
+            buildPhoneFormField(context, textEditingController),
+            const SizedBox(
+              height: 100,
+            ),
+            submitUserPhoneNumber(),
+            buildButtonShape(
+                buttonWidth: 160.0,
+                buttonText: "Next",
+                context: context,
+                onPressed: () {
+                  showLoadingDialog(context);
+                  submitPhone(context);
+                })
+          ],
         ),
       ),
-    ));
+    ),
+      ),
+    );
   }
 
   Widget submitUserPhoneNumber() {
@@ -89,7 +88,7 @@ class PhoneAuthScreen extends StatelessWidget {
         if (state is PhoneAuthErrorOccurred) {
           Navigator.pop(context);
           String errorMeg = state.message;
-          showFlushBar(context, errorMeg);
+          showFlushBar(context, errorMeg , "Error");
         }
       },
       child: Container(),
@@ -152,15 +151,15 @@ class PhoneAuthScreen extends StatelessWidget {
         child: Container(
           height: 70,
           padding: const EdgeInsets.all(10),
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(5)),
+          decoration:  BoxDecoration(
+            color: CustomColors.colorGrey,
+            borderRadius: const BorderRadius.all(Radius.circular(5)),
           ),
           child: TextFormField(
             controller: textEditingController,
             autofocus: true,
             style: const TextStyle(
-              fontSize: 20,
+              fontSize: 22,
               letterSpacing: 2.0,
             ),
             decoration: const InputDecoration(

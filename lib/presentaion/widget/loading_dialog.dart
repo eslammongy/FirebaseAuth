@@ -6,6 +6,7 @@ import 'package:flutter_maps/constants/colors.dart';
 import 'package:flutter_maps/logic/bloc/phone_auth_bloc.dart';
 import 'package:flutter_maps/presentaion/widget/button_shape.dart';
 import 'package:flutter_maps/presentaion/widget/text_input_feild.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 void showLoadingDialog(BuildContext context) {
   AlertDialog alertDialog = AlertDialog(
@@ -49,7 +50,7 @@ void showLoadingDialog(BuildContext context) {
       });
 }
 
-void showFlushBar(context, String message) {
+void showFlushBar(context, String message , String title) {
   Flushbar(
     mainButton: TextButton(
         onPressed: () {
@@ -66,7 +67,7 @@ void showFlushBar(context, String message) {
     padding: const EdgeInsets.all(15),
     borderRadius: BorderRadius.circular(15),
     animationDuration: const Duration(seconds: 5),
-    duration: const Duration(seconds: 8),
+    duration: const Duration(seconds: 3),
     boxShadows: const [
       BoxShadow(
         color: Colors.black45,
@@ -74,17 +75,17 @@ void showFlushBar(context, String message) {
         blurRadius: 8,
       ),
     ],
-    titleText: const Text(
-      "Error",
-      style: TextStyle(
+    titleText:  Text(
+      title,
+      style: const TextStyle(
           color: Colors.black87, fontSize: 20, fontWeight: FontWeight.w600),
     ),
     messageText: Text(
       message,
       style: const TextStyle(color: Colors.white, fontSize: 15),
     ),
-    icon: const Icon(
-      Icons.info_sharp,
+    icon:  Icon(
+      title == "Error" ? FontAwesomeIcons.infoCircle :FontAwesomeIcons.fileUpload ,
       color: Colors.black87,
     ),
     dismissDirection: FlushbarDismissDirection.HORIZONTAL,

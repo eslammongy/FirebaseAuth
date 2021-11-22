@@ -19,7 +19,8 @@ class UserProfileScreen extends StatelessWidget {
   var etPhoneController = TextEditingController();
   var etBioController = TextEditingController();
   var formKey = GlobalKey<FormState>();
-   UserProfileScreen({Key? key}) : super(key: key);
+  String phoneNumber;
+   UserProfileScreen({Key? key , required this.phoneNumber}) : super(key: key);
 
 
   @override
@@ -33,7 +34,7 @@ class UserProfileScreen extends StatelessWidget {
       listener: (context, state) {
         if (state is GetUserInfoErrorStatus) {
           String errorMeg = state.errorMessage;
-          showFlushBar(context, errorMeg);
+          showFlushBar(context, errorMeg , "Error");
         }
       },
       builder: (context, state) {
@@ -68,10 +69,10 @@ class UserProfileScreen extends StatelessWidget {
                           alignment: AlignmentDirectional.topStart,
                           child: IconButton(
                             onPressed: () {
-                              Navigator.pushNamed(context, googleMapsScreen);
+                             FirebaseAuthAppCubit.get(context).userSignOut();
                             },
                             icon: Icon(
-                              FontAwesomeIcons.arrowAltCircleLeft,
+                              FontAwesomeIcons.signOutAlt,
                               size: 30,
                               color: CustomColors.colorGrey,
                             ),),
@@ -86,7 +87,12 @@ class UserProfileScreen extends StatelessWidget {
                                ),
                             child: IconButton(
                                 onPressed: () {
-                                   showingGeneralDialog(context);
+                                  if(phoneNumber.isEmpty){
+                                    showingGeneralDialog(context , "Default");
+                                  }else{
+                                    showingGeneralDialog(context, "Phone");
+                                  }
+
                                 },
                                 icon: Icon(
                                   Icons.edit_road_outlined,
@@ -158,7 +164,7 @@ class UserProfileScreen extends StatelessWidget {
                               );
                           }),
                     ),
-
+                    createUserStates()
                   ],
                 ),
               ),
@@ -204,5 +210,29 @@ class UserProfileScreen extends StatelessWidget {
             ],
           ),
         ));
+  }
+
+  Widget createUserStates() {
+    return BlocListener<FirebaseAuthAppCubit, FirebaseAuthAppState>(
+      listenWhen: (previous, current) {
+        return previous != current;
+      },
+      listener: (context, state) {
+        if (state is UserSignOutLoading) {
+          Navigator.pop(context);
+          showLoadingDialog(context);
+        }
+        if (state is UserSignOutSuccess) {
+          Navigator.pushReplacementNamed(context, welcomeScreen);
+          showFlushBar(context, "Sign Out Finished Successfully" , "Error");
+        }
+        if (state is UserLoginErrorState) {
+          Navigator.pop(context);
+          String errorMeg = state.errorMessage;
+          showFlushBar(context, errorMeg , "Error");
+        }
+      },
+      child: Container(),
+    );
   }
 }

@@ -9,10 +9,10 @@ import 'package:flutter_maps/presentaion/widget/text_input_feild.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 // ignore: must_be_immutable
-class ForgetPasswordScreen extends StatelessWidget {
+class ResetCodeSent extends StatelessWidget {
   var etEmailController = TextEditingController();
   var formKey = GlobalKey<FormState>();
-  ForgetPasswordScreen({Key? key}) : super(key: key);
+  ResetCodeSent({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,64 +28,44 @@ class ForgetPasswordScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 50),
-                  Align(
-                    alignment: AlignmentDirectional.topStart,
-                    child: IconButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, userLoginScreen);
-                      },
-                      icon: Icon(
-                        FontAwesomeIcons.arrowAltCircleLeft,
-                        size: 30,
-                        color: CustomColors.colorGrey,
-                      ),
+                  const SizedBox(height: 100),
+                  Center(
+                    child: Text(
+                      "Check Your Email",
+                      style: TextStyle(
+                          fontSize: 25,
+                          fontFamily: "Roboto",
+                          fontWeight: FontWeight.w800,
+                          color: CustomColors.colorGrey),
                     ),
-                  ),
-                  const SizedBox(height: 40),
-                  Text(
-                    "Reset Password",
-                    style: TextStyle(
-                        fontSize: 25,
-                        fontFamily: "Roboto",
-                        fontWeight: FontWeight.w800,
-                        color: CustomColors.colorGrey),
                   ),
                   const SizedBox(
                     height: 30,
                   ),
-                  const Text(
-                    "Enter them email associated with your account and well send an email with instructions to reset your password.",
-                    style: TextStyle(
-                        fontSize: 20,
-                        height: 1.1,
-                        fontFamily: "Roboto",
-                        fontWeight: FontWeight.w500,
-                        color: Colors.grey),
+                    Center(
+                     child: Container(
+                       margin:const EdgeInsets.symmetric(horizontal: 15),
+                       child: const Text(
+                        "We have sent recover instructions to your email.",
+                        style: TextStyle(
+                            fontSize: 20,
+                            height: 1.1,
+                            fontFamily: "Roboto",
+                            fontWeight: FontWeight.w500,
+                            color: Colors.grey),
                   ),
+                     ),
+                   ),
                   const SizedBox(
                     height: 30,
                   ),
                   Center(
                     child: Image.asset(
-                      "assets/images/password.png",
+                      "assets/images/email_sent.png",
                       width: 150,
                       height: 150,
                     ),
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  textInputFormField(
-                      textEditingController: etEmailController,
-                      label: "enter your email",
-                      prefix: const Icon(Icons.email),
-                      textSize: 20.0,
-                      isTextBio: false,
-                      isTextPassword:false,
-                      textInputType: TextInputType.name,
-                      autoFocus: false),
-
                   const SizedBox(
                     height: 50,
                   ),
@@ -108,15 +88,14 @@ class ForgetPasswordScreen extends StatelessWidget {
                           ]),
                       child: TextButton(
                           onPressed: () {
-                            showLoadingDialog(context);
-                            FirebaseAuthAppCubit.get(context).userResetPassword(etEmailController.text);
+                          Navigator.pushReplacementNamed(context, userLoginScreen);
                           },
                           child: const Text(
-                            "Send",
+                            "Go To Login",
                             style: TextStyle(
                                 fontSize: 20,
                                 fontFamily: "Roboto",
-                                fontWeight: FontWeight.w500,
+                                fontWeight: FontWeight.w800,
                                 color: Colors.white),
                           )),
                     ),
@@ -141,7 +120,7 @@ class ForgetPasswordScreen extends StatelessWidget {
         if (state is UserResetPasswordSuccess) {
           Navigator.pop(context);
           Navigator.of(context)
-              .pushReplacementNamed(userResetCodeSentScreen);
+              .pushNamed(userLoginScreen);
         }
         if (state is UserResetPasswordError) {
           Navigator.pop(context);

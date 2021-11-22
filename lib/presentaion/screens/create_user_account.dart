@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_maps/constants/colors.dart';
 import 'package:flutter_maps/constants/strings.dart';
+import 'package:flutter_maps/data/user_model.dart';
 import 'package:flutter_maps/logic/bloc/phone_auth_bloc.dart';
 import 'package:flutter_maps/logic/bloc/phone_auth_state.dart';
 import 'package:flutter_maps/presentaion/widget/loading_dialog.dart';
@@ -12,7 +13,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class CreateUserAccount extends StatelessWidget {
   var etNameController = TextEditingController();
   var etEmailController = TextEditingController();
-  var etPhoneController = TextEditingController();
+  var etBioController = TextEditingController();
   var etPasswordController = TextEditingController();
   var formKey = GlobalKey<FormState>();
   String phoneNumber;
@@ -21,207 +22,196 @@ class CreateUserAccount extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: CustomColors.backgroundColor,
-        body: SingleChildScrollView(
-          child: Form(
-              key: formKey,
-              child: Container(
-                margin:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 30),
-                    Text(
-                      "What about you?",
-                      style: TextStyle(
-                          fontSize: 25,
-                          fontFamily: "Roboto",
-                          fontWeight: FontWeight.w800,
-                          color: CustomColors.colorGrey),
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
+    FirebaseAuthAppCubit
+        .get(context)
+        .userModel = UserModel(name: '', uId: '', phone: '', email: '', image: '' , bio: "");
+    return Scaffold(
+      backgroundColor: CustomColors.backgroundColor,
+      body: SingleChildScrollView(
+        child: Form(
+            key: formKey,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            child: Container(
+              margin:
+                  const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 80),
+                  Text(
+                    "What about you?",
+                    style: TextStyle(
+                        fontSize: 25,
+                        fontFamily: "Roboto",
+                        fontWeight: FontWeight.w800,
+                        color: CustomColors.colorGrey),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
 
-                    Center(child: BlocBuilder<FirebaseAuthAppCubit, FirebaseAuthAppState>(
-                        builder: (context, state) {
-                      var profileImage =
-                          FirebaseAuthAppCubit.get(context).profileImage;
-                      return Stack(
-                          alignment: AlignmentDirectional.bottomEnd,
-                          children: [
-                            CircleAvatar(
-                              radius: 60.0,
-                              backgroundColor: Colors.white,
-                              child: profileImage == null
-                                  ? const CircleAvatar(
-                                      radius: 60.0,
-                                      backgroundImage: NetworkImage(
-                                          "https://cdn-icons-png.flaticon.com/512/1177/1177568.png"))
-                                  : CircleAvatar(
-                                      radius: 60.0,
-                                      backgroundImage: FileImage(profileImage)),
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                FirebaseAuthAppCubit.get(context)
-                                    .getProfileImage(context);
-                              },
-                              icon: CircleAvatar(
-                                  backgroundColor: AppColor.backgroundColor,
-                                  radius: 30,
-                                  child: const Icon(
-                                    Icons.camera_alt_rounded,
-                                    size: 20,
-                                  )),
-                            ),
-                          ]);
-                    })),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    textInputFormField(
-                        textEditingController: etNameController,
-                        label: "enter your name",
-                        prefix: const Icon(FontAwesomeIcons.userAlt),
-                        textSize: 20.0,
-                        isTextBio: false,
-                        isTextPassword:false,
-                        textInputType: TextInputType.name,
-                        autoFocus: false),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    textInputFormField(
-                        textEditingController: etEmailController,
-                        label: "enter your email",
-                        prefix: const Icon(Icons.email),
-                        textSize: 20.0,
-                        isTextBio: false,
-                        isTextPassword:false,
-                        textInputType: TextInputType.emailAddress,
-                        autoFocus: false),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    textInputFormField(
-                        textEditingController: etPhoneController,
-                        label: "enter your phone",
-                        prefix: const Icon(FontAwesomeIcons.phoneAlt),
-                        textSize: 20.0,
-                        isTextBio: false,
-                        isTextPassword:false,
-                        textInputType: TextInputType.phone,
-                        autoFocus: false),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    textInputFormField(
-                        textEditingController: etPasswordController,
-                        label: "enter your password",
-                        prefix: const Icon(FontAwesomeIcons.lock),
-                        textSize: 20.0,
-                        isTextBio: false,
-                        isTextPassword: FirebaseAuthAppCubit.get(context).isPasswordShowing,
-                        textInputType: TextInputType.visiblePassword,
-                        autoFocus: false),
-
-                    const SizedBox(
-                      height: 40,
-                    ),
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                  Center(child: BlocBuilder<FirebaseAuthAppCubit, FirebaseAuthAppState>(
+                      builder: (context, state) {
+                    var profileImage =
+                        FirebaseAuthAppCubit.get(context).profileImage;
+                    return Stack(
+                        alignment: AlignmentDirectional.bottomEnd,
                         children: [
-                          RichText(
-                            textAlign: TextAlign.center,
-                            text: TextSpan(
-                                text: "By registering you agree to ",
-                                style: TextStyle(
-                                    fontSize: 17,
-                                    fontFamily: "Roboto",
-                                    height: 1.5,
-                                    fontWeight: FontWeight.w400,
-                                    color: CustomColors.colorGrey),
-                                children: <TextSpan>[
-                                  TextSpan(
-                                      text: "Terms & Conditions",
-                                      style: TextStyle(
-                                          fontSize: 17,
-                                          fontFamily: "Roboto",
-                                          fontWeight: FontWeight.w600,
-                                          letterSpacing: 1.2,
-                                          color: CustomColors.colorOrange)),
-                                  TextSpan(
-                                      text: " and ",
-                                      style: TextStyle(
-                                          fontSize: 17,
-                                          fontFamily: "Roboto",
-                                          height: 1.5,
-                                          fontWeight: FontWeight.w400,
-                                          color: CustomColors.colorGrey)),
-                                  TextSpan(
-                                      text: "Privacy Policy",
-                                      style: TextStyle(
-                                          fontSize: 17,
-                                          fontFamily: "Roboto",
-                                          fontWeight: FontWeight.w600,
-                                          letterSpacing: 1.2,
-                                          color: CustomColors.colorOrange)),
-                                  TextSpan(
-                                      text: " of the app ",
-                                      style: TextStyle(
-                                          fontSize: 17,
-                                          fontFamily: "Roboto",
-                                          height: 1.5,
-                                          fontWeight: FontWeight.w400,
-                                          color: CustomColors.colorGrey))
-                                ]),
+                          CircleAvatar(
+                            radius: 60.0,
+                            backgroundColor: Colors.white,
+                            child: profileImage == null
+                                ? const CircleAvatar(
+                                    radius: 60.0,
+                                    backgroundImage: NetworkImage(
+                                        "https://cdn-icons-png.flaticon.com/512/1177/1177568.png"))
+                                : CircleAvatar(
+                                    radius: 60.0,
+                                    backgroundImage: FileImage(profileImage)),
                           ),
-                          const SizedBox(
-                            height: 40,
-                          ),
-                          Container(
-                            width: double.infinity,
-                            height: 60,
-                            margin: const EdgeInsets.symmetric(horizontal: 15),
-                            decoration: BoxDecoration(
-                                color: AppColor.shapesColor,
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(8)),
-                                boxShadow: [
-                                  BoxShadow(
-                                    blurRadius: 10,
-                                    color: Colors.black.withOpacity(0.5),
-                                    offset: const Offset(0, 3),
-                                  )
-                                ]),
-                            child: TextButton(
-                                onPressed: () {
-                                  showLoadingDialog(context);
-                                 // createUserAccount(context);
-                                },
-                                child: const Text(
-                                  "Get Started",
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontFamily: "Roboto",
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.white),
+                          IconButton(
+                            onPressed: () {
+                              FirebaseAuthAppCubit.get(context)
+                                  .getProfileImage(context);
+                            },
+                            icon: CircleAvatar(
+                                backgroundColor: AppColor.backgroundColor,
+                                radius: 30,
+                                child: const Icon(
+                                  Icons.camera_alt_rounded,
+                                  size: 20,
                                 )),
                           ),
-                          createUserStates(),
-                        ],
-                      ),
+                        ]);
+                  })),
+                  const SizedBox(
+                    height: 40,
+                  ),
+                  textInputFormField(
+                      textEditingController: etNameController,
+                      label: "enter your name",
+                      prefix: const Icon(FontAwesomeIcons.userAlt),
+                      textSize: 20.0,
+                      isTextBio: false,
+                      isTextPassword:false,
+                      textInputType: TextInputType.name,
+                      autoFocus: false),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  textInputFormField(
+                      textEditingController: etEmailController,
+                      label: "enter your email",
+                      prefix: const Icon(Icons.email),
+                      textSize: 20.0,
+                      isTextBio: false,
+                      isTextPassword:false,
+                      textInputType: TextInputType.emailAddress,
+                      autoFocus: false),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  textInputFormField(
+                      textEditingController: etBioController,
+                      label: "enter your bio",
+                      prefix: const Icon(FontAwesomeIcons.infoCircle),
+                      textSize: 18.0,
+                      isTextBio: true,
+                      isTextPassword:false,
+                      textInputType: TextInputType.text,
+                      autoFocus: false),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        RichText(
+                          textAlign: TextAlign.center,
+                          text: TextSpan(
+                              text: "By registering you agree to ",
+                              style: TextStyle(
+                                  fontSize: 17,
+                                  fontFamily: "Roboto",
+                                  height: 1.5,
+                                  fontWeight: FontWeight.w400,
+                                  color: CustomColors.colorGrey),
+                              children: <TextSpan>[
+                                TextSpan(
+                                    text: "Terms & Conditions",
+                                    style: TextStyle(
+                                        fontSize: 17,
+                                        fontFamily: "Roboto",
+                                        fontWeight: FontWeight.w600,
+                                        letterSpacing: 1.2,
+                                        color: CustomColors.colorOrange)),
+                                TextSpan(
+                                    text: " and ",
+                                    style: TextStyle(
+                                        fontSize: 17,
+                                        fontFamily: "Roboto",
+                                        height: 1.5,
+                                        fontWeight: FontWeight.w400,
+                                        color: CustomColors.colorGrey)),
+                                TextSpan(
+                                    text: "Privacy Policy",
+                                    style: TextStyle(
+                                        fontSize: 17,
+                                        fontFamily: "Roboto",
+                                        fontWeight: FontWeight.w600,
+                                        letterSpacing: 1.2,
+                                        color: CustomColors.colorOrange)),
+                                TextSpan(
+                                    text: " of the app ",
+                                    style: TextStyle(
+                                        fontSize: 17,
+                                        fontFamily: "Roboto",
+                                        height: 1.5,
+                                        fontWeight: FontWeight.w400,
+                                        color: CustomColors.colorGrey))
+                              ]),
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        Container(
+                          width: double.infinity,
+                          height: 60,
+                          margin: const EdgeInsets.symmetric(horizontal: 15),
+                          decoration: BoxDecoration(
+                              color: AppColor.shapesColor,
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(8)),
+                              boxShadow: [
+                                BoxShadow(
+                                  blurRadius: 10,
+                                  color: Colors.black.withOpacity(0.5),
+                                  offset: const Offset(0, 3),
+                                )
+                              ]),
+                          child: TextButton(
+                              onPressed: () {
+                                showLoadingDialog(context);
+                                FirebaseAuthAppCubit.get(context).createNewUser(id: FirebaseAuthAppCubit.get(context).getUserID(), name: etNameController.text, phone: phoneNumber, email: etEmailController.text, profilePhoto: FirebaseAuthAppCubit.get(context).userModel.image, password: "password", bio: etBioController.text);
+                              },
+                              child: const Text(
+                                "Get Started",
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    fontFamily: "Roboto",
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.white),
+                              )),
+                        ),
+                        createUserStates(),
+                      ],
                     ),
-                  ],
-                ),
-              )),
-        ),
+                  ),
+                ],
+              ),
+            )),
       ),
     );
   }
@@ -238,12 +228,12 @@ class CreateUserAccount extends StatelessWidget {
         if (state is CreateNewUserSuccess) {
           Navigator.pop(context);
           Navigator.of(context)
-              .pushNamed(welcomeScreen, arguments: phoneNumber);
+              .pushNamed(userProfileScreen);
         }
         if (state is CreateNewUserError) {
           Navigator.pop(context);
           String errorMeg = state.errorMessage;
-          showFlushBar(context, errorMeg);
+          showFlushBar(context, errorMeg , "Error");
         }
       },
       child: Container(),

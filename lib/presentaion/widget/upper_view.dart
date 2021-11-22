@@ -44,7 +44,7 @@ Widget displayUpperView(String text1, String text2, String phoneNumber) {
                         fontFamily: "Roboto",
                         height: 1.5,
                         fontWeight: FontWeight.w400,
-                        color: AppColor.textColor),
+                        color: CustomColors.colorGrey),
                     children: <TextSpan>[
                       TextSpan(
                           text: phoneNumber,

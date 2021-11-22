@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_maps/constants/strings.dart';
 import 'package:flutter_maps/constants/colors.dart';
-import 'package:flutter_maps/presentaion/widget/social_card.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class WelcomesScreen extends StatelessWidget {
   const WelcomesScreen({Key? key}) : super(key: key);
@@ -20,20 +20,9 @@ class WelcomesScreen extends StatelessWidget {
                 const SizedBox(
                   height: 20,
                 ),
-                Text(
-                  "Welcome Back 😊",
-                  style: TextStyle(
-                      fontSize: 25,
-                      letterSpacing: 1.0,
-                      fontFamily: "Roboto",
-                      fontWeight: FontWeight.w700,
-                      color: CustomColors.colorYellow),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
+
                 Container(
-                  height: MediaQuery.of(context).size.height * 0.45,
+                  height: MediaQuery.of(context).size.height * 0.4,
                   width: double.infinity,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
@@ -46,53 +35,23 @@ class WelcomesScreen extends StatelessWidget {
                 const SizedBox(
                   height: 30,
                 ),
-                Container(
-                  width: double.infinity,
-                  height: 65,
-                  margin: const EdgeInsets.symmetric(horizontal: 15),
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(Radius.circular(8)),
-                    border: Border.all(
-                      color: AppColor.shapesColor,
-                      width: 2,
-                    ),
-                  ),
-                  child: TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, userLoginScreen);
-                      },
-                      child: const Text(
-                        "Login With Your Email",
-                        style: TextStyle(
-                            fontSize: 20,
-                            letterSpacing: 1.2,
-                            fontFamily: "Roboto",
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white),
-                      )),
+                buildSignInOptions(context, "SignIn With Email", Icons.email_rounded , (){
+                  Navigator.pushReplacementNamed(context, userLoginScreen);
+                }),
+                const SizedBox(
+                  height: 15,
                 ),
-
-                buildSpacer(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    SocalCard(
-                      icon: "assets/icons/google.png",
-                      press: () {},
-                    ),
-                    SocalCard(
-                      icon: "assets/icons/facebook.png",
-                      press: () {},
-                    ),
-                    SocalCard(
-                      icon: "assets/icons/telephone.png",
-                      press: () {
-                        Navigator.pushNamed(context, phoneAuthScreen);
-                      },
-                    ),
-                  ],
+                buildSignInOptions(context, "SignIn With Phone", FontAwesomeIcons.phoneSquare , (){
+                  Navigator.pushReplacementNamed(context, phoneAuthScreen);
+                }),
+                const SizedBox(
+                  height: 15,
                 ),
-
+                buildSignInOptions(context, "SignIn With Google", FontAwesomeIcons.google , (){}),
+                const SizedBox(
+                  height: 15,
+                ),
+                buildSignInOptions(context, "SignIn With Facebook", FontAwesomeIcons.facebookF, (){}),
               ],
             ),
           ),
@@ -101,25 +60,38 @@ class WelcomesScreen extends StatelessWidget {
     );
   }
 
-  Widget buildSpacer() {
-    return Column(
-      children: [
-        const SizedBox(
-          height: 25,
+
+  Widget buildSignInOptions(BuildContext context, String text , IconData iconData , Function()? onPressed) {
+    return    InkWell(
+      onTap: onPressed,
+      child: Container(
+        width: double.infinity,
+        height: 65,
+        margin: const EdgeInsets.symmetric(horizontal: 15),
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(Radius.circular(40)),
+          border: Border.all(
+            color: AppColor.shapesColor,
+            width: 2,
+          ),
         ),
-        Text(
-          "OR",
-          style: TextStyle(
-              fontSize: 25,
-              letterSpacing: 1.0,
+        child: Row(
+          children: [
+          Text(
+          text,
+          style: const TextStyle(
+              fontSize: 20,
+              letterSpacing: 1.2,
               fontFamily: "Roboto",
               fontWeight: FontWeight.w700,
-              color: CustomColors.colorYellow),
+              color: Colors.white),
         ),
-        const SizedBox(
-          height: 25,
-        )
-      ],
+            const Spacer(),
+            Icon(iconData , color: CustomColors.googleBackground,)
+          ],
+        ),
+      ),
     );
   }
 

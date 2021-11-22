@@ -14,14 +14,14 @@ class PhoneNumberSubmitted extends FirebaseAuthAppState {}
 
 class PhoneOtpCodeVerified extends FirebaseAuthAppState {}
 
+class ChangePasswordVisibilityState extends FirebaseAuthAppState {}
+
 class UserLoginLoadingState extends FirebaseAuthAppState {}
 
 class UserLoginSuccessState extends FirebaseAuthAppState {
   final String userID;
   UserLoginSuccessState({required this.userID});
 }
-
-class UserChangePasswordVisibilityState extends FirebaseAuthAppState {}
 
 class UserLoginErrorState extends FirebaseAuthAppState {
   final String errorMessage;
@@ -37,6 +37,26 @@ class UserSignUpError extends FirebaseAuthAppState {
   final String errorMessage;
 
   UserSignUpError({required this.errorMessage});
+}
+
+class UserSignOutLoading extends FirebaseAuthAppState {}
+
+class UserSignOutSuccess extends FirebaseAuthAppState {}
+
+class UserSignOutError extends FirebaseAuthAppState {
+  final String errorMessage;
+
+  UserSignOutError({required this.errorMessage});
+}
+
+class UserResetPasswordLoading extends FirebaseAuthAppState {}
+
+class UserResetPasswordSuccess extends FirebaseAuthAppState {}
+
+class UserResetPasswordError extends FirebaseAuthAppState {
+  final String errorMessage;
+
+  UserResetPasswordError({required this.errorMessage});
 }
 
 class CreateNewUserLoading extends FirebaseAuthAppState {}
