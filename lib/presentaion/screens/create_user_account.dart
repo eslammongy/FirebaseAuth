@@ -17,9 +17,9 @@ class CreateUserAccount extends StatelessWidget {
   var etPhoneController = TextEditingController();
   var etPasswordController = TextEditingController();
   var formKey = GlobalKey<FormState>();
-  String phoneNumber;
+  String signInType;
 
-  CreateUserAccount({Key? key, required this.phoneNumber}) : super(key: key);
+  CreateUserAccount({Key? key, required this.signInType}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,7 @@ class CreateUserAccount extends StatelessWidget {
       body: SingleChildScrollView(
         child: Form(
             key: formKey,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
+           autovalidate: true,
             child: Container(
               margin:
                   const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
@@ -101,7 +101,7 @@ class CreateUserAccount extends StatelessWidget {
                     height: 15,
                   ),
                   Container(
-                    child: phoneNumber.length > 15 ? textInputFormField(
+                    child: signInType.contains("@")  ? textInputFormField(
                       textEditingController: etPhoneController,
                       label: "enter your phone",
                       prefix: const Icon(FontAwesomeIcons.phoneAlt),
@@ -113,30 +113,34 @@ class CreateUserAccount extends StatelessWidget {
                         textEditingController: etEmailController,
                         label: "enter your email",
                         prefix: const Icon(Icons.email),
-                        textSize: 20.0,
+                        textSize: 18.0,
                         isTextBio: false,
                         isTextPassword:false,
                         textInputType: TextInputType.emailAddress,
                         autoFocus: false),
                   ),
-                  const SizedBox(
-                    height: 15,
-                  ),
                   Container(
-                    child: phoneNumber=="Facebook" ? textInputFormField(
-                        textEditingController: etPhoneController,
-                        label: "enter your phone",
-                        prefix: const Icon(FontAwesomeIcons.phoneAlt),
-                        textSize: 20.0,
-                        isTextBio: false,
-                        isTextPassword:false,
-                        textInputType: TextInputType.phone,
-                        autoFocus: false) :const SizedBox(
-                      height: 0.5,
+                    child: signInType=="Default" ? Column(
+                      children: [
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        textInputFormField(
+                            textEditingController: etPhoneController,
+                            label: "enter your phone",
+                            prefix: const Icon(FontAwesomeIcons.phoneAlt),
+                            textSize: 20.0,
+                            isTextBio: false,
+                            isTextPassword:false,
+                            textInputType: TextInputType.phone,
+                            autoFocus: false),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                      ],
+                    ) :const SizedBox(
+                      height: 15,
                     ),
-                  ),
-                  const SizedBox(
-                    height: 14,
                   ),
 
                   textInputFormField(
@@ -222,18 +226,18 @@ class CreateUserAccount extends StatelessWidget {
                           child: TextButton(
                               onPressed: () {
                                 showLoadingDialog(context);
-                                if(phoneNumber.length > 12){
+                                if(signInType.contains(RegExp(emailPattern))){
                                   FirebaseAuthAppCubit.get(context).createNewUser(
                                     id: FirebaseAuthAppCubit.get(context).getUserID(),
                                     name: etNameController.text,
-                                    phone: etPhoneController.text, email: FirebaseAuthAppCubit.get(context).googleAccount!,
+                                    phone: etPhoneController.text, email: FirebaseAuthAppCubit.get(context).signInType!,
                                     profilePhoto: FirebaseAuthAppCubit.get(context).userModel.image,
                                     password: "password", bio: etBioController.text,);
-                                }else if(phoneNumber.length > 12){
+                                }else if(signInType.contains(RegExp(r'(^(?:[+0]9)?[0-9]{10,12}$)'))){
                                   FirebaseAuthAppCubit.get(context).createNewUser(
                                     id: FirebaseAuthAppCubit.get(context).getUserID(),
                                     name: etNameController.text,
-                                    phone: phoneNumber, email: etEmailController.text,
+                                    phone: signInType, email: etEmailController.text,
                                     profilePhoto: FirebaseAuthAppCubit.get(context).userModel.image,
                                     password: "password", bio: etBioController.text,);
                                 }else{
@@ -277,7 +281,7 @@ class CreateUserAccount extends StatelessWidget {
         if (state is CreateNewUserSuccess) {
           Navigator.pop(context);
           Navigator.of(context)
-              .pushReplacementNamed(userProfileScreen);
+              .pushReplacementNamed(userProfileScreen , arguments: signInType);
         }
         if (state is CreateNewUserError) {
           Navigator.pop(context);

@@ -6,7 +6,7 @@ import 'package:flutter_maps/constants/colors.dart';
 import 'package:flutter_maps/constants/strings.dart';
 import 'package:flutter_maps/logic/bloc/phone_auth_bloc.dart';
 import 'package:flutter_maps/logic/bloc/phone_auth_state.dart';
-import 'package:flutter_maps/presentaion/screens/success_screen.dart';
+import 'package:flutter_maps/presentaion/screens/welcome_screen.dart';
 import 'package:flutter_maps/presentaion/widget/loading_dialog.dart';
 import 'package:flutter_maps/presentaion/widget/text_input_feild.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';

@@ -2,12 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_maps/constants/colors.dart';
+import 'package:flutter_maps/constants/icon_broken.dart';
 import 'package:flutter_maps/constants/strings.dart';
 import 'package:flutter_maps/data/user_model.dart';
 import 'package:flutter_maps/logic/bloc/phone_auth_bloc.dart';
 import 'package:flutter_maps/logic/bloc/phone_auth_state.dart';
 import 'package:flutter_maps/presentaion/widget/button_shape.dart';
-import 'package:flutter_maps/presentaion/widget/display_bottom_sheet.dart';
+import 'package:flutter_maps/presentaion/widget/displaying_edit_dialog.dart';
 import 'package:flutter_maps/presentaion/widget/loading_dialog.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -19,8 +20,8 @@ class UserProfileScreen extends StatelessWidget {
   var etPhoneController = TextEditingController();
   var etBioController = TextEditingController();
   var formKey = GlobalKey<FormState>();
-  String phoneNumber;
-   UserProfileScreen({Key? key , required this.phoneNumber}) : super(key: key);
+  String signInType;
+   UserProfileScreen({Key? key , required this.signInType}) : super(key: key);
 
 
   @override
@@ -29,7 +30,7 @@ class UserProfileScreen extends StatelessWidget {
         .get(context)
         .userModel = UserModel(name: '', uId: '', phone: '', email: '', image: '' , bio: "");
     FirebaseAuthAppCubit.get(context).getCurrentUserInfo();
-
+   print("&&&&&&& $signInType");
     return BlocConsumer<FirebaseAuthAppCubit, FirebaseAuthAppState>(
       listener: (context, state) {
         if (state is GetUserInfoErrorStatus) {
@@ -71,10 +72,10 @@ class UserProfileScreen extends StatelessWidget {
                             onPressed: () {
                              FirebaseAuthAppCubit.get(context).userSignOut();
                             },
-                            icon: Icon(
-                              FontAwesomeIcons.signOutAlt,
+                            icon: const Icon(
+                              Icons.logout,
                               size: 30,
-                              color: CustomColors.colorGrey,
+                              color: Colors.red,
                             ),),
                           ),
                         const  Spacer(),
@@ -87,11 +88,11 @@ class UserProfileScreen extends StatelessWidget {
                                ),
                             child: IconButton(
                                 onPressed: () {
-                                  if(phoneNumber.isEmpty){
+                                  if(signInType == "Default"){
                                     showingGeneralDialog(context , "Default");
-                                  }else if(phoneNumber.length < 15){
+                                  }else if(signInType.contains(RegExp(emailPattern))){
                                     showingGeneralDialog(context, "Email");
-                                  }else if(phoneNumber.length > 15){
+                                  }else if(signInType.contains(RegExp(r'(^(?:[+0]9)?[0-9]{10,12}$)'))){
                                     showingGeneralDialog(context, "Phone");
                                   }
 
@@ -138,19 +139,19 @@ class UserProfileScreen extends StatelessWidget {
                     const SizedBox(
                       height: 40,
                     ),
-                    buildTextViewShape(context, userModel.name , false , FontAwesomeIcons.userAlt),
+                    buildTextViewShape(context, userModel.name , 20,false , FontAwesomeIcons.userAlt),
                     const SizedBox(
                       height: 15,
                     ),
-                    buildTextViewShape(context, userModel.phone , false , FontAwesomeIcons.phoneSquare),
+                    buildTextViewShape(context, userModel.phone ,20 ,false , FontAwesomeIcons.phoneSquare),
                     const SizedBox(
                       height: 15,
                     ),
-                    buildTextViewShape(context, userModel.email , false , Icons.email),
+                    buildTextViewShape(context, userModel.email , 18 ,false , Icons.email),
                     const SizedBox(
                       height: 15,
                     ),
-                    buildTextViewShape(context, userModel.bio , true , FontAwesomeIcons.infoCircle),
+                    buildTextViewShape(context, userModel.bio ,18 ,true , FontAwesomeIcons.infoCircle),
                     const SizedBox(
                       height: 20,
                     ),
@@ -175,7 +176,7 @@ class UserProfileScreen extends StatelessWidget {
   }
 
 
-  Widget buildTextViewShape(BuildContext context, String text , bool isTextBio , IconData iconData) {
+  Widget buildTextViewShape(BuildContext context, String text ,double textSize ,bool isTextBio , IconData iconData) {
     return Container(
         width: double.infinity,
         height: isTextBio ? 160 : 60,
@@ -202,7 +203,7 @@ class UserProfileScreen extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   maxLines: 4,
                   style: TextStyle(
-                      fontSize: isTextBio ? 18 : 20,
+                      fontSize: textSize,
                       letterSpacing: isTextBio ? -0.5 : 1.0,
                       fontFamily: "Roboto",
                       fontWeight: FontWeight.w600,

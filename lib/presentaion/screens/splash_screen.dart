@@ -51,7 +51,7 @@ class _SplashScreenState extends State<SplashScreen> {
           "Authentication",
           style: TextStyle(
           fontSize: 30,
-          fontFamily: "Pacifico",
+          fontFamily: "Nunito",
           fontWeight: FontWeight.w800,
           color: CustomColors.colorGrey),
           )

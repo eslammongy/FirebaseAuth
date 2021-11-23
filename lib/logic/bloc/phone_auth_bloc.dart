@@ -121,7 +121,7 @@ class FirebaseAuthAppCubit extends Cubit<FirebaseAuthAppState> {
     emit(ChangePasswordVisibilityState());
   }
 
-  String? googleAccount;
+  String? signInType;
   Future userSignInWithGoogleAccount()async{
     final GoogleSignInAccount? signInAccount = await GoogleSignIn().signIn();
     final GoogleSignInAuthentication googleAuth = await signInAccount!.authentication;
@@ -131,7 +131,7 @@ class FirebaseAuthAppCubit extends Cubit<FirebaseAuthAppState> {
     );
     emit(UserLoginLoadingState());
     return await FirebaseAuth.instance.signInWithCredential(credential).then((value) {
-      googleAccount = value.user!.email;
+      signInType = value.user!.email;
       emit(UserLoginSuccessState(userID: value.user!.uid));
     }).catchError((onError){
       emit(UserLoginErrorState(errorMessage: onError.toString()));
@@ -144,6 +144,7 @@ class FirebaseAuthAppCubit extends Cubit<FirebaseAuthAppState> {
     // Once signed in, return the UserCredential
     emit(UserLoginLoadingState());
     return await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential).then((value){
+      signInType = "Default";
       emit(UserLoginSuccessState(userID: value.user!.uid));
     }).catchError((onError){
       emit(UserLoginErrorState(errorMessage: onError.toString()));

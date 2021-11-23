@@ -12,7 +12,7 @@ import 'package:flutter_maps/presentaion/screens/user_profile.dart';
 import 'logic/bloc/phone_auth_bloc.dart';
 import 'presentaion/screens/phone_auth.dart';
 import 'presentaion/screens/splash_screen.dart';
-import 'presentaion/screens/success_screen.dart';
+import 'presentaion/screens/welcome_screen.dart';
 
 class AppRouter {
   late FirebaseAuthAppCubit phoneAuthCubit;
@@ -74,7 +74,7 @@ class AppRouter {
             builder: (_) => BlocProvider<FirebaseAuthAppCubit>.value(
                   value: phoneAuthCubit,
                   child: CreateUserAccount(
-                    phoneNumber: authType.toString(),
+                    signInType: authType.toString(),
                   ),
                 ));
 
@@ -82,14 +82,14 @@ class AppRouter {
         return MaterialPageRoute(
             builder: (_) => BlocProvider<FirebaseAuthAppCubit>.value(
                   value: phoneAuthCubit,
-                  child:  WelcomesScreen(signInType: authType.toString(),),
+                  child:  const WelcomesScreen(),
                 ));
 
       case userProfileScreen:
         return MaterialPageRoute(
             builder: (_) => BlocProvider<FirebaseAuthAppCubit>.value(
                   value: phoneAuthCubit,
-                  child: UserProfileScreen(phoneNumber: authType.toString(),),
+                  child: UserProfileScreen(signInType: authType.toString(),),
                 ));
       default:
         {
