@@ -1,16 +1,15 @@
-# flutter_maps
+# flutterAuth
 
 A new Flutter project.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+bloc pattern ..firebase auth with Email, Phone, Google account, Registration, Create Account, Update User Data, Forget Password
 
 A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+
+https://user-images.githubusercontent.com/47952686/143404027-f7d2eaab-9640-4aff-92f5-2fc03c629343.mp4
+
